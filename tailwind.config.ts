@@ -23,7 +23,7 @@ const config: Config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          brack: "#121619",
+          black: "#121619",
           orange: "#FD9D3E",
           gray: "#999999",
         },
@@ -62,6 +62,7 @@ const config: Config = {
       fontFamily: {
         narrow: "var(--font-narrow)",
         pacifico: ["Pacifico", "cursive"],
+        courgette: ["Courgette", "cursive"],
       },
     },
     container: {
