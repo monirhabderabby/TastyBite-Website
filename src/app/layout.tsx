@@ -1,4 +1,5 @@
 import Navbar from "@/components/common/navbar/navbar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { PT_Sans_Narrow, Pacifico } from "next/font/google";
@@ -30,9 +31,11 @@ export default function RootLayout({
 }>) {
     return (
         <html>
-            <body className={cn(narrow.className, "antialiased")}>
-                <Navbar />
-                {children}
+            <body className={cn(narrow.className, "antialiased text-white")}>
+                <TooltipProvider>
+                    <Navbar />
+                    {children}
+                </TooltipProvider>
             </body>
         </html>
     );
