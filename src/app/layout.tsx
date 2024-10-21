@@ -1,3 +1,4 @@
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { PT_Sans_Narrow, Pacifico } from "next/font/google";
@@ -29,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={cn(narrow.className, "antialiased")}>{children}</body>
+      <body className={cn(narrow.className, "antialiased text-white")}>
+        <TooltipProvider>{children}</TooltipProvider>
+      </body>
     </html>
   );
 }
