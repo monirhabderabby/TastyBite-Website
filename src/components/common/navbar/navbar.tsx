@@ -51,9 +51,7 @@ const Navbar = () => {
             className={`py-3 fixed top-0 z-50 text-white w-full h-[70px] ${
                 scrolling && "bg-primary-black" // Add background when scrolling
             }  ${
-                pathname === "/"
-                    ? !scrolling && "md:mt-7" // Add margin on homepage when not scrolling
-                    : "bg-primary-black mt-0" // Default background for other pages
+                pathname !== "/" && "bg-primary-black" // Default background for other pages
             } transition duration-300`}
         >
             <div className="container h-full">

@@ -55,7 +55,7 @@ const Speciality = () => {
     } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
     return (
-        <div className="my-20">
+        <div className="my-40">
             <SectionHeader
                 title="Fresh From TastyBite"
                 heading="OUR SPECIALITY"
