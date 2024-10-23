@@ -1,9 +1,17 @@
+// Packages
+import { ClerkProvider } from "@clerk/nextjs";
+import type { Metadata } from "next";
+
+// Fonts
+import { PT_Sans_Narrow, Pacifico } from "next/font/google";
+
+// Local imports
 import Footer from "@/components/common/footer/footer";
 import Navbar from "@/components/common/navbar/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
-import { PT_Sans_Narrow, Pacifico } from "next/font/google";
+
+// CSS
 import "./globals.css";
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,14 +39,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
-      <body className={cn(narrow.className, "antialiased text-white")}>
-        <TooltipProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </TooltipProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html>
+        <body className={cn(narrow.className, "antialiased text-white")}>
+          <TooltipProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </TooltipProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
