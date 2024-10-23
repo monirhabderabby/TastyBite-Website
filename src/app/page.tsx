@@ -1,3 +1,4 @@
+import BestChef from "@/components/home/best-chef";
 import LatestNews from "@/components/home/latest-news";
 import Speciality from "@/components/home/speciality";
 import Banner from "@/components/ui/banner";
@@ -12,7 +13,8 @@ export default function Home() {
             <BannerInfo />
             {/* Special category section */}
             <Speciality />
-
+            {/* Best chef section */}
+            <BestChef />
             {/* Latest news section */}
             <LatestNews />
         </div>
