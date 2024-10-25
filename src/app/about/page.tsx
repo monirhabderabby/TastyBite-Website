@@ -1,6 +1,8 @@
 // import AboutTastybite from "@/components/about/AboutTastybite";
 // import OurStory from "@/components/about/OurStory";
 
+import AboutTastybite from "@/components/about/AboutTastybite";
+import OurStory from "@/components/about/OurStory";
 import AllPageBanner from "@/components/common/AllPageBanner/AllPageBanner";
 
 
@@ -16,8 +18,8 @@ const Page = () => {
     </div>
     {/* Tastybite about section add */}
     <div className="py-16">
-      {/* <AboutTastybite />
-      <OurStory /> */}
+      <AboutTastybite/>
+      <OurStory/>
     </div>
   </div>;
 };
