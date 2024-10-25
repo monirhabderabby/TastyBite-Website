@@ -41,10 +41,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html>
-        <body className={cn(narrow.className, "antialiased text-white")}>
+        <body className={cn(narrow.className, "antialiased text-white") }>
           <TooltipProvider>
             <Navbar />
-            {children}
+            <div className="min-h-screen">
+             {children} 
+            </div>
+            
             <Footer />
           </TooltipProvider>
         </body>

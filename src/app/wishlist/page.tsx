@@ -1,5 +1,23 @@
+import BreadcrumbComponent from "@/components/Breadcrumb/Breadcrum";
+import FoodCart from "@/components/common/cards/food-card";
+
+
 const Wishlist = () => {
-  return <div>Wishlist</div>;
+  const breadcrumbLinks = {
+    preLinks: [{ link: "/", name: "Home" }],
+    pageName: "Wishlist",
+  };
+  return (
+    <div className="container my-20 mx-auto ">
+      <BreadcrumbComponent links={breadcrumbLinks}/>
+     <h4 className="text-3xl dark:text-white text-black font-bold pt-7">WISHLIST</h4>
+      <div className="grid grid-cols-1 gap-y-5  md:grid-cols-2 lg:grid-cols-4 ">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]?.map((item, index) => {
+          return <FoodCart key={index} />;
+        })}
+      </div>
+    </div>
+  );
 };
 
 export default Wishlist;
