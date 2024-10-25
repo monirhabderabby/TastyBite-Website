@@ -7,17 +7,18 @@ const AboutTastybite = () => {
             {/* about img part */}
             <div>
                 <Image src={'https://utfs.io/f/oI7Ou0bdQ6rjwmghpGpDRo0qZfncSaKkXtLpHNGEmgxCAJP7'}
-                 width={700}
-                 height={700}
-                 className='rounded-md'
-                 alt='Tastybite image' />
+                    width={700}
+                    height={700}
+                    className='rounded-md'
+                    alt='Tastybite image' />
             </div>
             {/* about tastybite details */}
-            <div className='space-y-6'>
+            <div className='md:space-y-6 space-y-3'>
                 <h4 className='text-base md:text-2xl font-bold font-pacifico text-primary-orange'>Delicious Restaurant</h4>
-                <h2 className='text-base sm:text-2xl lg:text-6xl font-bold text-primary-black'>ABOUT TASTYBITE</h2>
+                <h2 className='text-3xl lg:text-7xl font-narrow font-bold text-primary-black'>ABOUT TASTYBITE</h2>
                 <p className='text-base font-normal text-primary-black'>
-                    Sit amet, consectetur adipiscing elit quisque eget maximus velit, non eleifend libero curabitur dapibus mauris sed leo cursus aliquetcras suscipit. Sit amet, consectetur adipiscing elit quisque eget maximus velit, non eleifend libero curabitur Sit amet, consectetur adipiscing elit quisque eget maximus velit, non eleifend libero curabitur dapibus mauris sed leo cursus aliquetcras suscipit. Sit amet.
+                    TastyBite is a well-loved brand offering an extensive range of ready-to-eat meals inspired by diverse global cuisines, including Indian, Asian, and Mexican flavors. Known for its commitment to natural ingredients and authentic taste, TastyBite brings flavorful, convenient dining solutions to homes. Their meals are crafted to deliver quality,
+                    satisfying experiences in minutes, perfect for busy lifestyles.
                 </p>
             </div>
         </div>

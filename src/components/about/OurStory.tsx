@@ -8,7 +8,7 @@ const OurStory = () => {
                 {/* heading */}
                 <h4 className='text-xl md:text-4xl font-bold text-center font-pacifico text-primary-orange'>Discover</h4>
                {/* title */}
-                <h2 className='text-base text-center sm:text-2xl lg:text-6xl font-bold text-primary-black'>
+                <h2 className='text-center text-3xl lg:text-6xl font-bold text-primary-black'>
                     OUR STORY
                 </h2>
                 {/* subtitle */}
