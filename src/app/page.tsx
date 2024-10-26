@@ -1,4 +1,5 @@
 import BestChef from "@/components/home/best-chef";
+import CustomerReviews from "@/components/home/customer-reviews";
 import LatestNews from "@/components/home/latest-news";
 import Speciality from "@/components/home/speciality";
 import Banner from "@/components/ui/banner";
@@ -17,6 +18,10 @@ export default function Home() {
             <BestChef />
             {/* Latest news section */}
             <LatestNews />
+            {/* Customer reviews section */}
+            <CustomerReviews />
+
+            <div className="h-80"></div>
         </div>
     );
 }
