@@ -3,12 +3,12 @@ import React from 'react';
 
 const OurStory = () => {
     return (
-        <div className='py-28 bg-slate-200 mt-20'>
+        <div className='py-16 md:py-28 bg-[#F5F5F7] mt-16 md:mt-20'>
             <div className='flex justify-center container items-center flex-col space-y-3 md:space-y-6'>
                 {/* heading */}
                 <h4 className='text-xl md:text-4xl font-bold text-center font-pacifico text-primary-orange'>Discover</h4>
                {/* title */}
-                <h2 className='text-center text-3xl lg:text-6xl font-bold text-primary-black'>
+                <h2 className='text-center text-3xl lg:text-7xl font-bold text-primary-black'>
                     OUR STORY
                 </h2>
                 {/* subtitle */}
@@ -17,7 +17,10 @@ const OurStory = () => {
                     on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
                 </p>
                 {/* image */}
-                <Image src={'https://utfs.io/f/oI7Ou0bdQ6rjbXGvnHPwY7olNctKITnZOQkPhFezgR96CLX3'} alt='Image' width={100} height={100}/>
+                <Image src={'https://utfs.io/f/oI7Ou0bdQ6rjbXGvnHPwY7olNctKITnZOQkPhFezgR96CLX3'}
+                 alt='Image' width={200} height={200}
+                 
+                 />
             </div>
         </div>
     );

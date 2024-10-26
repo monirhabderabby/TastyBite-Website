@@ -14,11 +14,11 @@ const Page = () => {
       <AllPageBanner
         img={'https://utfs.io/f/oI7Ou0bdQ6rjiGyuYM7CO0fsq7HAWnKhc6pERGMxZXFQizYo'}
         title="ABOUT US"
-        activelink="About"
+        activelink="About us"
       />
     </div>
     {/* Tastybite about section add */}
-    <div className="py-16">
+    <div className="py-10">
       <AboutTastybite/>
       <OurStory/>
       <AboutExperience/>
