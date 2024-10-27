@@ -1,6 +1,6 @@
 // Local imports
 import BreadcrumbComponent from "@/components/Breadcrumb/Breadcrum";
-import FoodCart from "@/components/common/cards/food-card";
+import FoodCart from "@/components/common/cards/food-card/food-card";
 
 const Wishlist = () => {
   const breadcrumbLinks = {

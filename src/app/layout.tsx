@@ -45,7 +45,9 @@ export default function RootLayout({
         <body className={cn(narrow.className, "antialiased text-white")}>
           <TooltipProvider>
             <Navbar />
-            <div className="min-h-screen">{children}</div>
+            <div className="min-h-screen" vaul-drawer-wrapper="">
+              {children}
+            </div>
 
             <Footer />
             <NProgress />
