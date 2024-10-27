@@ -41,7 +41,7 @@ const FoodCart = ({ theme }: FoodCartProps) => {
     // Do your stuff when clicking on the cart button
   };
   return (
-    <div className="flex flex-col justify-center items-center gap-y-3 cursor-pointer group overflow-hidden w-[240px] h-auto mx-auto">
+    <div className="flex flex-col justify-center items-center gap-y-3 cursor-pointer group overflow-hidden w-[180px] md:w-[240px] h-auto mx-auto">
       <div className="relative ">
         <ImageOverlap img1={item.images[0]} img2={item.images[1]} />
         <QuickActions
@@ -54,8 +54,8 @@ const FoodCart = ({ theme }: FoodCartProps) => {
       <div>
         <h3
           className={cn(
-            " hover:text-primary-orange cursor-pointer transition-colors duration-300 text-[22px] font-medium font-narrow",
-            theme === "black" ? "text-white" : "text-gray-500"
+            " hover:text-primary-orange cursor-pointer transition-colors duration-300 text-[22px] font-medium font-narrow ",
+            theme === "light" ? "text-gray-700" : "text-white"
           )}
         >
           {item.name}
@@ -83,12 +83,12 @@ const QuickActions = ({
   onCartClick,
 }: QuickActionsProps) => {
   const style = {
-    icon: "h-5 w-5",
+    icon: "h-4 md:h-5 w-4 md:w-5",
     button:
-      "w-[40px] h-[40px] bg-white hover:bg-primary-orange text-gray-500 hover:text-white flex justify-center items-center mt-[10px]",
+      "w-[30px] md:w-[40px] h-[30px] md:h-[40px] bg-white hover:bg-primary-orange text-gray-500 hover:text-white flex justify-center items-center mt-[10px]",
   };
   return (
-    <div className="absolute right-0 top-0 group-hover:translate-x-0 translate-x-10 transition-all duration-300">
+    <div className="absolute -right-4 md:-right-2 lg:right-0 top-0 group-hover:translate-x-0 translate-x-10 transition-all duration-300">
       <Tooltip>
         <TooltipTrigger className={style.button} onClick={onWishlist}>
           <Heart className={style.icon} />
@@ -128,7 +128,10 @@ const ImageOverlap = ({ img1, img2, className }: ImageOverlapProps) => {
   const [hovered, setHovered] = useState<boolean>(false);
   return (
     <div
-      className={cn("w-[240px] h-[240px] relative overflow-hidden ", className)}
+      className={cn(
+        "w-[150px] md:w-[240px] h-[150px] md:h-[240px] relative overflow-hidden ",
+        className
+      )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
