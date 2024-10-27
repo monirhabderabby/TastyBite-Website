@@ -1,17 +1,15 @@
-// import AboutTastybite from "@/components/about/AboutTastybite";
-// import OurStory from "@/components/about/OurStory";
-
 import AboutExperience from "@/components/about/AboutExperience";
 import AboutTastybite from "@/components/about/AboutTastybite";
 import OurStory from "@/components/about/OurStory";
-import AllPageBanner from "@/components/common/AllPageBanner/AllPageBanner";
+import Pageheader from "@/components/common/PageHeaderBanner/Pageheader";
+
 
 
 const Page = () => {
-  return <div className="">
+  return <div>
     {/* about banner section add */}
     <div>
-      <AllPageBanner
+      <Pageheader
         img={'https://utfs.io/f/oI7Ou0bdQ6rjiGyuYM7CO0fsq7HAWnKhc6pERGMxZXFQizYo'}
         title="ABOUT US"
         activelink="About us"

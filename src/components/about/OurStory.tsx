@@ -8,7 +8,7 @@ const OurStory = () => {
                 {/* heading */}
                 <h4 className='text-xl md:text-4xl font-bold text-center font-pacifico text-primary-orange'>Discover</h4>
                {/* title */}
-                <h2 className='text-center text-3xl lg:text-7xl font-bold text-primary-black'>
+                <h2 className='text-center text-3xl md:text-5xl lg:text-6xl font-bold text-primary-black'>
                     OUR STORY
                 </h2>
                 {/* subtitle */}
@@ -18,8 +18,7 @@ const OurStory = () => {
                 </p>
                 {/* image */}
                 <Image src={'https://utfs.io/f/oI7Ou0bdQ6rjbXGvnHPwY7olNctKITnZOQkPhFezgR96CLX3'}
-                 alt='Image' width={200} height={200}
-                 
+                 alt='Image' width={200} height={200}                 
                  />
             </div>
         </div>

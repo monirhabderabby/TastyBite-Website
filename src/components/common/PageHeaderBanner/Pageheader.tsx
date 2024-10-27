@@ -15,7 +15,7 @@ type Props={
     activelink: string
 }
 
-const AllPageBanner = ({img, title,activelink}: Props) => {
+const Pageheader = ({img, title,activelink}: Props) => {
     return (
         <div className="overflow-hidden relative mt-[60px]">
             <Image
@@ -52,4 +52,4 @@ const AllPageBanner = ({img, title,activelink}: Props) => {
     );
 };
 
-export default AllPageBanner;
+export default Pageheader;
