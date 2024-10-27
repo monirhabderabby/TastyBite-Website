@@ -23,7 +23,7 @@ const BreadcrumbComponent = ({ links }: { links: TLinks }) => {
           <div className="flex text-lg items-center" key={preLink?.name}>
             <BreadcrumbItem>
               <BreadcrumbLink
-                className="hover:text-green-800 font-medium"
+                className="hover:text-primary-orange font-medium"
                 href={preLink.link}
               >
                 {preLink?.name}
