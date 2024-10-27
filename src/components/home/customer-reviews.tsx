@@ -67,7 +67,7 @@ const CustomerReviews = () => {
                         alt="customer-top"
                     />
                 </div>
-                <div className="container py-20 lg:py-40">
+                <div className="container py-[50px] lg:py-[100px]">
                     <SectionHeader
                         title="What Our Clients Say"
                         heading="CUSTOMER REVIEWS"
