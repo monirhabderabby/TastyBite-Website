@@ -1,3 +1,4 @@
+import AboutHome from "@/components/home/about-home";
 import BestChef from "@/components/home/best-chef";
 import CustomerReviews from "@/components/home/customer-reviews";
 import LatestNews from "@/components/home/latest-news";
@@ -20,8 +21,8 @@ export default function Home() {
             <LatestNews />
             {/* Customer reviews section */}
             <CustomerReviews />
-
-            <div className="h-80"></div>
+            {/* About section */}
+            <AboutHome />
         </div>
     );
 }
