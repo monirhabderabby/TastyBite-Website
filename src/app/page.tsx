@@ -3,6 +3,7 @@ import BestChef from "@/components/home/best-chef";
 import BookOnline from "@/components/home/book-online";
 import CustomerReviews from "@/components/home/customer-reviews";
 import LatestNews from "@/components/home/latest-news";
+import OurSpecialMenus from "@/components/home/our-special-menus";
 import Speciality from "@/components/home/speciality";
 import Banner from "@/components/ui/banner";
 import BannerInfo from "@/components/ui/BannerInfo";
@@ -16,6 +17,8 @@ export default function Home() {
             <BannerInfo />
             {/* Special category section */}
             <Speciality />
+            {/* Our Special Menus */}
+            <OurSpecialMenus />
             {/* Book online section */}
             <BookOnline />
             {/* Best chef section */}

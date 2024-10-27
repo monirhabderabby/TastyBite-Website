@@ -47,8 +47,8 @@ const BookOnline = () => {
     }
 
     return (
-        <div className="mb-12 md:mb-20 md:mt-20 container">
-            <div className="flex flex-col md:flex-row justify-center md:justify-between gap-6">
+        <div className="my-14 md:my-28 container">
+            <div className="flex flex-col md:flex-row justify-center md:justify-between md:items-center gap-6">
                 <div className="flex-1">
                     <div className="mb-5">
                         <SectionHeader
@@ -71,7 +71,7 @@ const BookOnline = () => {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-8"
+                            className="space-y-5 md:space-y-8"
                         >
                             <FormField
                                 control={form.control}
