@@ -5,7 +5,7 @@ import { useState } from "react";
 // Local imports
 import Tabs from "@/components/ui/tabs";
 import { specialMenusTabs } from "@/data/menus";
-import FoodCart from "../common/cards/food-card";
+import FoodCart from "../common/cards/food-card/food-card";
 
 const MenusContaner = () => {
   const [activeTab, setActiveTab] = useState(specialMenusTabs[0].id);

@@ -2,17 +2,12 @@
 
 // Packages
 import { motion } from "framer-motion";
-import { Heart, Search, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 // Local Imports
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import QuickActions from "./quick-action";
 
 const item = {
   id: 1,
@@ -69,53 +64,6 @@ const FoodCart = ({ theme }: FoodCartProps) => {
 };
 
 export default FoodCart;
-
-interface QuickActionsProps {
-  onWishlist: () => void;
-  onQuickView: () => void;
-  onCartClick: () => void;
-}
-
-// Quick Actions Components
-const QuickActions = ({
-  onWishlist,
-  onQuickView,
-  onCartClick,
-}: QuickActionsProps) => {
-  const style = {
-    icon: "h-4 md:h-5 w-4 md:w-5",
-    button:
-      "w-[30px] md:w-[40px] h-[30px] md:h-[40px] bg-white hover:bg-primary-orange text-gray-500 hover:text-white flex justify-center items-center mt-[10px]",
-  };
-  return (
-    <div className="absolute -right-4 md:-right-2 lg:right-0 top-0 group-hover:translate-x-0 translate-x-10 transition-all duration-300">
-      <Tooltip>
-        <TooltipTrigger className={style.button} onClick={onWishlist}>
-          <Heart className={style.icon} />
-        </TooltipTrigger>
-        <TooltipContent side="left" className="bg-white text-gray-500">
-          Wishlist
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger className={style.button} onClick={onQuickView}>
-          <Search className={style.icon} />
-        </TooltipTrigger>
-        <TooltipContent side="left" className="bg-white text-gray-500">
-          Quick View
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger className={style.button} onClick={onCartClick}>
-          <ShoppingCart className={style.icon} />
-        </TooltipTrigger>
-        <TooltipContent side="left" className="bg-white text-gray-500">
-          Add To Cart
-        </TooltipContent>
-      </Tooltip>
-    </div>
-  );
-};
 
 interface ImageOverlapProps {
   img1: string;

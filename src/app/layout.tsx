@@ -12,6 +12,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 // CSS
+import NProgress from "@/provider/NProgress";
 import "./globals.css";
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,14 +42,15 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html>
-        <body className={cn(narrow.className, "antialiased text-white") }>
+        <body className={cn(narrow.className, "antialiased text-white")}>
           <TooltipProvider>
             <Navbar />
-            <div className="min-h-screen">
-             {children} 
+            <div className="min-h-screen" vaul-drawer-wrapper="">
+              {children}
             </div>
-            
+
             <Footer />
+            <NProgress />
           </TooltipProvider>
         </body>
       </html>
