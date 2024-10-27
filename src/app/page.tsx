@@ -10,7 +10,7 @@ import BannerInfo from "@/components/ui/BannerInfo";
 
 export default function Home() {
     return (
-        <div className="relative">
+        <div className="">
             {/* Rendering the Banner component at the top of the page */}
             <Banner />
             {/* Rendering the BannerInfo component below the Banner */}
