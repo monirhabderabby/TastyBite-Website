@@ -1,5 +1,6 @@
 import AboutHome from "@/components/home/about-home";
 import BestChef from "@/components/home/best-chef";
+import BookOnline from "@/components/home/book-online";
 import CustomerReviews from "@/components/home/customer-reviews";
 import LatestNews from "@/components/home/latest-news";
 import Speciality from "@/components/home/speciality";
@@ -15,6 +16,8 @@ export default function Home() {
             <BannerInfo />
             {/* Special category section */}
             <Speciality />
+            {/* Book online section */}
+            <BookOnline />
             {/* Best chef section */}
             <BestChef />
             {/* Latest news section */}
