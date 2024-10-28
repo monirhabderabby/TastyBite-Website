@@ -1,3 +1,4 @@
+import AboutFood from "@/components/home/about-food";
 import AboutHome from "@/components/home/about-home";
 import BestChef from "@/components/home/best-chef";
 import BookOnline from "@/components/home/book-online";
@@ -30,6 +31,8 @@ export default function Home() {
             <LatestNews />
             {/* Customer reviews section */}
             <CustomerReviews />
+            {/* About food */}
+            <AboutFood />
             {/* About section */}
             <AboutHome />
         </div>
