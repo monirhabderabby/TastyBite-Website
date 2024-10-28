@@ -16,7 +16,7 @@ const Page = () => {
       />
     </div>
     {/* Tastybite about section add */}
-    <div className="py-10">
+    <div className="py-10 bg-[#F4F1EA]">
       <AboutTastybite/>
       <OurStory/>
       <AboutExperience/>
