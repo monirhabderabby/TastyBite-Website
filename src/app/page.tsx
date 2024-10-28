@@ -5,12 +5,13 @@ import CustomerReviews from "@/components/home/customer-reviews";
 import LatestNews from "@/components/home/latest-news";
 import OurSpecialMenus from "@/components/home/our-special-menus";
 import Speciality from "@/components/home/speciality";
+import WhyBest from "@/components/home/why-best";
 import Banner from "@/components/ui/banner";
 import BannerInfo from "@/components/ui/BannerInfo";
 
 export default function Home() {
     return (
-        <div className="">
+        <div>
             {/* Rendering the Banner component at the top of the page */}
             <Banner />
             {/* Rendering the BannerInfo component below the Banner */}
@@ -19,6 +20,8 @@ export default function Home() {
             <Speciality />
             {/* Our Special Menus */}
             <OurSpecialMenus />
+            {/* Why best section */}
+            <WhyBest />
             {/* Book online section */}
             <BookOnline />
             {/* Best chef section */}
