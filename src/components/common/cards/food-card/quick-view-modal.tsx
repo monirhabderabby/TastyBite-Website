@@ -11,7 +11,7 @@ interface Props {
 const QuickViewModal = ({ open, setOpen }: Props) => {
   return (
     <Modal open={open} setOpen={setOpen}>
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
+      <section className=" grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
         <div className="flex-1 ">
           <ModalImageSlider />
         </div>

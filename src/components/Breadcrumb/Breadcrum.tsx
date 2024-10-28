@@ -7,11 +7,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-type TLinks = {
-  preLinks: {
-    link: string;
-    name: string;
-  }[];
+type preLink = {
+  link: string;
+  name: string;
+};
+
+export type TLinks = {
+  preLinks: preLink[];
   pageName: string;
 };
 

@@ -1,3 +1,4 @@
+"use client";
 // Packages
 import Image from "next/image";
 import { useState } from "react";
@@ -21,12 +22,25 @@ const images = [
   "https://utfs.io/f/ENJYMqft5qDjmWO44FxQB2YrEvwgWTsI0jSGMAcHkfhmo5i9",
   "https://utfs.io/f/ENJYMqft5qDjmWO44FxQB2YrEvwgWTsI0jSGMAcHkfhmo5i9",
 ];
-const ModalImageSlider = () => {
+
+interface Props {
+  carouselItemClassName?: string;
+  selectedImageContainer?: string;
+}
+const ModalImageSlider = ({
+  carouselItemClassName,
+  selectedImageContainer,
+}: Props) => {
   const [selectedImg, setSelectedImg] = useState(images[0]);
 
   return (
     <section className="w-full">
-      <div className="w-full bg-orange-300 h-[250px] md:h-[300px] relative md:rounded-[5px]">
+      <div
+        className={cn(
+          selectedImageContainer,
+          "w-full bg-orange-300 h-[250px] md:h-[300px] relative md:rounded-[5px]"
+        )}
+      >
         <Image
           src={selectedImg}
           fill
@@ -40,7 +54,7 @@ const ModalImageSlider = () => {
             {images.map((img) => (
               <CarouselItem
                 key={img} // please use a unike key
-                className="basis-1/4"
+                className={cn("basis-1/4", carouselItemClassName)}
                 onClick={() => setSelectedImg(img)}
               >
                 <Image
