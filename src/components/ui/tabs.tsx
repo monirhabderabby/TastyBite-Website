@@ -9,7 +9,7 @@ import { tab } from "@/types";
 interface Props {
   data: tab[];
   activeTab: string;
-  setActiveTab: () => Dispatch<SetStateAction<string>>;
+  setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 export default function Tabs({ data, activeTab, setActiveTab }: Props) {
@@ -31,7 +31,7 @@ export default function Tabs({ data, activeTab, setActiveTab }: Props) {
 interface TabProps {
   tab: tab;
   activeTab: string;
-  setActiveTab: () => Dispatch<SetStateAction<string>>;
+  setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 const Tab = ({ tab, activeTab, setActiveTab }: TabProps) => {

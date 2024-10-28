@@ -1,5 +1,4 @@
 "use client";
-import Modal from "@/components/ui/modal";
 // Local imports
 import {
   Tooltip,
@@ -8,6 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Heart, Search, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import QuickViewModal from "./quick-view-modal";
 
 interface QuickActionsProps {
   onWishlist: () => void;
@@ -59,9 +59,7 @@ const QuickActions = ({
           </TooltipContent>
         </Tooltip>
       </div>
-      <Modal open={open} setOpen={setOpen}>
-        <div className="text-black">Monir Hossain</div>
-      </Modal>
+      <QuickViewModal open={open} setOpen={setOpen} />
     </>
   );
 };

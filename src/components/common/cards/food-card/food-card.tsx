@@ -36,7 +36,7 @@ const FoodCart = ({ theme }: FoodCartProps) => {
     // Do your stuff when clicking on the cart button
   };
   return (
-    <div className="flex flex-col justify-center items-center gap-y-3 cursor-pointer group overflow-hidden w-[180px] md:w-[240px] h-auto mx-auto">
+    <div className="flex flex-col justify-center items-center gap-y-3 cursor-pointer group overflow-hidden w-[160px] md:w-[240px] h-auto mx-auto">
       <div className="relative ">
         <ImageOverlap img1={item.images[0]} img2={item.images[1]} />
         <QuickActions
