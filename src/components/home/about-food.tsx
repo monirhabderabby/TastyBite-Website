@@ -8,7 +8,7 @@ const AboutFood = () => {
     return (
         <div>
             <div className="container">
-                <div className="md:max-w-[560px] md:mx-auto lg:max-w-full mt-[50px] md:mt-[100px] grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="md:max-w-[560px] md:mx-auto lg:max-w-full my-[50px] md:my-[100px] grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div>
                         <Image
                             src={burger}
