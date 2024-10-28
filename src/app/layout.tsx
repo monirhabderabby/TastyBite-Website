@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 // CSS
 import NProgress from "@/provider/NProgress";
 import "./globals.css";
+import AppProvider from "@/provider/app-provider";
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
 const narrow = PT_Sans_Narrow({
@@ -40,20 +41,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html>
-        <body className={cn(narrow.className, "antialiased text-white")}>
-          <TooltipProvider>
-            <Navbar />
-            <div className="min-h-screen" vaul-drawer-wrapper="">
-              {children}
-            </div>
 
-            <Footer />
-            <NProgress />
-          </TooltipProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <AppProvider>
+      <ClerkProvider>
+        <html>
+          <body className={cn(narrow.className, "antialiased text-white")}>
+            <TooltipProvider>
+              <Navbar />
+              <div className="min-h-screen" vaul-drawer-wrapper="">
+                {children}
+              </div>
+
+              <Footer />
+              <NProgress />
+            </TooltipProvider>
+          </body>
+        </html>
+      </ClerkProvider>
+    </AppProvider>
   );
 }
