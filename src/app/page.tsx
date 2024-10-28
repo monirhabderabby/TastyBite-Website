@@ -27,12 +27,12 @@ export default function Home() {
             <BookOnline />
             {/* Best chef section */}
             <BestChef />
-            {/* About food */}
-            <AboutFood />
             {/* Latest news section */}
             <LatestNews />
             {/* Customer reviews section */}
             <CustomerReviews />
+            {/* About food */}
+            <AboutFood />
             {/* About section */}
             <AboutHome />
         </div>
