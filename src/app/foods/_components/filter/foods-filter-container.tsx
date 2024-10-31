@@ -1,20 +1,28 @@
 "use client";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+// Packages
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
+import RangeSlider from "react-range-slider-input";
+
+// Local Imports
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+
+// CSS
+import "react-range-slider-input/dist/style.css";
 
 const FoodsFilterContainer = () => {
   return (
-    <div className="hidden lg:block">
-      <Categories />
+    <div className="hidden lg:block space-y-10">
+      <CategoriesFilter />
+      <PriceFilter />
     </div>
   );
 };
 
 export default FoodsFilterContainer;
 
-const Categories = () => {
+export const CategoriesFilter = () => {
   const [selectedId, setSelectedId] = useState("1");
   const data = [
     {
@@ -85,6 +93,40 @@ const Categories = () => {
           ))}
         </div>
       </ScrollArea>
+    </div>
+  );
+};
+
+export const PriceFilter = () => {
+  const [value, setValue] = useState([0, 120]);
+  return (
+    <div>
+      <h1 className="text-[24px] uppercase text-primary-black font-semibold tracking-[2px]">
+        price
+      </h1>
+
+      <div className="mt-3">
+        <RangeSlider
+          id="range-slider-green"
+          className="bg-primary-orange"
+          value={value} // Pass current min and max as slider values
+          max={120} // Maximum value of the slider
+          min={0} // Minimum value of the slider
+          onInput={(value) => {
+            setValue(value);
+          }}
+        />
+
+        <div className="mt-4 flex items-center gap-x-4">
+          <div className="border-input border rounded-md text-gray-700 w-[70px] py-1 flex justify-center items-center">
+            ${value[0]}
+          </div>
+          <span className="text-gray-700">to</span>
+          <div className="border-input border rounded-md text-gray-700 w-[70px] py-1 flex justify-center items-center">
+            ${value[1]}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
