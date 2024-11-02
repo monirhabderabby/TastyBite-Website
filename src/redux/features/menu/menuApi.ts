@@ -18,7 +18,7 @@ const menuApi = baseApi.injectEndpoints({
         }),
         createMenu: builder.mutation({
             query: (body) => ({
-                url: "/menu/create-menu",
+                url: "/menu",
                 method: "POST",
                 body,
             }),
