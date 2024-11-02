@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { Dispatch, SetStateAction } from "react";
 
 // Local imports
+import { cn } from "@/lib/utils";
 import { tab } from "@/types";
 
 interface Props {
   data: tab[];
   activeTab: string;
-  setActiveTab: () => Dispatch<SetStateAction<string>>;
+  setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 export default function Tabs({ data, activeTab, setActiveTab }: Props) {
@@ -28,19 +29,21 @@ export default function Tabs({ data, activeTab, setActiveTab }: Props) {
 }
 
 //  -----------------------------------------------------------------
+// test
 interface TabProps {
   tab: tab;
   activeTab: string;
-  setActiveTab: () => Dispatch<SetStateAction<string>>;
+  setActiveTab: Dispatch<SetStateAction<string>>;
 }
 
 const Tab = ({ tab, activeTab, setActiveTab }: TabProps) => {
   return (
     <button
       onClick={() => setActiveTab(tab.id)}
-      className={`${
+      className={cn(
+        "relative rounded-full px-3 py-1.5 text-sm md:text-xl font-medium  outline-sky-400 transition focus-visible:outline-2 my-2",
         activeTab === tab.id ? "text-white" : "hover:text-white/60"
-      } relative rounded-full px-3 py-1.5 text-sm md:text-xl font-medium text-white outline-sky-400 transition focus-visible:outline-2 my-2`}
+      )}
       style={{
         WebkitTapHighlightColor: "",
       }}

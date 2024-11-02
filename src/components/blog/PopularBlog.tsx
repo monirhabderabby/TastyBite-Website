@@ -28,7 +28,7 @@ const PopularBlog = () => {
                                 />
                                 <div className='space-y-2'>
                                     {/* title */}
-                                    <h2 className='text-xl text-black font-bold hover:text-green-700'>
+                                    <h2 className='text-[18px] leading-[22px] text-black font-[600] hover:text-green-700'>
                                         Budget Issues Force The Our To Become
                                     </h2>
                                     {/* date of post */}
