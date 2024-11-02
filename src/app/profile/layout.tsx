@@ -25,7 +25,7 @@ export default async function DashboardLayout({ children, params }) {
     );
   }
   return (
-    <div className="container grid min-h-screen grid-cols-6 md:pt-24  ">
+    <div className="container grid min-h-screen grid-cols-6 md:pt-24 mt-20 md:mt-0 ">
       <div className="hidden md:block md:col-span-1">
         <DashboardSideBar />
       </div>
