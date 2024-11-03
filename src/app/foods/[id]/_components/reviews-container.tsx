@@ -1,9 +1,11 @@
 "use client";
-import { Button } from "@/components/ui/button";
+// Packages
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-// @ts-expect-error
-import ReactStars from "react-rating-stars-component";
+import { Rating } from "react-simple-star-rating";
+
+// Local imports
+import { Button } from "@/components/ui/button";
 import ReviewForm from "./review-form";
 
 const ReviewsContainer = () => {
@@ -16,7 +18,7 @@ const ReviewsContainer = () => {
       <div>
         <div className="mt-5 flex justify-center items-center gap-x-20">
           <div>
-            <ReactStars count={5} size={20} edit={false} />
+            <Rating initialValue={5} readonly />
             <p className="text-gray-400">Be the first to write a review</p>
           </div>
           <div className="h-[50px] w-[2px] bg-gray-500/20" />
