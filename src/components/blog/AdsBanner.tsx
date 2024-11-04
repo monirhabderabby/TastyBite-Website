@@ -12,7 +12,7 @@ const AdsBanner = () => {
                 className='w-full object-cover'
             />
             {/* overlav color */}
-            <div className='absolute top-0 inset-0 bg-green-600 opacity-70'></div>
+            <div className='absolute top-0 inset-0 bg-primary-orange opacity-70'></div>
             {/* content */}
             <div className='absolute  top-1/2 -translate-x-1/2  -translate-y-1/2  left-1/2'>
                 <div className='flex items-center gap-x-4 md:gap-x-12  text-white'>
