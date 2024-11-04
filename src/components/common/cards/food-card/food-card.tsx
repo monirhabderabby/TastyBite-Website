@@ -95,7 +95,7 @@ const ImageOverlap = ({ img1, img2, className }: ImageOverlapProps) => {
           ease: "easeInOut",
         }}
       >
-        <Image src={img1} fill alt="food" />
+        <Image src={img1} fill alt="food" priority />
       </motion.div>
 
       {/* Incoming Image (Hovered Image) */}
@@ -110,7 +110,7 @@ const ImageOverlap = ({ img1, img2, className }: ImageOverlapProps) => {
           ease: "easeInOut",
         }}
       >
-        <Image src={img2} fill alt="food" />
+        <Image src={img2} fill alt="food" priority />
       </motion.div>
     </div>
   );

@@ -13,11 +13,16 @@ type preLink = {
 };
 
 export type TLinks = {
+  mode: "light" | "dark";
   preLinks: preLink[];
   pageName: string;
 };
 
 const BreadcrumbComponent = ({ links }: { links: TLinks }) => {
+  if (!links.mode) {
+    links.mode = "light";
+  }
+
   return (
     <Breadcrumb className="">
       <BreadcrumbList>
@@ -25,7 +30,9 @@ const BreadcrumbComponent = ({ links }: { links: TLinks }) => {
           <div className="flex text-lg items-center" key={preLink?.name}>
             <BreadcrumbItem>
               <BreadcrumbLink
-                className="hover:text-primary-orange font-medium"
+                className={`hover:text-primary-orange  font-medium ${
+                  links.mode === "light" ? "text-primary-gray" : "text-white"
+                }`}
                 href={preLink.link}
               >
                 {preLink?.name}
@@ -35,7 +42,11 @@ const BreadcrumbComponent = ({ links }: { links: TLinks }) => {
           </div>
         ))}
         <BreadcrumbItem>
-          <BreadcrumbPage className="font-medium text-lg">
+          <BreadcrumbPage
+            className={`font-medium  text-lg ${
+              links.mode === "light" ? "text-black" : "text-primary-gray"
+            }`}
+          >
             {links?.pageName}
           </BreadcrumbPage>
         </BreadcrumbItem>
