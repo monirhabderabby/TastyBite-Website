@@ -3,7 +3,7 @@
 // Packages
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import ReactStars from "react-rating-stars-component";
+import { Rating } from "react-simple-star-rating";
 import * as z from "zod";
 
 // Local imports
@@ -51,11 +51,7 @@ export default function ReviewForm() {
             render={({ field }) => (
               <FormItem className=" flex justify-center">
                 <FormControl title="Set a ratings">
-                  <ReactStars
-                    count={field.value}
-                    size={25}
-                    onChange={field.onChange}
-                  />
+                  <Rating initialValue={field.value} onClick={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
