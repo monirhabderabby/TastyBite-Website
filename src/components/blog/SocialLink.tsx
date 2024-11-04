@@ -14,22 +14,22 @@ const SocialLink = () => {
                 <ul className='flex items-center  gap-x-4'>
                     <li>
                         <Link href='#'>
-                            <FaFacebook className='text-5xl hover:bg-green-700 hover:text-white bg-[#e9e6e6] text-black rounded-full p-3' />
+                            <FaFacebook className='text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3' />
                         </Link>
                     </li>
                     <li>
                         <Link href='#'>
-                            <FaTwitter className='text-5xl hover:bg-green-700 hover:text-white bg-[#e9e6e6] text-black rounded-full p-3'/>
+                            <FaTwitter className='text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3'/>
                         </Link>
                     </li>
                     <li>
                         <Link href='#'>
-                            <IoLogoInstagram className='text-5xl hover:bg-green-700 hover:text-white bg-[#e9e6e6] text-black rounded-full p-3'/>
+                            <IoLogoInstagram className='text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3'/>
                         </Link>
                     </li>
                     <li>
                         <Link href='#'>
-                            <FaYoutube className='text-5xl hover:bg-green-700 hover:text-white bg-[#e9e6e6] text-black rounded-full p-3'/>
+                            <FaYoutube className='text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3'/>
                         </Link>
                     </li>
                 </ul>
