@@ -32,8 +32,8 @@ const PopularBlog = () => {
                   Budget Issues Force The Our To Become
                 </h2>
                 {/* date of post */}
-                <p className="text-primary-orange flex items-center gap-x-2 text-base font-bold">
-                  <MdOutlineDateRange className="text-xl text-primary-orange" />
+                <p className="text-primary-gray flex items-center gap-x-2 text-base font-bold">
+                  <MdOutlineDateRange className="text-xl text-primary-gray" />
                   26th March 2024
                 </p>
               </div>
