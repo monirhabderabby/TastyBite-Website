@@ -1,5 +1,5 @@
 import { TStaff } from "@/types";
-import { Facebook, Linkedin,  Youtube, Instagram } from "lucide-react";
+import { Facebook, Linkedin, Youtube, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,7 +19,7 @@ export default function ChefCard({ chef: teamMember }: { chef: TStaff }) {
             alt={teamMember.name}
             width={400}
             height={500}
-            className="object-cover  h-[450px]"
+            className="object-cover rounded-2xl h-[450px]"
           />
 
           {/* Social Media Sidebar */}
@@ -77,11 +77,11 @@ export default function ChefCard({ chef: teamMember }: { chef: TStaff }) {
             <p className="text-[#008148] text-xl font-semibold">
               {teamMember.designation}
             </p>
-           <Link href={`/chefs/${teamMember._id}`}>
-           <h3 className="text-3xl hover:text-[#008148] text-black font-bold mt-1">
-              {teamMember.name}
-            </h3>
-           </Link> 
+            <Link href={`/chefs/${teamMember._id}`}>
+              <h3 className="text-3xl hover:text-[#008148] text-black font-bold mt-1">
+                {teamMember.name}
+              </h3>
+            </Link>
           </div>
         </div>
       </div>
