@@ -32,7 +32,7 @@ const BlogPage = () => {
             <About_data />
             <AdsBanner />
           </div>
-          
+
           {/* blog sidebar part */}
           <div className="col-span-5  lg:mt-4 lg:col-span-2">
             <Blog_Search />
