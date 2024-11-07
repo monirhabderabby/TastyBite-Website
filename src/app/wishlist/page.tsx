@@ -1,15 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Local imports
+
 import BreadcrumbComponent from "@/components/Breadcrumb/Breadcrum";
 import FoodCart from "@/components/common/cards/food-card/food-card";
 
 const Wishlist = () => {
   const breadcrumbLinks = {
+    mode: "dark" as any,
     preLinks: [{ link: "/", name: "Home" }],
-    pageName: "Wishlist",
+    pageName: "Blog Page",
   };
+  
+  
+
   return (
     <div className="container my-28 mx-auto ">
-      <BreadcrumbComponent links={breadcrumbLinks} />
+     <BreadcrumbComponent  links={breadcrumbLinks} />
       <h4 className="text-3xl dark:text-white text-black font-bold pt-7">
         WISHLIST
       </h4>

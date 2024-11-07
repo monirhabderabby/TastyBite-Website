@@ -17,7 +17,7 @@ const Blog_category = () => {
                 FOOD MENU
               </h2>
               <div>
-                <p className="bg-primary-orange text-xl font-bold px-6  py-4">
+                <p className="bg-primary-gray text-xl font-bold px-6  py-4">
                   24
                 </p>
               </div>
