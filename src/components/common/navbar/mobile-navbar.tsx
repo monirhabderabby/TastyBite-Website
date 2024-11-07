@@ -110,6 +110,11 @@ const MobileNavbar = ({
                                 </Link>
                             </SheetClose>
                         </div>
+                        <div className="text-sm font-medium border-b py-4">
+                            <SheetClose asChild>
+                                <Link href={"/profile"}>Profile</Link>
+                            </SheetClose>
+                        </div>
                     </SheetContent>
                 </Sheet>
                 <Button
