@@ -1,17 +1,33 @@
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
 import Pageheader from "@/components/common/PageHeaderBanner/Pageheader";
-import { FaComments, FaUser } from "react-icons/fa";
-import { MdOutlineDateRange } from "react-icons/md";
+
 import Blog_Search from "../_components/Blog_Search";
 import PopularBlog from "@/components/blog/PopularBlog";
 import Blog_category from "../_components/Blog_Category";
 import SocialLink from "@/components/blog/SocialLink";
+import { TBlog } from "@/types";
+import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
 
-export default function BlogPost() {
+export default async function BlogDetailsPage({
+  params,
+}: {
+  params: Record<string, string>;
+}) {
+  let blogData: TBlog | null = null;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${params.blogId}`
+    );
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch blog data");
+    }
+    const data = await res.json();
+    blogData = data?.data;
+  } catch (err) {
+    console.log(err);
+  }
+
   const breadcrumbLinks = {
     mode: "dark",
     preLinks: [
@@ -37,28 +53,17 @@ export default function BlogPost() {
           <div className="col-span-5  lg:col-span-3">
             <article className="space-y-6">
               <h1 className="text-[30px] md:text-[44px] leading-[1.4] text-black font-extrabold  ">
-                QUICK CRAVINGS: UNRAVELING FAST FOOD DELIGHTS
+                {blogData?.title}
               </h1>
 
-              <div className="flex items-center flex-wrap gap-y-2 justify-start font-medium gap-x-6">
-                <p className="text-[15px] leading-[1px] md:text-[18px] flex items-center gap-1 text-[#5C5C5B]">
-                  <FaUser className="text-xl text-primary-orange" />
-                  Prosanta Roy
-                </p>
-                {/*comment  */}
-                <p className="text-[15px] leading-[1px] md:text-[18px] flex items-center gap-1  text-[#5C5C5B]">
-                  <FaComments className="text-xl text-primary-orange" />
-                  35 Comments
-                </p>
-                {/* date */}
-                <p className="text-[15px] leading-[1px] md:text-[18px] flex items-center gap-1  text-[#5C5C5B]">
-                  <MdOutlineDateRange className="text-xl text-primary-orange" />
-                  24th March 2024
-                </p>
-              </div>
+              {/* for author name , blog total comments and publish date */}
+              <BlogHeaderInfo blog={blogData!} />
               <div className="relative aspect-[16/9] overflow-hidden rounded-lg">
                 <Image
-                  src="https://foodking-react.vercel.app/assets/img/news/post-4.jpg"
+                  src={
+                    blogData?.image ||
+                    "https://foodking-react.vercel.app/assets/img/news/post-1.jpg"
+                  }
                   alt="Delicious burger with chicken nuggets"
                   className="object-cover"
                   fill
@@ -67,44 +72,10 @@ export default function BlogPost() {
               </div>
 
               <h2 className="text-2xl font-bold text-[#333]">
-                THE PEOPLE WHO GIVE YOU THEIR FOOD GIVE YOU THEIR HEART
+                {blogData?.title}
               </h2>
               <p className="text-[18px] leading-[28px]  text-[#5c5c5b] primary-gray font-normal">
-                There are many variations of passages of Lorem Ipsum available,
-                but majority have suffered Lorem haca ullamcorper donec ante
-                habi believable. If you are going to use a passage of Lorem
-                Ipsum cibo mundi ea duo donec imperdiet eturpis varius per a
-                augue magna hac. dolor sit amet, teration in some form, by
-                injected humour, or randomised words which dont look ev There
-                are many variations of passages of Lorem Ipsum available, but
-                majority have suffered Lorem haca ullamcorper donec ante habi
-                believable. If you are going to use a passage of Lorem Ipsum
-                cibo mundi ea duo donec imperdiet eturpis varius per a augue
-                magna hac. dolor sit amet, teration in some form, by injected
-                humour, or randomised words which dont look ev There are many
-                variations of passages of Lorem Ipsum available, but majority
-                have suffered Lorem haca ullamcorper donec ante habi believable.
-                If you are going to use a passage of Lorem Ipsum cibo mundi ea
-                duo donec imperdiet eturpis varius per a augue magna hac. dolor
-                sit amet, teration in some form, by injected humour, or
-                randomised words which dont look ev There are many variations of
-                passages of Lorem Ipsum available, but majority have suffered
-                Lorem haca ullamcorper donec ante habi believable. If you are
-                going to use a passage of Lorem Ipsum cibo mundi ea duo donec
-                imperdiet eturpis varius per a augue magna hac. dolor sit amet,
-                teration in some form, by injected humour, or randomised words
-                which dont look ev
-              </p>
-
-              <p className="text-[#666]">
-                This shortage is being seen in both the airline and the cargo
-                industries. With such a small pool of applicants to choose from,
-                these two sectors are battling to get the most qualified
-                available candidates. Many pilots are increasingly being wooed
-                to get behind the controls of passenger planes over cargo
-                flights—frankly, it&apos;s tough to compete with jobs perks like
-                fixed schedules and free flights for your family across the
-                world.
+                {blogData?.description}
               </p>
             </article>
           </div>

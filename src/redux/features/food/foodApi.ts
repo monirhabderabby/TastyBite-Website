@@ -4,7 +4,7 @@ const foodApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllFoods: builder.query({
       query: () => ({
-        url: "/food",
+        url: `/food`,
         method: "GET",
       }),
       providesTags: ["food"],

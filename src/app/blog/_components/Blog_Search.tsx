@@ -15,7 +15,7 @@ const Blog_Search = () => {
           className="hover:outline-0 text-black  pl-4 flex-1 bg-transparent text-base outline-0 border-0 hover:border-0"
         />
         <div className="w-1/4 h-full">
-          <Button className="bg-primary-orange hover:bg-primary-orange w-full h-full flex items-center justify-center">
+          <Button className="bg-primary-gray hover:bg-primary-gray w-full h-full flex items-center justify-center">
             <Search size={64} />
           </Button>
         </div>
