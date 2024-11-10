@@ -20,7 +20,7 @@ export default function DashboardSideBar() {
 
   // Filter tabs based on the user's role
   const filteredTabs = dashboardTabsList.filter((tab) =>
-    tab.roles.includes(currentRole)
+    tab.roles.includes(currentRole as string)
   );
 
   return (

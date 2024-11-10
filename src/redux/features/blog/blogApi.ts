@@ -22,6 +22,16 @@ const blogApi = baseApi.injectEndpoints({
       },
       providesTags: (result, error, id) => [{ type: "SingleBlog", id }],
     }),
+    getBlogComment: builder.query({
+      query: ({id,query}) => {
+        console.log(id);
+        return {
+          url: `/blog-comment/${id}/?${query}`,
+          method: "GET",
+        };
+      },
+      providesTags: (result, error, id) => [{ type: "SingleBlog", id }],
+    }),
     createBlog: builder.mutation({
       query: (body) => {
         console.log(body);
@@ -39,6 +49,19 @@ const blogApi = baseApi.injectEndpoints({
         return {
           url: `/blog/${id}`,
           method: "PATCH",
+          body,
+        };
+      },
+      invalidatesTags: (result, error, { id }) => [
+        "Blog",
+        { type: "SingleBlog", id },
+      ],
+    }),
+    createBlogComment: builder.mutation({
+      query: ({ body }) => {
+        return {
+          url: `/blog-comment`,
+          method: "POST",
           body,
         };
       },
@@ -69,4 +92,6 @@ export const {
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useDeleteBlogMutation,
+  useCreateBlogCommentMutation,
+  useGetBlogCommentQuery
 } = blogApi;

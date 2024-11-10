@@ -6,6 +6,7 @@ import BookOnline from "@/components/home/book-online";
 import CustomerReviews from "@/components/home/customer-reviews";
 import MarqueeSec from "@/components/common/Marquee/MarqueeSec";
 import WhyBest from "@/components/home/why-best";
+import SectionHeader from "@/components/common/sectionHeader/sectionHeader";
 
 const Page = async () => {
   const chefsRes = await fetch(
@@ -20,13 +21,12 @@ const Page = async () => {
     <div className=" ">
       <ChefsPageHeader />
       <div>
-        <div className="text-center pt-16 pb-10 space-y-5 text-black">
-          <p className="text-xl font-bold uppercase text-red-700">
-            about our food
-          </p>
-          <h2 className="text-3xl md:text-4xl lg:text-[3vw] font-black">
-            MEET OUR EXPERT CHEFS
-          </h2>
+        <div className=" my-14 w-fit mx-auto">
+          <SectionHeader
+            heading="Book Online"
+            title="Fresh From TastyBite"
+            textPosition="left"
+          />
         </div>
 
         <div className="grid  mx-auto container grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -34,7 +34,7 @@ const Page = async () => {
             return <ChefCard chef={chef} key={chef._id} />;
           })}
         </div>
-        <WhyBest/>
+        <WhyBest />
         <MarqueeSec />
         <CustomerReviews />
         <BookOnline />
