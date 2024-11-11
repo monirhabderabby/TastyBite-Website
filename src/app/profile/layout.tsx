@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Packages
 import { currentUser } from "@clerk/nextjs/server";
 import dynamic from "next/dynamic";
@@ -11,7 +12,7 @@ const DashboardContent = dynamic(
   { ssr: false }
 );
 
-export default async function DashboardLayout({ children, params }) {
+export default async function DashboardLayout({ children, params }:{children:React.ReactNode,params:any}) {
   const user = await currentUser();
 
   // If the user is not authenticated, redirect them to the sign-in page

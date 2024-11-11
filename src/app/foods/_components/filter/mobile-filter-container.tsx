@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Filter } from "lucide-react";
-import { CategoriesFilter, PriceFilter } from "./foods-filter-container";
+import { CategoriesFilter } from "./foods-filter-container";
 import Sorting from "./sorting";
 
 const MobileFilterContainer = () => {
@@ -15,7 +15,7 @@ const MobileFilterContainer = () => {
         </SheetTrigger>
         <SheetContent side="left">
           <CategoriesFilter />
-          <PriceFilter />
+          
         </SheetContent>
       </Sheet>
       <Sorting />

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
-const Blog_Pagination = ({page,handlePageChange,totalPages}:any) => {
+const Blog_Pagination = ({page,handlePageChange,totalPages,sectionId}:any) => {
 
     const renderPaginationItems = () => {
         const items = [];
@@ -12,7 +12,7 @@ const Blog_Pagination = ({page,handlePageChange,totalPages}:any) => {
             items.push(
               <PaginationItem key={i}>
                 <PaginationLink
-                  href="#"
+                  href={sectionId ? `#${sectionId}` : "#"}
                   onClick={() => handlePageChange(i)}
                   isActive={page === i}
                 >
@@ -37,7 +37,7 @@ const Blog_Pagination = ({page,handlePageChange,totalPages}:any) => {
             items.push(
               <PaginationItem key={i}>
                 <PaginationLink
-                  href="#"
+                  href={sectionId ? `#${sectionId}` : "#"}
                   onClick={() => handlePageChange(i)}
                   isActive={page === i}
                 >

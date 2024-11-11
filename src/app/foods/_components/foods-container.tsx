@@ -5,7 +5,7 @@ import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
 import Sorting from "./filter/sorting";
 
 const FoodsContainer = () => {
-  const { isLoading, data: foods, error, isError } = useGetAllFoodsQuery();
+  const { isLoading, data: foods,  } = useGetAllFoodsQuery(undefined);
 
   let content;
 
@@ -17,13 +17,15 @@ const FoodsContainer = () => {
         ))}
       </div>
     );
-  } else if (isError) {
-    content = (
-      <div className="min-h-[300px] w-full flex justify-center items-center">
-        {error?.message}
-      </div>
-    );
-  } else if (foods.data?.length === 0) {
+  } 
+  // else if (isError) {
+  //   content = (
+  //     <div className="min-h-[300px] w-full flex justify-center items-center">
+  //       {error?.message}
+  //     </div>
+  //   );
+  // } 
+  else if (foods.data?.length === 0) {
     content = <div>NO DATA FOUND!</div>;
   } else if (foods?.data?.length > 0) {
     content = (

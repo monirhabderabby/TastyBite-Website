@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import NProgress from "@/provider/NProgress";
 import "./globals.css";
 import AppProvider from "@/provider/app-provider";
+import { Toaster } from "sonner";
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
 const narrow = PT_Sans_Narrow({
@@ -53,6 +54,7 @@ export default function RootLayout({
               </div>
 
               <Footer />
+              <Toaster />
               <NProgress />
             </TooltipProvider>
           </body>
