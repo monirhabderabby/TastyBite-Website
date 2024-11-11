@@ -1,20 +1,11 @@
-import FoodInfos from "./_components/food-infos";
-import FoodOverview from "./_components/food-overview";
-import RecentlyViewedProducts from "./_components/recently-viewed-products";
-import RelatedProducts from "./_components/related-products";
+import SingleFoodContainer from "./_components/single-food-container";
 
-const Page = () => {
-  return (
-    <section className="container mt-[100px] space-y-[100px] pb-[150px]">
-      <div>
-        <FoodOverview />
-      </div>
-      <FoodInfos />
-
-      <RelatedProducts />
-      <RecentlyViewedProducts />
-    </section>
-  );
+const Page = ({ params }: { params: { id: string } }) => {
+    return (
+        <section className="container mt-[100px] space-y-[100px] pb-[150px]">
+            <SingleFoodContainer foodId={params.id} />
+        </section>
+    );
 };
 
 export default Page;
