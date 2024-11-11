@@ -6,7 +6,7 @@ interface Props {
   children: ReactNode;
   isLoading: boolean;
   fullWidth: boolean;
-  className: string;
+  className?: string;
 }
 
 const SkeletonWrapper = ({

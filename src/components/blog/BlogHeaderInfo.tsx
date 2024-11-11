@@ -7,7 +7,7 @@ const BlogHeaderInfo = ({blog}:{blog:TBlog}) => {
     <div className="flex items-center flex-wrap gap-y-2 justify-start font-medium gap-x-6">
     <p className="text-[15px] leading-[1px] md:text-[18px] flex items-center gap-1 text-[#5C5C5B]">
       <FaUser className="text-xl text-primary-gray" />
-      {blog.user.name}
+      {blog?.user?.name}
     </p>
     <p className="text-[15px] leading-[1px] md:text-[18px] flex items-center gap-1 text-[#5C5C5B]">
       <FaComments className="text-xl text-primary-gray" />
@@ -15,7 +15,7 @@ const BlogHeaderInfo = ({blog}:{blog:TBlog}) => {
     </p>
     <p className="text-[15px] leading-[1px] md:text-[18px] flex items-center gap-1 text-[#5C5C5B]">
       <MdOutlineDateRange className="text-xl text-primary-gray" />
-      {new Date(blog.createdAt).toDateString()}
+      {new Date(blog?.createdAt).toDateString()}
     </p>
   </div>
   );

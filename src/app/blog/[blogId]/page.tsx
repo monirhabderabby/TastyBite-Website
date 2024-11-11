@@ -7,6 +7,8 @@ import Blog_category from "../_components/Blog_Category";
 import SocialLink from "@/components/blog/SocialLink";
 import { TBlog } from "@/types";
 import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
+import BlogCommentForm from "./_components/BlogCommentForm";
+import BlogCommentDisplay from "./_components/BlogCommentDisplay";
 
 export default async function BlogDetailsPage({
   params,
@@ -78,10 +80,16 @@ export default async function BlogDetailsPage({
                 {blogData?.description}
               </p>
             </article>
+            <div className="text-black col-span-5 mx-5 lg:col-span-3">
+              <BlogCommentDisplay blogData={blogData} />
+            </div>
+            <div className="text-black col-span-5 mx-5 lg:col-span-3">
+              <BlogCommentForm blog={blogData!} />
+            </div>
           </div>
 
           {/* blog sidebar part */}
-          <div className="col-span-5  lg:mt-4 lg:col-span-2">
+          <div className=" col-span-5 lg:mt-4 lg:col-span-2">
             <Blog_Search />
             <PopularBlog />
             <Blog_category />

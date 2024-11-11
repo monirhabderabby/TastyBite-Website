@@ -7,8 +7,9 @@ import { usePathname } from "next/navigation";
 // Components
 import { dashboardTabsList } from "@/data/dashboard";
 import { useUser } from "@clerk/nextjs";
+import { ReactNode } from "react";
 
-const DashboardContent = ({ children }) => {
+const DashboardContent = ({ children }:{children:ReactNode}) => {
   const pathname = usePathname();
   const { isLoaded, user } = useUser();
 
@@ -18,7 +19,7 @@ const DashboardContent = ({ children }) => {
 
   // Filter tabs based on the user's role
   const filteredTabs = dashboardTabsList.filter((tab) =>
-    tab.roles.includes(currentRole)
+    tab.roles.includes(currentRole as string)
   );
 
   return (

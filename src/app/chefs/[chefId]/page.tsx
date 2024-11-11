@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Facebook, Linkedin, Youtube, Instagram } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import Pageheader from "@/components/common/PageHeaderBanner/Pageheader";
 import BookOnline from "@/components/home/book-online";
 import CustomerReviews from "@/components/home/customer-reviews";
@@ -8,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import WhyBest from "@/components/home/why-best";
 import MarqueeSec from "@/components/common/Marquee/MarqueeSec";
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
+import ButtonPrimary from "@/components/common/button/buttonPrimary";
 
 export default async function ChefDetails({ params }: any) {
   const { chefId } = params;
@@ -17,12 +18,15 @@ export default async function ChefDetails({ params }: any) {
   );
   const data = await res.json();
   const chef = data.data;
-  console.log(chef);
 
   const breadcrumbLinks = {
     mode: "dark",
-    preLinks: [{ link: "/", name: "Home" }],
-    pageName: "Chefs",
+    preLinks: [
+      { link: "/", name: "Home" },
+
+      { link: "/chefs", name: "Chefs" },
+    ],
+    pageName: chef.name,
   };
   const img =
     "https://foodking-react.vercel.app/assets/img/banner/breadcrumb.jpg";
@@ -31,17 +35,17 @@ export default async function ChefDetails({ params }: any) {
     <div>
       <Pageheader img={img} title="CHEF DETAILS" breadLink={breadcrumbLinks} />
       <div className="container pt-10 mx-auto text-black p-6">
-        <div className="grid md:grid-cols-2  gap-8 items-start">
+        <div className="grid md:grid-cols-2 justify-center items-center gap-8 lg:gap-20 ">
           <div className="relative">
             <Image
               alt="Restaurant manager holding a plate of pasta"
-              className="rounded-lg object-cover w-full"
-              height={400}
+              className="rounded-lg  h-[500px]   w-full"
+              height={600}
               src={chef.image}
               width={500}
             />
           </div>
-          <div className="space-y-4 md:mt-40">
+          <div className="space-y-4 ">
             <h1 className="text-4xl uppercase lg:text-5xl font-bold tracking-tight">
               {chef.name}
             </h1>
@@ -51,44 +55,44 @@ export default async function ChefDetails({ params }: any) {
 
             {/* Social media icons */}
             <div className="flex  items-center gap-6 py-6 relative z-10">
-              {chef.facebookLink && (
-                <Link
-                  href={chef.facebookLink || "#"}
-                  className="text-primary-orange hover:opacity-80"
-                >
-                  <Facebook size={24} />
-                </Link>
-              )}
-              {chef.linkedinLink && (
-                <Link
-                  href={chef.linkedinLink || "#"}
-                  className="text-primary-orange  hover:opacity-80"
-                >
-                  <Linkedin size={24} />
-                </Link>
-              )}
-              {chef.youtubeLink && (
-                <Link
-                  href={chef.youtubeLink || "#"}
-                  className="text-primary-orange hover:opacity-80"
-                >
-                  <Youtube size={24} />
-                </Link>
-              )}
-              {chef.instagramLink && (
-                <Link
-                  href={chef.instagramLink || "#"}
-                  className="text-primary-orange hover:opacity-80"
-                >
-                  <Instagram size={24} />
-                </Link>
-              )}
+              <div className="mt-5">
+                <ul className="flex items-center  gap-x-4">
+                  <li>
+                    {chef.facebookLink && (
+                      <Link href={chef.facebookLink || "#"}>
+                        <FaFacebook className="text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3" />
+                      </Link>
+                    )}
+                  </li>
+                  <li>
+                    {chef.linkedinLink && (
+                      <Link href={chef.linkedinLink || "#"}>
+                        <FaLinkedin className="text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3" />
+                      </Link>
+                    )}
+                  </li>
+                  <li>
+                    {chef.youtubeLink && (
+                      <Link href={chef.youtubeLink || "#"}>
+                        <FaYoutube className="text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3" />
+                      </Link>
+                    )}
+                  </li>
+                  <li>
+                    {chef.instagramLink && (
+                      <Link href={chef.instagramLink || "#"}>
+                        <FaInstagram className="text-5xl hover:bg-primary-orange hover:text-white bg-[#e9e6e6] text-black rounded-full p-3" />
+                      </Link>
+                    )}
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <Link href={"/contact"}>
-              <Button className="w-full py-6 text-xl font-bold text-black hover:bg-primary-orange bg-primary-orange">
-                CONTACT WITH ME
-              </Button>
+              <div className="flex justify-center md:justify-start items-center">
+                <ButtonPrimary text="Book Contact with me" btnType="submit" />
+              </div>
             </Link>
           </div>
         </div>
