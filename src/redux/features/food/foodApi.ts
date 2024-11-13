@@ -16,6 +16,13 @@ const foodApi = baseApi.injectEndpoints({
             }),
             providesTags: (result, error, id) => [{ type: "SingleFood", id }],
         }),
+        getFoodByMenu: builder.query({
+            query: (menuId) => ({
+                url: `/menu/all-food/${menuId}`,
+                method: "GET",
+            }),
+            providesTags: (result, error, id) => [{ type: "food", id }],
+        }),
         createFood: builder.mutation({
             query: (body) => ({
                 url: "/food",
@@ -51,6 +58,7 @@ const foodApi = baseApi.injectEndpoints({
 export const {
     useGetAllFoodsQuery,
     useGetSingleFoodQuery,
+    useGetFoodByMenuQuery,
     useCreateFoodMutation,
     useUpdateFoodMutation,
     useDeleteFoodMutation,
