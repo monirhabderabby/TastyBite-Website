@@ -40,6 +40,7 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
                     onWishlist={handleWishlist}
                     onQuickView={handleQuickView}
                     onCartClick={handleCart}
+                    food={food}
                 />
             </div>
 
