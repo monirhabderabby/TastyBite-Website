@@ -4,9 +4,9 @@ const blogApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllBlogs: builder.query({
       query: (query) => {
-        console.log(query);
+        const url = query ? `/blog/?${query}` : "/blog";
         return {
-          url: `/blog/?${query}`,
+          url,
           method: "GET",
         };
       },
@@ -23,10 +23,11 @@ const blogApi = baseApi.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "SingleBlog", id }],
     }),
     getBlogComment: builder.query({
-      query: ({id,query}) => {
+      query: ({id, query}) => {
         console.log(id);
+        const url = query ? `/blog-comment/${id}/?${query}` : `/blog-comment/${id}`;
         return {
-          url: `/blog-comment/${id}/?${query}`,
+          url,
           method: "GET",
         };
       },

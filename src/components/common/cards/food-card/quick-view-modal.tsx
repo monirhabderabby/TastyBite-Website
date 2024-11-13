@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  
 }
 
 const QuickViewModal = ({ open, setOpen }: Props) => {
@@ -13,10 +14,10 @@ const QuickViewModal = ({ open, setOpen }: Props) => {
     <Modal open={open} setOpen={setOpen}>
       <section className=" grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
         <div className="flex-1 ">
-          <ModalImageSlider />
+          <ModalImageSlider  />
         </div>
         <div className="flex-1 px-3 py-4">
-          <QuickViewModalDesc />
+          <QuickViewModalDesc  />
         </div>
       </section>
     </Modal>

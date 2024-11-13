@@ -3,7 +3,7 @@ import AboutHome from "@/components/home/about-home";
 import BestChef from "@/components/home/best-chef";
 import BookOnline from "@/components/home/book-online";
 import CustomerReviews from "@/components/home/customer-reviews";
-import LatestNews from "@/components/home/latest-news";
+import LatestNews from "@/components/home/latest-blogs";
 import OurSpecialMenus from "@/components/home/our-special-menus";
 import Speciality from "@/components/home/speciality";
 import WhyBest from "@/components/home/why-best";

@@ -9,6 +9,7 @@ import { TBlog } from "@/types";
 import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
 import BlogCommentForm from "./_components/BlogCommentForm";
 import BlogCommentDisplay from "./_components/BlogCommentDisplay";
+import RichTextViewer from '../../../components/common/richTextViewer';
 
 export default async function BlogDetailsPage({
   params,
@@ -76,9 +77,9 @@ export default async function BlogDetailsPage({
               <h2 className="text-2xl font-bold text-[#333]">
                 {blogData?.title}
               </h2>
-              <p className="text-[18px] leading-[28px]  text-[#5c5c5b] primary-gray font-normal">
-                {blogData?.description}
-              </p>
+              <div className="text-[18px] leading-[28px]  text-[#5c5c5b] primary-gray font-normal">
+              <RichTextViewer type="details" content={blogData?.description} />
+              </div>
             </article>
             <div className="text-black col-span-5 mx-5 lg:col-span-3">
               <BlogCommentDisplay blogData={blogData} />
