@@ -13,7 +13,7 @@ const AboutHome = () => {
 
     return (
         <div className="my-6 md:my-20 container" ref={ref}>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col md:flex-row items-center justify-between xl:justify-center gap-6 xl:gap-80">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={
