@@ -59,6 +59,7 @@ export interface TComment {
 }
 
 export interface TMenu {
+    _id: string;
     name: string;
     image: string;
     description: string;

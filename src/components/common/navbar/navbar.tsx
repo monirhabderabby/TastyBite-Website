@@ -4,15 +4,17 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Bell, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Components
 import { Button } from "@/components/ui/button";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/navbar-menu";
+import { setMenu } from "@/redux/features/filter/filterSlice";
 import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
 import { useGetAllMenusQuery } from "@/redux/features/menu/menuApi";
 import { TFood, TMenu } from "@/types";
+import { useDispatch } from "react-redux";
 import ButtonPrimary from "../button/buttonPrimary";
 import FoodCart from "../cards/food-card/food-card";
 import Logo from "../logo/Logo";
@@ -22,12 +24,20 @@ const Navbar = () => {
     const [scrolling, setScrolling] = useState<boolean>(false);
     const [active, setActive] = useState<string | null>(null);
 
+    const dispatch = useDispatch();
+    const router = useRouter();
+
     const { data, isLoading } = useGetAllFoodsQuery({});
     const { data: menuData, isLoading: menuLoading } = useGetAllMenusQuery({});
 
     const { isSignedIn } = useUser();
 
     const pathname = usePathname(); // Get current route to highlight active menu
+
+    const handleMenuChange = (_id: string) => {
+        dispatch(setMenu(_id));
+        router.push(`/foods`);
+    };
 
     // Track window scroll to update navbar style
     useEffect(() => {
@@ -93,6 +103,11 @@ const Navbar = () => {
                                                     <p
                                                         key={menu.name}
                                                         className={`text-primary-gray hover:text-primary-orange cursor-pointer`}
+                                                        onClick={() =>
+                                                            handleMenuChange(
+                                                                menu._id
+                                                            )
+                                                        }
                                                     >
                                                         {menu.name}
                                                     </p>
