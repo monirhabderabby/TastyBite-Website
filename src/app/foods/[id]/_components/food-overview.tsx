@@ -3,7 +3,6 @@ import QuickViewModalDesc from "@/components/common/cards/food-card/quick-view-m
 import { TFood } from "@/types";
 
 const FoodOverview = ({ food }: { food: TFood }) => {
-    console.log(food);
     return (
         <section className=" grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-7">
             <div className="flex-initial w-full">

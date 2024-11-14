@@ -10,12 +10,20 @@ import { useEffect, useState } from "react";
 // Components
 import { Button } from "@/components/ui/button";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/navbar-menu";
+import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
+import { useGetAllMenusQuery } from "@/redux/features/menu/menuApi";
+import { TFood, TMenu } from "@/types";
+import ButtonPrimary from "../button/buttonPrimary";
+import FoodCart from "../cards/food-card/food-card";
 import Logo from "../logo/Logo";
 import MobileNavbar from "./mobile-navbar";
 
 const Navbar = () => {
     const [scrolling, setScrolling] = useState<boolean>(false);
     const [active, setActive] = useState<string | null>(null);
+
+    const { data, isLoading } = useGetAllFoodsQuery({});
+    const { data: menuData, isLoading: menuLoading } = useGetAllMenusQuery({});
 
     const { isSignedIn } = useUser();
 
@@ -38,38 +46,9 @@ const Navbar = () => {
         };
     }, []);
 
-    const basicMenuList = [
-        {
-            id: "1",
-            menu: "Burger",
-            link: "/product/burger",
-        },
-        {
-            id: "2",
-            menu: "Pasta",
-            link: "/product/pasta",
-        },
-        {
-            id: "3",
-            menu: "Pizzas",
-            link: "/product/pizzas",
-        },
-        {
-            id: "4",
-            menu: "Desert",
-            link: "/product/desert",
-        },
-        {
-            id: "5",
-            menu: "Salads",
-            link: "/product/salads",
-        },
-        {
-            id: "6",
-            menu: "Drink",
-            link: "/product/drink",
-        },
-    ];
+    if (isLoading || menuLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div
@@ -103,41 +82,52 @@ const Navbar = () => {
                                 active={active}
                                 item="MENU"
                             >
-                                <div className="flex justify-between items-start gap-x-32 px-10 py-12">
+                                <div className="flex justify-between items-start gap-x-10 xl:gap-x-32 px-6 xl:px-10 py-5 xl:py-12">
                                     <div className="mt-5">
                                         <h3 className="text-primary-black font-semibold mb-4">
                                             Menu List
                                         </h3>
                                         <div className="space-y-4 flex flex-col">
-                                            {basicMenuList.map((item) => (
-                                                <Link
-                                                    href={item.link}
-                                                    key={item.id}
-                                                    className={`text-primary-gray hover:text-primary-orange`}
-                                                >
-                                                    {item.menu}
-                                                </Link>
-                                            ))}
+                                            {menuData?.data.map(
+                                                (menu: TMenu) => (
+                                                    <p
+                                                        key={menu.name}
+                                                        className={`text-primary-gray hover:text-primary-orange cursor-pointer`}
+                                                    >
+                                                        {menu.name}
+                                                    </p>
+                                                )
+                                            )}
                                         </div>
                                         <div className="mt-16">
                                             <Link
-                                                href={"/menu"}
+                                                href={"/foods"}
                                                 className="text-primary-gray hover:text-primary-orange underline duration-300"
                                             >
-                                                View All Menu
+                                                Find all foods
                                             </Link>
                                         </div>
                                     </div>
                                     {/* Special foods */}
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-10 gap-y-12">
-                                        {/* {[1, 2, 3].map((n) => (
-                      <div key={n}>
-                        <FoodCart theme="light" />
-                        <div className="flex justify-center mt-5">
-                          <ButtonPrimary text="Shop Now" />
-                        </div>
-                      </div>
-                    ))} */}
+                                    <div className="grid grid-cols-3 xl:gap-10 gap-y-12">
+                                        {data?.data
+                                            ?.slice(0, 3)
+                                            .map((food: TFood) => (
+                                                <div key={food._id}>
+                                                    <FoodCart
+                                                        key={food?._id}
+                                                        theme="light"
+                                                        food={food}
+                                                    />
+                                                    <div className="flex justify-center mt-5">
+                                                        <Link
+                                                            href={`/foods/${food._id}`}
+                                                        >
+                                                            <ButtonPrimary text="Shop Now" />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            ))}
                                     </div>
                                 </div>
                             </MenuItem>
