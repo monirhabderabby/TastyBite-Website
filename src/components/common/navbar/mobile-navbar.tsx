@@ -41,7 +41,7 @@ const MobileNavbar = ({
                         </div>
                         <div className="text-sm font-medium border-b py-4">
                             <SheetClose asChild>
-                                <Link href={"/menu"}>Menu</Link>
+                                <Link href={"/foods"}>Find foods</Link>
                             </SheetClose>
                         </div>
                         <div className="text-sm font-medium border-b py-4">

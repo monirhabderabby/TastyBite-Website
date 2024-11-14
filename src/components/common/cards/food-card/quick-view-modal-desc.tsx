@@ -28,6 +28,8 @@ const QuickViewModalDesc = ({ food }: { food: TFood }) => {
                 title={food.name}
                 description={food.description}
                 price={food.price}
+                extras={food.extras}
+                sizes={food.sizes}
             />
             <div className="space-y-[30px]">
                 <QuantityControl

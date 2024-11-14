@@ -29,7 +29,7 @@ const SingleFoodContainer = ({ foodId }: { foodId: string }) => {
             </div>
             <FoodInfos food={data.data} />
 
-            <RelatedProducts foods={foodsData?.data} />
+            <RelatedProducts foods={foodsData?.data.slice(0, 4)} />
             {/* <RecentlyViewedProducts /> */}
         </div>
     );
