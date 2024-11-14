@@ -1,5 +1,6 @@
 "use client";
 // Packages
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 // Local imports
@@ -15,6 +16,16 @@ import FoodCardLoader from "../common/skeleton-loader/food-card-loader";
 
 const MenusContaner = () => {
     const [activeTab, setActiveTab] = useState("all");
+
+    const stagger = {
+        hidden: { opacity: 0, y: 50 },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: i * 0.2, duration: 1 },
+        }),
+    };
+
     const { data: menuData } = useGetAllMenusQuery({});
     const { data, isLoading, isSuccess } = useGetAllFoodsQuery({});
     const { data: foodByMenu, isLoading: foodByMenuLoading } =
@@ -47,23 +58,31 @@ const MenusContaner = () => {
         content = (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 gap-y-12 mt-10">
                 {activeTab === "all"
-                    ? data?.data
-                          ?.slice(0, 8)
-                          .map((food: TFood) => (
-                              <FoodCart
-                                  key={food?._id}
-                                  theme="black"
-                                  food={food}
-                              />
-                          ))
+                    ? data?.data?.slice(0, 8).map((food: TFood, i: number) => (
+                          <motion.div
+                              key={food?._id}
+                              custom={i}
+                              initial="hidden"
+                              whileInView="visible"
+                              variants={stagger}
+                              viewport={{ once: false }}
+                          >
+                              <FoodCart theme="black" food={food} />
+                          </motion.div>
+                      ))
                     : foodByMenu?.data
                           ?.slice(0, 8)
-                          .map((food: TFood) => (
-                              <FoodCart
+                          .map((food: TFood, i: number) => (
+                              <motion.div
                                   key={food?._id}
-                                  theme="black"
-                                  food={food}
-                              />
+                                  custom={i}
+                                  initial="hidden"
+                                  whileInView="visible"
+                                  variants={stagger}
+                                  viewport={{ once: false }}
+                              >
+                                  <FoodCart theme="black" food={food} />
+                              </motion.div>
                           ))}
             </div>
         );
@@ -71,13 +90,19 @@ const MenusContaner = () => {
 
     return (
         <div>
-            <div className="w-full flex justify-center mt-10">
+            <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="w-full flex justify-center mt-10"
+            >
                 <Tabs
                     data={specialMenuTabs}
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                 />
-            </div>
+            </motion.div>
             {content}
         </div>
     );
