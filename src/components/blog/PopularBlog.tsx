@@ -4,9 +4,22 @@ import Image from "next/image";
 // components
 import SidebarTitle from "./SidebarTitle";
 import { MdOutlineDateRange } from "react-icons/md";
+import { TBlog } from "@/types";
+import Link from "next/link";
 
-const PopularBlog = () => {
-  const blog = [1, 2, 3];
+const PopularBlog = async () => {
+  let blogs = [];
+  try {
+    const blogRes = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog?limit=4`,
+      { cache: "no-cache" }
+    );
+    const data = await blogRes.json();
+    blogs = data?.data;
+  } catch (err) {
+    console.log(err);
+  }
+
 
   return (
     <div className="mt-24">
@@ -14,11 +27,12 @@ const PopularBlog = () => {
       <SidebarTitle title="POPULARS FEEDS" />
       {/* blog item */}
       <div className="mt-6 flex flex-col gap-y-12">
-        {blog.map((item) => (
-          <div key={item}>
+        {blogs.map((item: TBlog) => (
+          <div key={item._id}>
             <div className="flex justify-start gap-x-4 items-center">
               <Image
                 src={
+                  item?.image ||
                   "https://utfs.io/f/oI7Ou0bdQ6rjmUlllajcqpbkXPjeJtfhu3ndFHU6y4YNQ1iI"
                 }
                 alt="Popular Blog Image"
@@ -28,13 +42,13 @@ const PopularBlog = () => {
               />
               <div className="space-y-2">
                 {/* title */}
-                <h2 className="text-[18px] leading-[22px] text-black font-[600] hover:text-primary-orange">
-                  Budget Issues Force The Our To Become
-                </h2>
+               <Link href={`/blog/${item._id}`}>    <h2 className="text-[18px] leading-[22px] text-black font-[600] hover:text-primary-orange">
+                  {item?.title}
+                </h2></Link>
                 {/* date of post */}
                 <p className="text-primary-gray flex items-center gap-x-2 text-base font-bold">
                   <MdOutlineDateRange className="text-xl text-primary-gray" />
-                  26th March 2024
+                  {new Date(item.createdAt).toDateString()}
                 </p>
               </div>
             </div>

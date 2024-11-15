@@ -4,7 +4,6 @@ const blogApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllBlogs: builder.query({
       query: (query) => {
-        console.log(query);
         return {
           url: `/blog/?${query}`,
           method: "GET",
@@ -14,7 +13,6 @@ const blogApi = baseApi.injectEndpoints({
     }),
     getSingleBlog: builder.query({
       query: (id) => {
-        console.log(id);
         return {
           url: `/blog/${id}`,
           method: "GET",
@@ -23,8 +21,7 @@ const blogApi = baseApi.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "SingleBlog", id }],
     }),
     getBlogComment: builder.query({
-      query: ({id,query}) => {
-        console.log(id);
+      query: ({ id, query }) => {
         return {
           url: `/blog-comment/${id}/?${query}`,
           method: "GET",
@@ -34,7 +31,6 @@ const blogApi = baseApi.injectEndpoints({
     }),
     createBlog: builder.mutation({
       query: (body) => {
-        console.log(body);
         return {
           url: "/blog",
           method: "POST",
@@ -45,7 +41,6 @@ const blogApi = baseApi.injectEndpoints({
     }),
     updateBlog: builder.mutation({
       query: ({ body, id }) => {
-        console.log(body, id);
         return {
           url: `/blog/${id}`,
           method: "PATCH",
@@ -72,7 +67,6 @@ const blogApi = baseApi.injectEndpoints({
     }),
     deleteBlog: builder.mutation({
       query: (id: string) => {
-        console.log(id);
         return {
           url: `/blog/${id}`,
           method: "DELETE",
@@ -93,5 +87,5 @@ export const {
   useUpdateBlogMutation,
   useDeleteBlogMutation,
   useCreateBlogCommentMutation,
-  useGetBlogCommentQuery
+  useGetBlogCommentQuery,
 } = blogApi;
