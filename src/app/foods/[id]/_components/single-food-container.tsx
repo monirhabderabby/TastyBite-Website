@@ -1,20 +1,14 @@
 "use client";
 
-import {
-    useGetAllFoodsQuery,
-    useGetSingleFoodQuery,
-} from "@/redux/features/food/foodApi";
+import { useGetSingleFoodQuery } from "@/redux/features/food/foodApi";
 import FoodInfos from "./food-infos";
 import FoodOverview from "./food-overview";
 import RelatedProducts from "./related-products";
 
 const SingleFoodContainer = ({ foodId }: { foodId: string }) => {
     const { data, isLoading } = useGetSingleFoodQuery(foodId);
-    const { data: foodsData, isLoading: foodsLoading } = useGetAllFoodsQuery(
-        {}
-    );
 
-    if (isLoading || foodsLoading) {
+    if (isLoading) {
         return (
             <div className="h-[60vh] text-2xl text-black flex justify-center items-center w-full animate-pulse">
                 Loading...
@@ -29,7 +23,7 @@ const SingleFoodContainer = ({ foodId }: { foodId: string }) => {
             </div>
             <FoodInfos food={data.data} />
 
-            <RelatedProducts foods={foodsData?.data.slice(0, 4)} />
+            <RelatedProducts food={data?.data} />
             {/* <RecentlyViewedProducts /> */}
         </div>
     );
