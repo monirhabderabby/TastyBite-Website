@@ -53,6 +53,21 @@ const foodApi = baseApi.injectEndpoints({
                 { type: "SingleFood", id },
             ],
         }),
+        createFoodReview: builder.mutation({
+            query: (body) => ({
+                url: "/food-feedback",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["FoodFeedback"],
+        }),
+        getFoodReviewByFood: builder.query({
+            query: (foodId) => ({
+                url: `/food-feedback/${foodId}`,
+                method: "GET",
+            }),
+            providesTags: (result, error, id) => [{ type: "FoodFeedback", id }],
+        }),
     }),
 });
 
@@ -63,4 +78,6 @@ export const {
     useCreateFoodMutation,
     useUpdateFoodMutation,
     useDeleteFoodMutation,
+    useCreateFoodReviewMutation,
+    useGetFoodReviewByFoodQuery,
 } = foodApi;

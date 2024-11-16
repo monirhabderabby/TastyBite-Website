@@ -95,3 +95,13 @@ export interface TFood {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type TFoodFeedback = {
+    _id?: string;
+    user: TUser;
+    clerkId?: string;
+    foodId: string;
+    title: string;
+    review: string;
+    rating: number;
+};
