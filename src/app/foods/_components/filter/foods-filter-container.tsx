@@ -3,6 +3,8 @@
 // Packages
 import { ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import RangeSlider from "react-range-slider-input";
 
 // Local Imports

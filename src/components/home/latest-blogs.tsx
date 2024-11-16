@@ -17,7 +17,7 @@ import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
 import { TBlog } from "@/types";
 
 const LatestNews = () => {
-  const { data,isLoading } = useGetAllBlogsQuery("?limit=3");
+  const { data, isLoading } = useGetAllBlogsQuery("?limit=3");
   const blogs = data?.data || [];
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
@@ -41,7 +41,7 @@ const LatestNews = () => {
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
-if(isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="my-40 container">

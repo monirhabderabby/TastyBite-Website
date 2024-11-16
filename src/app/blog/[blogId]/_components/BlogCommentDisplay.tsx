@@ -4,7 +4,7 @@
 import { useGetBlogCommentQuery } from "@/redux/features/blog/blogApi";
 import { TBlog } from "@/types";
 import Image from "next/image";
-import {  useState } from "react";
+import { useState } from "react";
 import Blog_Pagination from "../../_components/Blog_Pagination";
 
 export default function BlogCommentDisplay({
@@ -23,9 +23,7 @@ export default function BlogCommentDisplay({
   });
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-  
   };
-
 
   const comments = blogCommentRes?.data || [];
   const totalPages = blogCommentRes?.meta?.totalPage || 1;
@@ -42,6 +40,7 @@ export default function BlogCommentDisplay({
           >
             <Image
               src={
+                comment?.userId?.image ||
                 "https://foodking-react.vercel.app/assets/img/news/author_img2.jpg"
               }
               alt={`${comment?.userId?.image}'s avatar`}
@@ -52,13 +51,13 @@ export default function BlogCommentDisplay({
             <div className="flex-1">
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h3 className="font-bold">{comment.userId.name}</h3>
+                  <h3 className="font-bold">{comment?.userId?.name}</h3>
                   <p className="text-sm text-green-600">
                     {new Date(comment.createdAt).toLocaleDateString("en-GB")}
                   </p>
                 </div>
               </div>
-              <p className="text-muted-foreground">{comment.comment}</p>
+              <p className="text-muted-foreground">{comment?.comment}</p>
             </div>
           </div>
         ))}

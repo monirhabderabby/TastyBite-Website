@@ -1,35 +1,21 @@
-import chef from "../../../public/images/chef-1.webp";
+import { TStaff } from "@/types";
 import ChefCard from "../common/cards/chef-card";
 import SectionHeader from "../common/sectionHeader/sectionHeader";
 import BlackRubBG from "../ui/black-rub-bg";
 
-const BestChef = () => {
-  const chefData = [
-    {
-      id: "1",
-      name: "Chef John",
-      designation: "Sous Chef",
-      image: chef,
-    },
-    {
-      id: "2",
-      name: "Julia Child",
-      designation: "Sous Chef",
-      image: chef,
-    },
-    {
-      id: "3",
-      name: "Abdullah Kafi",
-      designation: "Sous Chef",
-      image: chef,
-    },
-    {
-      id: "4",
-      name: "Sahabuddin",
-      designation: "Sous Chef",
-      image: chef,
-    },
-  ];
+const BestChef = async () => {
+  let chefData = [];
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/staff?limit=4`,
+      { cache: "no-cache" }
+    );
+    const chefDataRes = await res.json();
+    chefData = chefDataRes.data;
+  } catch (error) {
+    console.log(error);
+  }
+
   return (
     <div>
       <BlackRubBG>
@@ -40,8 +26,8 @@ const BestChef = () => {
         />
 
         <div className="mt-[50px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[30px]">
-          {chefData.map((chef) => (
-            <ChefCard key={chef.id} chef={chef} />
+          {chefData.map((chef: TStaff) => (
+            <ChefCard key={chef._id} chef={chef} />
           ))}
         </div>
       </BlackRubBG>

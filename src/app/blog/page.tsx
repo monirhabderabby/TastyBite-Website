@@ -36,7 +36,7 @@ const BlogPage = () => {
           {/* blog sidebar part */}
           <div className="col-span-5  lg:mt-4 lg:col-span-2">
             <Blog_Search />
-            <PopularBlog />
+            <PopularBlog  blogId=""/>
             <Blog_category />
             <SocialLink />
           </div>
