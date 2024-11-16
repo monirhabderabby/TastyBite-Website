@@ -9,6 +9,12 @@ import { TBlog } from "@/types";
 import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
 import BlogCommentForm from "./_components/BlogCommentForm";
 import BlogCommentDisplay from "./_components/BlogCommentDisplay";
+import dynamic from "next/dynamic";
+
+const RichTextViewer = dynamic(
+  () => import("@/components/common/textEditor/richTextViewer"),
+  { ssr: false }
+);
 
 export default async function BlogDetailsPage({
   params,
@@ -72,12 +78,11 @@ export default async function BlogDetailsPage({
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
-
-              <h2 className="text-2xl font-bold text-[#333]">
-                {blogData?.title}
-              </h2>
               <p className="text-[18px] leading-[28px]  text-[#5c5c5b] primary-gray font-normal">
-                {blogData?.description}
+                <RichTextViewer
+                  type="details"
+                  content={blogData?.description || ""}
+                />
               </p>
             </article>
             <div className="text-black col-span-5 mx-5 lg:col-span-3">
@@ -91,7 +96,7 @@ export default async function BlogDetailsPage({
           {/* blog sidebar part */}
           <div className=" col-span-5 lg:mt-4 lg:col-span-2">
             <Blog_Search />
-            <PopularBlog />
+            <PopularBlog blogId={params.blogId} />
             <Blog_category />
             <SocialLink />
           </div>

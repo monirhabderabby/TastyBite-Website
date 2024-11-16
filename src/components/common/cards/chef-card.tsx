@@ -1,29 +1,29 @@
-import Image, { StaticImageData } from "next/image";
+import { TStaff } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
 
 interface ChefProps {
-  chef: {
-    id: string;
-    name: string;
-    designation: string;
-    image: StaticImageData;
-  };
+  chef: TStaff;
 }
 
 const ChefCard = ({ chef }: ChefProps) => {
   return (
-    <div>
-      <Image
+    <div className="w-[80%] md:w-full mx-auto">
+      <div className='h-[350px] md:h-[320px]'>
+         <Image
+          className='h-[350px] md:h-[320px] w-full'
         src={chef.image}
         alt={chef.name}
-        width={277}
-        height={263}
-        layout="responsive"
+        width={500}
+        height={350}
         objectFit="cover"
       />
+      </div>
+     
       <div className="bg-white text-center py-6">
-        <h2 className="text-xl text-primary-black uppercase font-semibold hover:text-primary-orange duration-300">
+     <Link href={`/chefs/${chef._id}`}> <h2 className="text-xl text-primary-black uppercase font-semibold hover:text-primary-orange duration-300">
           {chef.name}
-        </h2>
+        </h2> </Link>  
         <p className="text-sm text-primary-gray">{chef.designation}</p>
       </div>
     </div>

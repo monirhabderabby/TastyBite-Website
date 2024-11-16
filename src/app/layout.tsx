@@ -42,11 +42,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
     <AppProvider>
       <ClerkProvider>
-        <html>
-          <body className={cn(narrow.className, "antialiased text-white")}>
+        <html className="scrollbar-thin">
+          <body className={cn(narrow.className, "antialiased text-white ")}>
             <TooltipProvider>
               <Navbar />
               <div className="min-h-screen" vaul-drawer-wrapper="">
