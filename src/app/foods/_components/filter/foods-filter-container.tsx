@@ -125,11 +125,8 @@ export const PriceFilter = () => {
                     id="range-slider-green"
                     className="bg-primary-orange"
                     value={value} // Pass current min and max as slider values
-                    max={120} // Maximum value of the slider
+                    max={200} // Maximum value of the slider
                     min={0} // Minimum value of the slider
-                    // onInput={(value: [number, number]) => {
-                    //     setValue(value);
-                    // }}
                     onInput={(value: [number, number]) =>
                         handlePriceRangeChange(value)
                     }
