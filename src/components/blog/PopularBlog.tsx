@@ -7,11 +7,11 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { TBlog } from "@/types";
 import Link from "next/link";
 
-const PopularBlog = async () => {
+const PopularBlog = async ({ blogId = "" }: { blogId: string }) => {
   let blogs = [];
   try {
     const blogRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog?limit=4`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog?limit=5`,
       { cache: "no-cache" }
     );
     const data = await blogRes.json();
@@ -20,6 +20,9 @@ const PopularBlog = async () => {
     console.log(err);
   }
 
+  if (blogId !== "") {
+    blogs = blogs.filter((blog: TBlog) => blog._id != blogId);
+  }
 
   return (
     <div className="mt-24">
@@ -42,9 +45,12 @@ const PopularBlog = async () => {
               />
               <div className="space-y-2">
                 {/* title */}
-               <Link href={`/blog/${item._id}`}>    <h2 className="text-[18px] leading-[22px] text-black font-[600] hover:text-primary-orange">
-                  {item?.title}
-                </h2></Link>
+                <Link href={`/blog/${item._id}`}>
+                  {" "}
+                  <h2 className="text-[18px] leading-[22px] text-black font-[600] hover:text-primary-orange">
+                    {item?.title}
+                  </h2>
+                </Link>
                 {/* date of post */}
                 <p className="text-primary-gray flex items-center gap-x-2 text-base font-bold">
                   <MdOutlineDateRange className="text-xl text-primary-gray" />

@@ -16,6 +16,24 @@
   --detail-medium-contrast: hsl(0, 0%, 100%);
   --text-body: #fd9d3e;
 }
+/* Scroll bar */
+.scrollbar-thin {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #fd9d3e transparent; /* For Firefox */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 2px; /* Set the width */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent; /* Track color */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: orange; /* Thumb color */
+  border-radius: 10px; /* Optional for rounded edges */
+}
 
 @layer base {
   :root {

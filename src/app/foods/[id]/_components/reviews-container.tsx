@@ -21,7 +21,7 @@ const ReviewsContainer = ({ foodId }: { foodId: string }) => {
 
     if (isLoading) {
         content = (
-            <p className="animate-pulse text-xl text-center text-primary-black">
+            <p className="animate-pulse text-xl text-center text-primary-black my-20">
                 Loading...
             </p>
         );
