@@ -35,6 +35,17 @@
   border-radius: 10px; /* Optional for rounded edges */
 }
 
+/* hide scroll bar */
+/* Add this class to hide scrollbars */
+.scrollbar-hidden {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
