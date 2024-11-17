@@ -39,7 +39,9 @@ const FoodInfos = ({ food }: { food: TFood }) => {
                     {activeTab === "1" && (
                         <Description desc={food.description} />
                     )}
-                    {activeTab === "4" && <ReviewsContainer />}
+                    {activeTab === "4" && (
+                        <ReviewsContainer foodId={food._id} />
+                    )}
                 </div>
             </div>
             <div className="bg-gray-300/50 h-[1px] w-full" />

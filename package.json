@@ -24,6 +24,7 @@
     "@radix-ui/react-tooltip": "^1.1.3",
     "@reduxjs/toolkit": "^2.3.0",
     "@tabler/icons-react": "^3.22.0",
+    "@smastrom/react-rating": "^1.5.0",
     "@tailwindcss/typography": "^0.5.15",
     "@tiptap/react": "^2.9.1",
     "@tiptap/starter-kit": "^2.9.1",
