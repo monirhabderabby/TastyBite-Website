@@ -10,11 +10,17 @@ import { useEffect, useState } from "react";
 // Components
 import { Button } from "@/components/ui/button";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/navbar-menu";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { setMenu } from "@/redux/features/filter/filterSlice";
 import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
 import { useGetAllMenusQuery } from "@/redux/features/menu/menuApi";
+import { RootState } from "@/redux/store";
 import { TFood, TMenu } from "@/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ButtonPrimary from "../button/buttonPrimary";
 import FoodCart from "../cards/food-card/food-card";
 import Logo from "../logo/Logo";
@@ -23,6 +29,7 @@ import MobileNavbar from "./mobile-navbar";
 const Navbar = () => {
     const [scrolling, setScrolling] = useState<boolean>(false);
     const [active, setActive] = useState<string | null>(null);
+    const wishlist = useSelector((state: RootState) => state.wishlist.items);
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -200,17 +207,19 @@ const Navbar = () => {
                                     </HoveredLink>
                                 </div>
                             </MenuItem>
-                            <Link href="/profile">
-                                <span
-                                    className={`hover:text-primary-orange ${
-                                        pathname === "/contact"
-                                            ? "text-primary-orange"
-                                            : "text-white"
-                                    }`}
-                                >
-                                    PROFILE
-                                </span>
-                            </Link>
+                            {isSignedIn && (
+                                <Link href="/profile">
+                                    <span
+                                        className={`hover:text-primary-orange ${
+                                            pathname === "/contact"
+                                                ? "text-primary-orange"
+                                                : "text-white"
+                                        }`}
+                                    >
+                                        PROFILE
+                                    </span>
+                                </Link>
+                            )}
                         </Menu>
                     </div>
                     {/* Menu end part */}
@@ -221,40 +230,78 @@ const Navbar = () => {
                         >
                             <Search className="w-6" />
                         </Button>
-                        <Link href="/notification" className="relative">
-                            <Bell className="w-5" />
-                            <p
-                                className={`absolute -top-2 -right-3 ${
-                                    scrolling
-                                        ? "bg-[#91b842] text-white"
-                                        : "bg-white text-primary-black"
-                                } w-5 h-5 flex items-center justify-center rounded-full`}
-                            >
-                                13
-                            </p>
-                        </Link>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Link href="/notification" className="relative">
+                                    <Bell className="w-5" />
+                                    <p
+                                        className={`absolute -top-2 -right-3 ${
+                                            scrolling
+                                                ? "bg-[#91b842] text-white"
+                                                : "bg-white text-primary-black"
+                                        } w-5 h-5 flex items-center justify-center rounded-full`}
+                                    >
+                                        0
+                                    </p>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-primary-orange text-white">
+                                Notifications
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Link href="/wishlist" className="relative">
+                                    <Heart className="w-5" />
+                                    <p
+                                        className={`absolute -top-2 -right-3 ${
+                                            scrolling
+                                                ? "bg-[#91b842] text-white"
+                                                : "bg-white text-primary-black"
+                                        } w-5 h-5 flex items-center justify-center rounded-full`}
+                                    >
+                                        {wishlist.length}
+                                    </p>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-primary-orange text-white">
+                                Wishlist
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Link href="/cart" className="relative">
+                                    <ShoppingCart className="w-5" />
+                                    <p
+                                        className={`absolute -top-2 -right-3 ${
+                                            scrolling
+                                                ? "bg-[#91b842] text-white"
+                                                : "bg-white text-primary-black"
+                                        } w-5 h-5 flex items-center justify-center rounded-full`}
+                                    >
+                                        5
+                                    </p>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-primary-orange text-white">
+                                Cart
+                            </TooltipContent>
+                        </Tooltip>
+
                         {isSignedIn ? (
                             <UserButton />
                         ) : (
-                            <Link href="/sign-in ">
-                                <User className="w-5" />
-                            </Link>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Link href="/sign-in ">
+                                        <User className="w-5" />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent className="bg-primary-orange text-white">
+                                    Sign In
+                                </TooltipContent>
+                            </Tooltip>
                         )}
-                        <Link href="/wishlist">
-                            <Heart className="w-5" />
-                        </Link>
-                        <Link href="/cart" className="relative">
-                            <ShoppingCart className="w-5" />
-                            <p
-                                className={`absolute -top-2 -right-3 ${
-                                    scrolling
-                                        ? "bg-[#91b842] text-white"
-                                        : "bg-white text-primary-black"
-                                } w-5 h-5 flex items-center justify-center rounded-full`}
-                            >
-                                5
-                            </p>
-                        </Link>
                     </div>
 
                     {/* Mobile Responsive */}

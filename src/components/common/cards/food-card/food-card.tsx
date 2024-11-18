@@ -7,8 +7,12 @@ import { useState } from "react";
 
 // Local Imports
 import { cn } from "@/lib/utils";
+import { addToWishlist } from "@/redux/features/wishlist/wishlistSlice";
+import { RootState } from "@/redux/store";
 import { TFood } from "@/types";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import QuickActions from "./quick-action";
 
 interface FoodCartProps {
@@ -17,8 +21,17 @@ interface FoodCartProps {
 }
 
 const FoodCart = ({ theme, food }: FoodCartProps) => {
+    const pathname = usePathname();
+    const dispatch = useDispatch();
+    const wishlist = useSelector((state: RootState) => state.wishlist.items);
+
+    // Check if the food is already in the wishlist
+    const isWishListed = wishlist.includes(food._id);
+
     const handleWishlist = () => {
-        // do your stuff when clicking on the wishlist button
+        if (!isWishListed) {
+            dispatch(addToWishlist(food._id));
+        }
     };
 
     const handleQuickView = () => {
@@ -41,6 +54,8 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
                     onQuickView={handleQuickView}
                     onCartClick={handleCart}
                     food={food}
+                    isWishListed={isWishListed}
+                    pathname={pathname}
                 />
             </div>
 
