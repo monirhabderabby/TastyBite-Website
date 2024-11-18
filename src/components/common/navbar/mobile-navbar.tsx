@@ -11,9 +11,11 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import { RootState } from "@/redux/store";
 import { UserButton } from "@clerk/nextjs";
 import { AlignJustify, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import Logo from "../logo/Logo";
 
 const MobileNavbar = ({
@@ -23,6 +25,8 @@ const MobileNavbar = ({
     scrolling: boolean;
     isSignedIn: boolean | undefined;
 }) => {
+    const wishlist = useSelector((state: RootState) => state.wishlist.items);
+
     return (
         <div className="lg:hidden flex justify-between items-center gap-x-4 w-full">
             <div className="flex items-center gap-x-1">
@@ -94,6 +98,19 @@ const MobileNavbar = ({
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
+                        <div className="text-sm font-medium border-b py-4">
+                            <SheetClose asChild>
+                                <Link href={"/wishlist"} className="relative">
+                                    <span>Wishlist</span>
+                                    <span
+                                        className={`absolute -top-2 -right-5 bg-[#91b842] text-white 
+                                         w-5 h-5 flex items-center justify-center rounded-full`}
+                                    >
+                                        {wishlist.length}
+                                    </span>
+                                </Link>
+                            </SheetClose>
+                        </div>
                         <div className="text-sm font-medium border-b py-4">
                             <SheetClose asChild>
                                 <Link
