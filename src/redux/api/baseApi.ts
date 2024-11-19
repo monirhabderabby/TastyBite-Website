@@ -21,6 +21,8 @@ export const baseApi = createApi({
         "Menu",
         "SingleMenu",
         "FoodFeedback",
+        "SingleFoodFeedback",
+        "FoodFeedback"
     ],
 
     endpoints: () => ({}),
