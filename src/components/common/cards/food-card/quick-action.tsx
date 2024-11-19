@@ -18,6 +18,7 @@ interface QuickActionsProps {
     onCartClick: () => void;
     food: TFood;
     isWishListed: boolean;
+    isInCart: boolean;
     pathname: string;
 }
 
@@ -27,6 +28,7 @@ const QuickActions = ({
     onCartClick,
     food,
     isWishListed,
+    isInCart,
     pathname,
 }: QuickActionsProps) => {
     const [open, setOpen] = useState<boolean>(false);
@@ -112,8 +114,11 @@ const QuickActions = ({
                 </Tooltip>
                 <Tooltip>
                     <TooltipTrigger
-                        className={style.button}
+                        className={`${
+                            isInCart ? style.buttonTriggered : style.button
+                        } ${isInCart && "cursor-not-allowed"}`}
                         onClick={onCartClick}
+                        disabled={isInCart}
                     >
                         <ShoppingCart className={style.icon} />
                     </TooltipTrigger>
@@ -121,7 +126,7 @@ const QuickActions = ({
                         side="left"
                         className="bg-white text-gray-500"
                     >
-                        Add To Cart
+                        {isInCart ? "Already In Cart" : "Add To Cart"}
                     </TooltipContent>
                 </Tooltip>
             </div>

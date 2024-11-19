@@ -8,13 +8,16 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Components
+import CartSheet from "@/components/cart/cart-sheet";
 import { Button } from "@/components/ui/button";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/navbar-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { selectCartTotalQuantity } from "@/redux/features/cart/cartSelector";
 import { setMenu } from "@/redux/features/filter/filterSlice";
 import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
 import { useGetAllMenusQuery } from "@/redux/features/menu/menuApi";
@@ -30,6 +33,7 @@ const Navbar = () => {
     const [scrolling, setScrolling] = useState<boolean>(false);
     const [active, setActive] = useState<string | null>(null);
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
+    const cartItemsNumber = useSelector(selectCartTotalQuantity);
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -270,18 +274,40 @@ const Navbar = () => {
                         </Tooltip>
                         <Tooltip>
                             <TooltipTrigger>
-                                <Link href="/cart" className="relative">
-                                    <ShoppingCart className="w-5" />
-                                    <p
-                                        className={`absolute -top-2 -right-3 ${
-                                            scrolling
-                                                ? "bg-[#91b842] text-white"
-                                                : "bg-white text-primary-black"
-                                        } w-5 h-5 flex items-center justify-center rounded-full`}
-                                    >
-                                        5
-                                    </p>
-                                </Link>
+                                {pathname !== "/cart" && isSignedIn ? (
+                                    <Sheet>
+                                        <SheetTrigger asChild>
+                                            <div className="relative">
+                                                <ShoppingCart className="w-5" />
+                                                <p
+                                                    className={`absolute -top-2 -right-3 ${
+                                                        scrolling
+                                                            ? "bg-[#91b842] text-white"
+                                                            : "bg-white text-primary-black"
+                                                    } w-5 h-5 flex items-center justify-center rounded-full`}
+                                                >
+                                                    {cartItemsNumber}
+                                                </p>
+                                            </div>
+                                        </SheetTrigger>
+                                        <SheetContent className="border p-0">
+                                            <CartSheet />
+                                        </SheetContent>
+                                    </Sheet>
+                                ) : (
+                                    <Link href="/cart" className="relative">
+                                        <ShoppingCart className="w-5" />
+                                        <p
+                                            className={`absolute -top-2 -right-3 ${
+                                                scrolling
+                                                    ? "bg-[#91b842] text-white"
+                                                    : "bg-white text-primary-black"
+                                            } w-5 h-5 flex items-center justify-center rounded-full`}
+                                        >
+                                            {cartItemsNumber}
+                                        </p>
+                                    </Link>
+                                )}
                             </TooltipTrigger>
                             <TooltipContent className="bg-primary-orange text-white">
                                 Cart

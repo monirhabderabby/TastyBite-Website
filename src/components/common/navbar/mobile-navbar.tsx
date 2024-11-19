@@ -11,6 +11,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import { selectCartTotalQuantity } from "@/redux/features/cart/cartSelector";
 import { RootState } from "@/redux/store";
 import { UserButton } from "@clerk/nextjs";
 import { AlignJustify, Search, ShoppingCart, User } from "lucide-react";
@@ -26,6 +27,7 @@ const MobileNavbar = ({
     isSignedIn: boolean | undefined;
 }) => {
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
+    const cartItemsNumber = useSelector(selectCartTotalQuantity);
 
     return (
         <div className="lg:hidden flex justify-between items-center gap-x-4 w-full">
@@ -162,7 +164,7 @@ const MobileNavbar = ({
                                 : "bg-white text-primary-black"
                         } w-5 h-5 flex items-center justify-center rounded-full`}
                     >
-                        5
+                        {cartItemsNumber}
                     </p>
                 </Link>
             </div>
