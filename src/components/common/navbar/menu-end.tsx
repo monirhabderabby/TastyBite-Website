@@ -34,25 +34,27 @@ const MenuEnd = ({
             >
                 <Search className="w-6" />
             </Button>
-            <Tooltip>
-                <TooltipTrigger>
-                    <Link href="/notification" className="relative">
-                        <Bell className="w-5" />
-                        <p
-                            className={`absolute -top-2 -right-3 ${
-                                scrolling
-                                    ? "bg-[#91b842] text-white"
-                                    : "bg-white text-primary-black"
-                            } w-5 h-5 flex items-center justify-center rounded-full`}
-                        >
-                            0
-                        </p>
-                    </Link>
-                </TooltipTrigger>
-                <TooltipContent className="bg-primary-orange text-white">
-                    Notifications
-                </TooltipContent>
-            </Tooltip>
+            {isSignedIn && (
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Link href="/notification" className="relative">
+                            <Bell className="w-5" />
+                            <p
+                                className={`absolute -top-2 -right-3 ${
+                                    scrolling
+                                        ? "bg-[#91b842] text-white"
+                                        : "bg-white text-primary-black"
+                                } w-5 h-5 flex items-center justify-center rounded-full`}
+                            >
+                                0
+                            </p>
+                        </Link>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-primary-orange text-white">
+                        Notifications
+                    </TooltipContent>
+                </Tooltip>
+            )}
             <Tooltip>
                 <TooltipTrigger>
                     <Link href="/wishlist" className="relative">
@@ -72,47 +74,49 @@ const MenuEnd = ({
                     Wishlist
                 </TooltipContent>
             </Tooltip>
-            <Tooltip>
-                <TooltipTrigger>
-                    {pathname !== "/cart" && isSignedIn ? (
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <div className="relative">
-                                    <ShoppingCart className="w-5" />
-                                    <p
-                                        className={`absolute -top-2 -right-3 ${
-                                            scrolling
-                                                ? "bg-[#91b842] text-white"
-                                                : "bg-white text-primary-black"
-                                        } w-5 h-5 flex items-center justify-center rounded-full`}
-                                    >
-                                        {cartItemsNumber}
-                                    </p>
-                                </div>
-                            </SheetTrigger>
-                            <SheetContent className="border p-0">
-                                <CartSheet />
-                            </SheetContent>
-                        </Sheet>
-                    ) : (
-                        <Link href="/cart" className="relative">
-                            <ShoppingCart className="w-5" />
-                            <p
-                                className={`absolute -top-2 -right-3 ${
-                                    scrolling
-                                        ? "bg-[#91b842] text-white"
-                                        : "bg-white text-primary-black"
-                                } w-5 h-5 flex items-center justify-center rounded-full`}
-                            >
-                                {cartItemsNumber}
-                            </p>
-                        </Link>
-                    )}
-                </TooltipTrigger>
-                <TooltipContent className="bg-primary-orange text-white">
-                    Cart
-                </TooltipContent>
-            </Tooltip>
+            {isSignedIn && (
+                <Tooltip>
+                    <TooltipTrigger>
+                        {pathname !== "/cart" && isSignedIn ? (
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <div className="relative">
+                                        <ShoppingCart className="w-5" />
+                                        <p
+                                            className={`absolute -top-2 -right-3 ${
+                                                scrolling
+                                                    ? "bg-[#91b842] text-white"
+                                                    : "bg-white text-primary-black"
+                                            } w-5 h-5 flex items-center justify-center rounded-full`}
+                                        >
+                                            {cartItemsNumber}
+                                        </p>
+                                    </div>
+                                </SheetTrigger>
+                                <SheetContent className="border p-0">
+                                    <CartSheet />
+                                </SheetContent>
+                            </Sheet>
+                        ) : (
+                            <Link href="/cart" className="relative">
+                                <ShoppingCart className="w-5" />
+                                <p
+                                    className={`absolute -top-2 -right-3 ${
+                                        scrolling
+                                            ? "bg-[#91b842] text-white"
+                                            : "bg-white text-primary-black"
+                                    } w-5 h-5 flex items-center justify-center rounded-full`}
+                                >
+                                    {cartItemsNumber}
+                                </p>
+                            </Link>
+                        )}
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-primary-orange text-white">
+                        Cart
+                    </TooltipContent>
+                </Tooltip>
+            )}
 
             {isSignedIn ? (
                 <UserButton />

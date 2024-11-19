@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import { removeFromWishlist } from "@/redux/features/wishlist/wishlistSlice";
 import { TFood } from "@/types";
-import { Heart, Search, ShoppingCart, X } from "lucide-react";
+import { Heart, ShoppingCart, X, ZoomIn } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import QuickViewModal from "./quick-view-modal";
@@ -103,7 +103,7 @@ const QuickActions = ({
                         className={style.button}
                         onClick={handleSearch}
                     >
-                        <Search className={style.icon} />
+                        <ZoomIn className={style.icon} />
                     </TooltipTrigger>
                     <TooltipContent
                         side="left"
