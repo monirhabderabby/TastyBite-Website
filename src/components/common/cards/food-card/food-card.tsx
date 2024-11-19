@@ -7,6 +7,8 @@ import { useState } from "react";
 
 // Local Imports
 import { cn } from "@/lib/utils";
+import { isFoodInCart } from "@/redux/features/cart/cartSelector";
+import { addToCart } from "@/redux/features/cart/cartSlice";
 import { addToWishlist } from "@/redux/features/wishlist/wishlistSlice";
 import { RootState } from "@/redux/store";
 import { TFood } from "@/types";
@@ -27,6 +29,7 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
 
     // Check if the food is already in the wishlist
     const isWishListed = wishlist.includes(food._id);
+    const isInCart = useSelector(isFoodInCart(food._id));
 
     const handleWishlist = () => {
         if (!isWishListed) {
@@ -39,7 +42,16 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
     };
 
     const handleCart = () => {
-        // Do your stuff when clicking on the cart button
+        dispatch(
+            addToCart({
+                id: food._id,
+                name: food.name,
+                price: food.price,
+                image: food.images[0],
+                quantity: 1, // default quantity to add
+                menu: food.menuId.name,
+            })
+        );
     };
 
     return (
@@ -55,6 +67,7 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
                     onCartClick={handleCart}
                     food={food}
                     isWishListed={isWishListed}
+                    isInCart={isInCart}
                     pathname={pathname}
                 />
             </div>

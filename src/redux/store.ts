@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { baseApi } from "./api/baseApi";
+import cartReducer from "./features/cart/cartSlice";
 import filterReducer from "./features/filter/filterSlice";
 import wishlistReducer from "./features/wishlist/wishlistSlice";
 
@@ -9,6 +10,7 @@ export const store = configureStore({
         [baseApi.reducerPath]: baseApi.reducer,
         filter: filterReducer,
         wishlist: wishlistReducer,
+        cart: cartReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(baseApi.middleware),
