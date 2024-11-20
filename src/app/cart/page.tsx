@@ -3,7 +3,7 @@ import CartPageContainer from "./_components/CartPageContainer";
 
 const CartPage = () => {
     const breadcrumbLinks = {
-        // mode: "dark" as string,
+        mode: "dark" as string,
         preLinks: [{ link: "/", name: "Home" }],
         pageName: "Cart",
     };

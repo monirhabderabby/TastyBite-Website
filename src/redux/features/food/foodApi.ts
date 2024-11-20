@@ -68,6 +68,14 @@ const foodApi = baseApi.injectEndpoints({
             }),
             providesTags: (result, error, id) => [{ type: "FoodFeedback", id }],
         }),
+        getFoodByIds: builder.mutation({
+            query: (body) => ({
+                url: "/food/foodbyids",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["food"],
+        }),
     }),
 });
 
@@ -80,4 +88,5 @@ export const {
     useDeleteFoodMutation,
     useCreateFoodReviewMutation,
     useGetFoodReviewByFoodQuery,
+    useGetFoodByIdsMutation,
 } = foodApi;

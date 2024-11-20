@@ -4,17 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     selectCartItems,
-    selectCartTotalPrice,
+    selectCartTotalQuantity,
 } from "@/redux/features/cart/cartSelector";
 import {
-    CartItemProps,
     removeFromCart,
     updateQuantity,
 } from "@/redux/features/cart/cartSlice";
+import { useGetFoodByIdsMutation } from "@/redux/features/food/foodApi";
+import { TFoodWithQuantity } from "@/types";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollArea } from "../ui/scroll-area";
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
@@ -62,14 +63,14 @@ function CartItem({
     onUpdateQuantity,
     onRemove,
 }: {
-    item: CartItemProps;
+    item: TFoodWithQuantity;
     onUpdateQuantity: (id: string, quantity: number) => void;
     onRemove: (id: string) => void;
 }) {
     return (
         <div className="flex items-start gap-4 py-4 border-b">
             <Image
-                src={item.image}
+                src={item.images[0]}
                 alt={item.name}
                 width={80}
                 height={80}
@@ -80,12 +81,12 @@ function CartItem({
                     <div>
                         <h3 className="font-medium">{item.name}</h3>
                         <p className="text-sm text-muted-foreground">
-                            {item.menu}
+                            {item.menuId.name}
                         </p>
                         <p className="mt-1">${item.price.toFixed(2)}</p>
                     </div>
                     <button
-                        onClick={() => onRemove(item.id)}
+                        onClick={() => onRemove(item._id)}
                         className="text-muted-foreground hover:text-foreground"
                     >
                         <X className="h-4 w-4" />
@@ -96,14 +97,14 @@ function CartItem({
                         value={item.quantity}
                         onDecrease={() =>
                             onUpdateQuantity(
-                                item.id,
+                                item._id,
                                 Math.max(1, item.quantity - 1)
                             )
                         }
                         onIncrease={() =>
-                            onUpdateQuantity(item.id, item.quantity + 1)
+                            onUpdateQuantity(item._id, item.quantity + 1)
                         }
-                        onChange={(value) => onUpdateQuantity(item.id, value)}
+                        onChange={(value) => onUpdateQuantity(item._id, value)}
                     />
                 </div>
             </div>
@@ -112,13 +113,17 @@ function CartItem({
 }
 
 function CartSummary({
-    subtotal,
+    cartFoodItems,
     onCheckout,
 }: {
-    subtotal: number;
+    cartFoodItems: TFoodWithQuantity[];
     onCheckout: (totalPrice: number) => void;
 }) {
     const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+    const subtotal = cartFoodItems.reduce((total, item) => {
+        return total + item.price * item.quantity;
+    }, 0);
 
     return (
         <div className="space-y-4 p-5">
@@ -168,8 +173,11 @@ function CartSummary({
 
 export default function CartSheet() {
     const cartItems = useSelector(selectCartItems);
-    const subtotal = useSelector(selectCartTotalPrice);
+    const cartItemsNumber = useSelector(selectCartTotalQuantity);
     const dispatch = useDispatch();
+
+    const [getFoodByIds, { data: cartFoodData, isLoading }] =
+        useGetFoodByIdsMutation();
 
     const updateCartQuantity = (id: string, quantity: number) => {
         if (quantity > 0) {
@@ -188,6 +196,20 @@ export default function CartSheet() {
         console.log("Proceeding to checkout to pay $", totalPrice);
     };
 
+    useEffect(() => {
+        if (cartItems.length > 0) {
+            getFoodByIds(cartItems);
+        }
+    }, [cartItems, getFoodByIds]);
+
+    if (isLoading) {
+        return (
+            <p className="text-primary-black text-center mt-72 text-2xl animate-pulse">
+                Cart Loading...
+            </p>
+        );
+    }
+
     return (
         <div className="text-primary-black">
             <div className="mt-4">
@@ -195,15 +217,13 @@ export default function CartSheet() {
                     <div className="">
                         <SheetHeader>
                             <div className="flex justify-between items-center p-5">
-                                <SheetTitle>
-                                    <h1 className="text-primary-black text-2xl font-semibold">
-                                        Shopping Cart
-                                    </h1>
+                                <SheetTitle className="text-primary-black text-2xl font-semibold">
+                                    Shopping Cart
                                 </SheetTitle>
                                 <SheetDescription>
                                     <span className="text-muted-foreground">
-                                        {cartItems.length}{" "}
-                                        {cartItems.length === 1
+                                        {cartItemsNumber}{" "}
+                                        {cartItemsNumber === 1
                                             ? "item"
                                             : "items"}
                                     </span>
@@ -213,17 +233,19 @@ export default function CartSheet() {
                         <div className="">
                             <ScrollArea className="h-[60vh] px-5">
                                 <div className="space-y-4">
-                                    {cartItems.length > 0 ? (
-                                        cartItems.map((item) => (
-                                            <CartItem
-                                                key={item.id}
-                                                item={item}
-                                                onUpdateQuantity={
-                                                    updateCartQuantity
-                                                }
-                                                onRemove={removeItem}
-                                            />
-                                        ))
+                                    {cartFoodData?.data?.length > 0 ? (
+                                        cartFoodData?.data?.map(
+                                            (item: TFoodWithQuantity) => (
+                                                <CartItem
+                                                    key={item._id}
+                                                    item={item}
+                                                    onUpdateQuantity={
+                                                        updateCartQuantity
+                                                    }
+                                                    onRemove={removeItem}
+                                                />
+                                            )
+                                        )
                                     ) : (
                                         <p className="text-center text-muted-foreground my-20">
                                             Your cart is empty.
@@ -231,10 +253,10 @@ export default function CartSheet() {
                                     )}
                                 </div>
                             </ScrollArea>
-                            {cartItems.length > 0 && (
+                            {cartFoodData?.data?.length > 0 && (
                                 <div className="mt-4 shadow-inner">
                                     <CartSummary
-                                        subtotal={subtotal}
+                                        cartFoodItems={cartFoodData?.data}
                                         onCheckout={handleCheckout}
                                     />
                                 </div>

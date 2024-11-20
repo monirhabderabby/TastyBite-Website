@@ -51,11 +51,7 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
             dispatch(
                 addToCart({
                     id: food._id,
-                    name: food.name,
-                    price: food.price,
-                    image: food.images[0],
                     quantity: 1, // default quantity to add
-                    menu: food.menuId.name,
                 })
             );
             toast.success("Food successfully added in cart.");

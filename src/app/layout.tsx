@@ -7,13 +7,14 @@ import { PT_Sans_Narrow, Pacifico } from "next/font/google";
 
 // Local imports
 import Footer from "@/components/common/footer/footer";
-import Navbar from "@/components/common/navbar/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+const Navbar = dynamic(() => import("../components/common/navbar/navbar"));
 
 // CSS
 import AppProvider from "@/provider/app-provider";
 import NProgress from "@/provider/NProgress";
+import dynamic from "next/dynamic";
 import { Toaster } from "sonner";
 import "./globals.css";
 

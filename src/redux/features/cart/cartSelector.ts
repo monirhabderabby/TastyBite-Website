@@ -10,14 +10,6 @@ export const selectCartTotalQuantity = (state: RootState): number => {
     return state.cart.items.reduce((total, item) => total + item.quantity, 0);
 };
 
-// Selector to get the total price of the cart
-export const selectCartTotalPrice = (state: RootState): number => {
-    return state.cart.items.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-    );
-};
-
 // Selector to get an item by ID
 export const selectCartItemById = (
     state: RootState,
