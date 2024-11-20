@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Accordion,
     AccordionContent,
@@ -16,8 +18,10 @@ import { RootState } from "@/redux/store";
 import { UserButton } from "@clerk/nextjs";
 import { AlignJustify, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Logo from "../logo/Logo";
+import NavbarSearchModal from "./navbar-search-modal";
 
 const MobileNavbar = ({
     scrolling,
@@ -26,6 +30,7 @@ const MobileNavbar = ({
     scrolling: boolean;
     isSignedIn: boolean | undefined;
 }) => {
+    const [open, setOpen] = useState<boolean>(false);
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
     const cartItemsNumber = useSelector(selectCartTotalQuantity);
 
@@ -144,6 +149,7 @@ const MobileNavbar = ({
                     variant={"outline"}
                     size={"icon"}
                     className="px-1 border-none bg-transparent hover:bg-transparent hover:text-white"
+                    onClick={() => setOpen(!open)}
                 >
                     <Search className="w-8" />
                 </Button>
@@ -187,6 +193,8 @@ const MobileNavbar = ({
                     </Link>
                 )}
             </div>
+
+            <NavbarSearchModal open={open} setOpen={setOpen} />
         </div>
     );
 };

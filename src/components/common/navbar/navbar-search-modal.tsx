@@ -64,7 +64,7 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
 
     if (isLoading) {
         content = (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-5 gap-y-[50px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-[50px]">
                 {[1, 2, 3].map((n) => (
                     <FoodCardLoader key={n} />
                 ))}
@@ -88,7 +88,7 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
         );
     } else if (foods?.data?.length > 0) {
         content = (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-2 gap-y-[30px]">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-[30px]">
                 {foods?.data?.map((food: TFood, i: number) => (
                     <motion.div
                         key={food?._id}
@@ -107,11 +107,11 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
 
     return (
         <Modal open={open} setOpen={setOpen}>
-            <div className="flex justify-center mt-5">
+            <div className="flex justify-center mt-5 px-5 md:px-0">
                 <Input
                     placeholder="Search Foods"
                     onChange={(e) => handleSearchTermChange(e.target.value)}
-                    className="text-primary-black md:w-72 lg:w-96"
+                    className="text-primary-black w-full md:w-72 lg:w-96"
                 />
             </div>
 
