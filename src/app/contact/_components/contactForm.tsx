@@ -1,103 +1,3 @@
-// "use client";
-
-// import ButtonPrimary from "@/components/common/button/buttonPrimary";
-// import SectionHeader from "@/components/common/sectionHeader/sectionHeader";
-// import {
-//   Form,
-//   FormControl,
-//   FormField,
-//   FormItem,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// // import { cn } from "@/lib/utils";
-// import { zodResolver } from "@hookform/resolvers/zod";
-
-// import { useForm } from "react-hook-form";
-// import { z } from "zod";
-
-// const FormSchema = z.object({
-//   username: z.string().min(2, {
-//     message: "Username must be at least 2 characters.",
-//   }),
-//   email: z.string().email({
-//     message: "Please, provide a valid email.",
-//   }),
-//   date: z.date({
-//     message: "Please, pick a date for book.",
-//   }),
-// });
-
-// const ContactForm = () => {
-//   const form = useForm<z.infer<typeof FormSchema>>({
-//     resolver: zodResolver(FormSchema),
-//     defaultValues: {
-//       username: "",
-//       email: "",
-//       date: undefined,
-//     },
-//   });
-
-//   function onSubmit(data: z.infer<typeof FormSchema>) {
-//     console.log(data);
-//   }
-
-//   return (
-//     <div className="my-14 md:my-28 container">
-//       <div className="flex flex-col md:flex-row justify-center md:justify-between md:items-center gap-6">
-//         {/* book form */}
-//         <div className="flex-1">
-//           <Form {...form}>
-//             <form
-//               onSubmit={form.handleSubmit(onSubmit)}
-//               className="space-y-5 md:space-y-8"
-//             >
-//               <FormField
-//                 control={form.control}
-//                 name="username"
-//                 render={({ field }) => (
-//                   <FormItem>
-//                     <FormControl>
-//                       <Input
-//                         placeholder="Your Name*"
-//                         {...field}
-//                         className="px-5 py-[10px] h-[50px] rounded-[50px] text-base leading-[22px] text-primary-gray"
-//                       />
-//                     </FormControl>
-//                     <FormMessage />
-//                   </FormItem>
-//                 )}
-//               />
-//               <FormField
-//                 control={form.control}
-//                 name="email"
-//                 render={({ field }) => (
-//                   <FormItem>
-//                     <FormControl>
-//                       <Input
-//                         placeholder="Your Email*"
-//                         type="email"
-//                         {...field}
-//                         className="px-5 py-[10px] h-[50px] rounded-[50px] text-base leading-[22px] text-primary-gray"
-//                       />
-//                     </FormControl>
-//                     <FormMessage />
-//                   </FormItem>
-//                 )}
-//               />
-
-//               <div className="flex justify-center md:justify-start items-center">
-//                 <ButtonPrimary text="Book Now" btnType="submit" />
-//               </div>
-//             </form>
-//           </Form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ContactForm;
 "use client";
 
 import ButtonPrimary from "@/components/common/button/buttonPrimary";
@@ -111,9 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateContactMutation } from "@/redux/features/contact/contactApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -135,6 +38,8 @@ const FormSchema = z.object({
 });
 
 const ContactForm = () => {
+  const [createContact] = useCreateContactMutation();
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -146,8 +51,14 @@ const ContactForm = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const res = await createContact(data);
+
+    if (res.data) {
+      form.reset();
+      router.push("/");
+      toast.success("Your message has been sent successfully.");
+    }
   }
 
   return (
