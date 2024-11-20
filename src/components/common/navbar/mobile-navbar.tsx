@@ -14,7 +14,7 @@ import {
 import { selectCartTotalQuantity } from "@/redux/features/cart/cartSelector";
 import { RootState } from "@/redux/store";
 import { UserButton } from "@clerk/nextjs";
-import { AlignJustify, Search, ShoppingCart, User } from "lucide-react";
+import { AlignJustify, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import Logo from "../logo/Logo";
@@ -113,27 +113,31 @@ const MobileNavbar = ({
                                 </Link>
                             </SheetClose>
                         </div>
-                        <div className="text-sm font-medium border-b py-4">
-                            <SheetClose asChild>
-                                <Link
-                                    href={"/notification"}
-                                    className="relative"
-                                >
-                                    <span>Notification</span>
-                                    <span
-                                        className={`absolute -top-2 -right-5 bg-[#91b842] text-white 
-                                         w-5 h-5 flex items-center justify-center rounded-full`}
+                        {isSignedIn && (
+                            <div className="text-sm font-medium border-b py-4">
+                                <SheetClose asChild>
+                                    <Link
+                                        href={"/notification"}
+                                        className="relative"
                                     >
-                                        13
-                                    </span>
-                                </Link>
-                            </SheetClose>
-                        </div>
-                        <div className="text-sm font-medium border-b py-4">
-                            <SheetClose asChild>
-                                <Link href={"/profile"}>Profile</Link>
-                            </SheetClose>
-                        </div>
+                                        <span>Notification</span>
+                                        <span
+                                            className={`absolute -top-2 -right-5 bg-[#91b842] text-white 
+                                            w-5 h-5 flex items-center justify-center rounded-full`}
+                                        >
+                                            0
+                                        </span>
+                                    </Link>
+                                </SheetClose>
+                            </div>
+                        )}
+                        {isSignedIn && (
+                            <div className="text-sm font-medium border-b py-4">
+                                <SheetClose asChild>
+                                    <Link href={"/profile"}>Profile</Link>
+                                </SheetClose>
+                            </div>
+                        )}
                     </SheetContent>
                 </Sheet>
                 <Button
@@ -147,7 +151,34 @@ const MobileNavbar = ({
             <div>
                 <Logo />
             </div>
-            <div className="flex items-center gap-x-1">
+            <div className="flex items-center gap-x-3">
+                {isSignedIn ? (
+                    <Link href="/cart" className="relative">
+                        <ShoppingCart className="w-5" />
+                        <p
+                            className={`absolute -top-2 -right-3 ${
+                                scrolling
+                                    ? "bg-[#91b842] text-white"
+                                    : "bg-white text-primary-black"
+                            } w-5 h-5 flex items-center justify-center rounded-full`}
+                        >
+                            {cartItemsNumber}
+                        </p>
+                    </Link>
+                ) : (
+                    <Link href="/wishlist" className="relative">
+                        <Heart className="w-5" />
+                        <p
+                            className={`absolute -top-2 -right-3 ${
+                                scrolling
+                                    ? "bg-[#91b842] text-white"
+                                    : "bg-white text-primary-black"
+                            } w-5 h-5 flex items-center justify-center rounded-full`}
+                        >
+                            {wishlist.length}
+                        </p>
+                    </Link>
+                )}
                 {isSignedIn ? (
                     <UserButton />
                 ) : (
@@ -155,18 +186,6 @@ const MobileNavbar = ({
                         <User className="w-5" />
                     </Link>
                 )}
-                <Link href="/cart" className="relative">
-                    <ShoppingCart className="w-5" />
-                    <p
-                        className={`absolute -top-2 -right-3 ${
-                            scrolling
-                                ? "bg-[#91b842] text-white"
-                                : "bg-white text-primary-black"
-                        } w-5 h-5 flex items-center justify-center rounded-full`}
-                    >
-                        {cartItemsNumber}
-                    </p>
-                </Link>
             </div>
         </div>
     );
