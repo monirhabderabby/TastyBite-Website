@@ -37,7 +37,7 @@ const QuickViewModalDesc = ({ food }: { food: TFood }) => {
                     onMinus={handleMinus}
                     onPlus={handlePlus}
                 />
-                <QuickViewAction />
+                <QuickViewAction foodId={food._id} />
             </div>
         </div>
     );

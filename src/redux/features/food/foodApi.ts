@@ -3,10 +3,10 @@ import { baseApi } from "../../api/baseApi";
 const foodApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllFoods: builder.query({
-            query: ({ searchTerm, menu, min, max }) => ({
+            query: ({ searchTerm, menu, min, max, limit }) => ({
                 url: `/food`,
                 method: "GET",
-                params: { searchTerm, menu, min, max },
+                params: { searchTerm, menu, min, max, limit },
             }),
             providesTags: ["food"],
         }),
@@ -68,6 +68,14 @@ const foodApi = baseApi.injectEndpoints({
             }),
             providesTags: (result, error, id) => [{ type: "FoodFeedback", id }],
         }),
+        getFoodByIds: builder.mutation({
+            query: (body) => ({
+                url: "/food/foodbyids",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["food"],
+        }),
     }),
 });
 
@@ -80,4 +88,5 @@ export const {
     useDeleteFoodMutation,
     useCreateFoodReviewMutation,
     useGetFoodReviewByFoodQuery,
+    useGetFoodByIdsMutation,
 } = foodApi;

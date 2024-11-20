@@ -1,17 +1,22 @@
 "use client";
 
-import { selectCartTotalPrice } from "@/redux/features/cart/cartSelector";
+import { TFoodWithQuantity } from "@/types";
 import { Shield } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
-export default function CartSummary() {
+export default function CartSummary({
+    cartItems,
+}: {
+    cartItems: TFoodWithQuantity[];
+}) {
     const [specialInstructions, setSpecialInstructions] = useState("");
     const [couponCode, setCouponCode] = useState("");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-    const subtotal = useSelector(selectCartTotalPrice);
+    const subtotal = cartItems.reduce((total, item) => {
+        return total + item.price * item.quantity;
+    }, 0);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

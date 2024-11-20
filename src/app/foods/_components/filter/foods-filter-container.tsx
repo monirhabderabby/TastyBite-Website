@@ -171,7 +171,7 @@ export const SearchFoodByName = () => {
     return (
         <div>
             <Input
-                placeholder="Search by food name"
+                placeholder="Search Foods"
                 onChange={(e) => handleSearchTermChange(e.target.value)}
                 className="text-primary-black md:w-72 lg:w-96"
             />

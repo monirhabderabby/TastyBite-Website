@@ -27,7 +27,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const { data, isLoading } = useGetAllFoodsQuery({});
+    const { data, isLoading } = useGetAllFoodsQuery({ limit: 3 });
     const { data: menuData, isLoading: menuLoading } = useGetAllMenusQuery({});
 
     const { isSignedIn } = useUser();
@@ -125,43 +125,38 @@ const Navbar = () => {
                                     </div>
                                     {/* Special foods */}
                                     <div className="">
-                                        {data?.data
-                                            ?.slice(0, 3)
-                                            .map((food: TFood) => (
-                                                <div
-                                                    key={food._id}
-                                                    className="grid grid-cols-[1fr_auto] shadow-sm px-5 py-3 rounded-lg"
-                                                >
-                                                    <div className="flex items-center gap-x-5">
-                                                        <Image
-                                                            src={food.images[0]}
-                                                            alt=""
-                                                            width={100}
-                                                            height={100}
-                                                            className="rounded-lg"
-                                                        />
-                                                        <div className="self-center">
-                                                            <h4 className="text-primary-black font-bold">
-                                                                {food.name}
-                                                            </h4>
-                                                            <p className="text-primary-black">
-                                                                {
-                                                                    food.menuId
-                                                                        .name
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="ml-5 self-center">
-                                                        <Link
-                                                            href={`/foods/${food._id}`}
-                                                            className="uppercase text-white hover:text-primary-orange bg-primary-orange hover:bg-transparent rounded-[50px] text-base px-6 py-[10px] tracking-wide border-[1px] border-primary-orange font-semibold duration-300"
-                                                        >
-                                                            Shop Now
-                                                        </Link>
+                                        {data?.data?.map((food: TFood) => (
+                                            <div
+                                                key={food._id}
+                                                className="grid grid-cols-[1fr_auto] shadow-sm px-5 py-3 rounded-lg"
+                                            >
+                                                <div className="flex items-center gap-x-5">
+                                                    <Image
+                                                        src={food.images[0]}
+                                                        alt=""
+                                                        width={100}
+                                                        height={100}
+                                                        className="rounded-lg"
+                                                    />
+                                                    <div className="self-center">
+                                                        <h4 className="text-primary-black font-bold">
+                                                            {food.name}
+                                                        </h4>
+                                                        <p className="text-primary-black">
+                                                            {food.menuId.name}
+                                                        </p>
                                                     </div>
                                                 </div>
-                                            ))}
+                                                <div className="ml-5 self-center">
+                                                    <Link
+                                                        href={`/foods/${food._id}`}
+                                                        className="uppercase text-white hover:text-primary-orange bg-primary-orange hover:bg-transparent rounded-[50px] text-base px-6 py-[10px] tracking-wide border-[1px] border-primary-orange font-semibold duration-300"
+                                                    >
+                                                        Shop Now
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </MenuItem>

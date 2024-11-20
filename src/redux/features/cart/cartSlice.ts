@@ -3,11 +3,7 @@ import Cookies from "js-cookie";
 
 export interface CartItemProps {
     id: string;
-    name: string;
-    price: number;
-    image: string;
     quantity: number;
-    menu: string;
 }
 
 interface CartState {
@@ -31,11 +27,7 @@ const cartSlice = createSlice({
             } else {
                 state.items.push({
                     id: action.payload.id,
-                    name: action.payload.name,
-                    price: action.payload.price,
-                    image: action.payload.image,
                     quantity: action.payload.quantity,
-                    menu: action.payload.menu,
                 });
             }
             Cookies.set("cart", JSON.stringify(state.items), { expires: 7 });

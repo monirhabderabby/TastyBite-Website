@@ -13,7 +13,9 @@ import { RootState } from "@/redux/store";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Bell, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import NavbarSearchModal from "./navbar-search-modal";
 
 const MenuEnd = ({
     scrolling,
@@ -22,6 +24,8 @@ const MenuEnd = ({
     scrolling: boolean;
     pathname: string;
 }) => {
+    const [open, setOpen] = useState<boolean>(false);
+
     const { isSignedIn } = useUser();
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
     const cartItemsNumber = useSelector(selectCartTotalQuantity);
@@ -30,7 +34,8 @@ const MenuEnd = ({
         <div className="hidden lg:flex items-center gap-x-4">
             <Button
                 variant="ghost"
-                className="px-1 hover:bg-transparent hover:text-white"
+                className="px-1 text-white hover:bg-transparent hover:text-primary-orange"
+                onClick={() => setOpen(!open)}
             >
                 <Search className="w-6" />
             </Button>
@@ -132,6 +137,8 @@ const MenuEnd = ({
                     </TooltipContent>
                 </Tooltip>
             )}
+
+            <NavbarSearchModal open={open} setOpen={setOpen} />
         </div>
     );
 };
