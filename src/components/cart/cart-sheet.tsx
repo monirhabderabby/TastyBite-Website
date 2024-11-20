@@ -31,26 +31,28 @@ function QuantityInput({
     onChange: (value: number) => void;
 }) {
     return (
-        <div className="flex items-center border rounded-md">
-            <button
-                onClick={onDecrease}
-                className="px-3 py-1 border-r hover:bg-gray-100"
-            >
-                -
-            </button>
-            <input
-                type="number"
-                value={value}
-                onChange={(e) => onChange(parseInt(e.target.value) || 1)}
-                className="w-12 text-center focus:outline-none"
-                min="1"
-            />
-            <button
-                onClick={onIncrease}
-                className="px-3 py-1 border-l hover:bg-gray-100"
-            >
-                +
-            </button>
+        <div className="flex">
+            <div className="flex items-center border rounded-md">
+                <button
+                    onClick={onDecrease}
+                    className="px-3 py-1 border-r hover:bg-gray-100"
+                >
+                    -
+                </button>
+                <input
+                    type="number"
+                    value={value}
+                    onChange={(e) => onChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center focus:outline-none"
+                    min="1"
+                />
+                <button
+                    onClick={onIncrease}
+                    className="px-3 py-1 border-l hover:bg-gray-100"
+                >
+                    +
+                </button>
+            </div>
         </div>
     );
 }

@@ -12,9 +12,11 @@ import { addToCart } from "@/redux/features/cart/cartSlice";
 import { addToWishlist } from "@/redux/features/wishlist/wishlistSlice";
 import { RootState } from "@/redux/store";
 import { TFood } from "@/types";
+import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 import QuickActions from "./quick-action";
 
 interface FoodCartProps {
@@ -23,6 +25,7 @@ interface FoodCartProps {
 }
 
 const FoodCart = ({ theme, food }: FoodCartProps) => {
+    const { isSignedIn } = useUser();
     const pathname = usePathname();
     const dispatch = useDispatch();
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
@@ -42,16 +45,21 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
     };
 
     const handleCart = () => {
-        dispatch(
-            addToCart({
-                id: food._id,
-                name: food.name,
-                price: food.price,
-                image: food.images[0],
-                quantity: 1, // default quantity to add
-                menu: food.menuId.name,
-            })
-        );
+        if (!isSignedIn) {
+            toast.error("Please login first to add food in cart.");
+        } else {
+            dispatch(
+                addToCart({
+                    id: food._id,
+                    name: food.name,
+                    price: food.price,
+                    image: food.images[0],
+                    quantity: 1, // default quantity to add
+                    menu: food.menuId.name,
+                })
+            );
+            toast.success("Food successfully added in cart.");
+        }
     };
 
     return (

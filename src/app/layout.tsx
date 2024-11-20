@@ -61,7 +61,7 @@ export default function RootLayout({
                             </div>
 
                             <Footer />
-                            <Toaster />
+                            <Toaster richColors />
                             <NProgress />
                         </TooltipProvider>
                     </body>
