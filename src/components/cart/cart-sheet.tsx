@@ -12,11 +12,13 @@ import {
 } from "@/redux/features/cart/cartSlice";
 import { useGetFoodByIdsMutation } from "@/redux/features/food/foodApi";
 import { TFoodWithQuantity } from "@/types";
-import { X } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { LoaderCircle, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 import { ScrollArea } from "../ui/scroll-area";
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 
@@ -112,66 +114,83 @@ function CartItem({
     );
 }
 
+interface CartSummaryProps {
+    subTotal: number;
+    onCheckout: (e: React.FormEvent) => void;
+    deliveryLocation: string;
+    setDeliveryLocation: (location: string) => void;
+    agreedToTerms: boolean;
+    setAgreedToTerms: (agreed: boolean) => void;
+}
+
 function CartSummary({
-    cartFoodItems,
+    subTotal,
     onCheckout,
-}: {
-    cartFoodItems: TFoodWithQuantity[];
-    onCheckout: (totalPrice: number) => void;
-}) {
-    const [agreedToTerms, setAgreedToTerms] = useState(false);
-
-    const subtotal = cartFoodItems.reduce((total, item) => {
-        return total + item.price * item.quantity;
-    }, 0);
-
+    deliveryLocation,
+    setDeliveryLocation,
+    agreedToTerms,
+    setAgreedToTerms,
+}: CartSummaryProps) {
     return (
-        <div className="space-y-4 p-5">
-            <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between font-medium">
-                <span>Total:</span>
-                <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-                Tax included and shipping calculated at checkout
-            </p>
-            <div className="flex items-center space-x-2">
-                <Checkbox
-                    id="terms"
-                    checked={agreedToTerms}
-                    onCheckedChange={(checked: boolean) =>
-                        setAgreedToTerms(checked as boolean)
-                    }
-                />
-                <label
-                    htmlFor="terms"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                    I agree with the Terms & conditions
-                </label>
-            </div>
-            <div className="flex flex-col gap-1">
-                <Button
-                    className="w-full bg-orange-400 hover:bg-orange-500"
-                    disabled={!agreedToTerms}
-                    onClick={() => onCheckout(subtotal)}
-                >
-                    CHECKOUT
-                </Button>
-                <Link href={"/cart"} className="mt-2">
-                    <Button variant="outline" className="w-full">
-                        VIEW CART
+        <form onSubmit={onCheckout}>
+            <div className="space-y-4 p-5">
+                <div className="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span>${subTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between font-medium">
+                    <span>Total:</span>
+                    <span>${subTotal.toFixed(2)}</span>
+                </div>
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Enter Delivery Location"
+                        value={deliveryLocation}
+                        onChange={(e) => setDeliveryLocation(e.target.value)}
+                        className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    />
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox
+                        id="terms"
+                        checked={agreedToTerms}
+                        onCheckedChange={(checked: boolean) =>
+                            setAgreedToTerms(checked as boolean)
+                        }
+                    />
+                    <label
+                        htmlFor="terms"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        I agree with the Terms & conditions
+                    </label>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <Button
+                        className="w-full bg-orange-400 hover:bg-orange-500"
+                        disabled={!agreedToTerms}
+                        type="submit"
+                    >
+                        CHECKOUT
                     </Button>
-                </Link>
+                    <Link href={"/cart"} className="mt-2">
+                        <Button variant="outline" className="w-full">
+                            VIEW CART
+                        </Button>
+                    </Link>
+                </div>
             </div>
-        </div>
+        </form>
     );
 }
 
 export default function CartSheet() {
+    const [deliveryLocation, setDeliveryLocation] = useState("");
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+    const { user } = useUser();
+
     const cartItems = useSelector(selectCartItems);
     const cartItemsNumber = useSelector(selectCartTotalQuantity);
     const dispatch = useDispatch();
@@ -191,9 +210,34 @@ export default function CartSheet() {
         dispatch(removeFromCart(id));
     };
 
-    const handleCheckout = (totalPrice: number) => {
+    const subTotal = cartFoodData?.data.reduce(
+        (total: number, item: TFoodWithQuantity) => {
+            return total + item.price * item.quantity;
+        },
+        0
+    );
+
+    const handleCheckout = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!user) {
+            toast.error("You must be logged in to place an order");
+            return;
+        }
+        if (!agreedToTerms) {
+            toast.error("Please agree to the Terms & Conditions");
+            return;
+        }
+        if (!deliveryLocation) {
+            toast.error("Please, Provide your valid delivery location");
+            return;
+        }
         // Implement checkout functionality
-        console.log("Proceeding to checkout to pay $", totalPrice);
+        console.log({
+            clerkId: user?.id,
+            cartFoods: cartFoodData?.data,
+            deliveryLocation,
+            totalPrice: subTotal,
+        });
     };
 
     useEffect(() => {
@@ -204,9 +248,9 @@ export default function CartSheet() {
 
     if (isLoading) {
         return (
-            <p className="text-primary-black text-center mt-72 text-2xl animate-pulse">
-                Cart Loading...
-            </p>
+            <div className="mt-72 flex justify-center">
+                <LoaderCircle className="text-primary-gray animate-spin w-10 h-10"></LoaderCircle>
+            </div>
         );
     }
 
@@ -231,7 +275,7 @@ export default function CartSheet() {
                             </div>
                         </SheetHeader>
                         <div className="">
-                            <ScrollArea className="h-[60vh] px-5">
+                            <ScrollArea className="h-[55vh] px-5">
                                 <div className="space-y-4">
                                     {cartFoodData?.data?.length > 0 ? (
                                         cartFoodData?.data?.map(
@@ -256,8 +300,14 @@ export default function CartSheet() {
                             {cartFoodData?.data?.length > 0 && (
                                 <div className="mt-4 shadow-inner">
                                     <CartSummary
-                                        cartFoodItems={cartFoodData?.data}
+                                        subTotal={subTotal}
                                         onCheckout={handleCheckout}
+                                        deliveryLocation={deliveryLocation}
+                                        setDeliveryLocation={
+                                            setDeliveryLocation
+                                        }
+                                        agreedToTerms={agreedToTerms}
+                                        setAgreedToTerms={setAgreedToTerms}
                                     />
                                 </div>
                             )}
