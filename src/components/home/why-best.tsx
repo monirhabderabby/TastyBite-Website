@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Flower, Salad, Smile, Truck } from "lucide-react";
 import SectionHeader from "../common/sectionHeader/sectionHeader";
 
@@ -28,6 +31,16 @@ const WhyBest = () => {
             icon: Truck,
         },
     ];
+
+    const stagger = {
+        hidden: { opacity: 0, y: 50 },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: i * 0.2, duration: 1 },
+        }),
+    };
+
     return (
         <div className="py-[50px] md:py-[100px]">
             <div className="mb-[50px]">
@@ -38,8 +51,13 @@ const WhyBest = () => {
             </div>
             <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14">
                 {bestInfo.map((info) => (
-                    <div
+                    <motion.div
                         key={info.id}
+                        custom={info.id}
+                        initial="hidden"
+                        whileInView="visible"
+                        variants={stagger}
+                        viewport={{ once: false }}
                         className="flex flex-col justify-center items-center"
                     >
                         <info.icon className="w-16 h-16 text-primary-orange mb-4" />
@@ -49,7 +67,7 @@ const WhyBest = () => {
                         <p className="text-lg text-primary-black/50 text-center">
                             {info.text}
                         </p>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </div>
