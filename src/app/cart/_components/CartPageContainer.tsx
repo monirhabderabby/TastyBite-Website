@@ -2,6 +2,7 @@
 
 import { selectCartItems } from "@/redux/features/cart/cartSelector";
 import { useGetFoodByIdsMutation } from "@/redux/features/food/foodApi";
+import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -27,10 +28,8 @@ const CartPageContainer = () => {
 
     if (!hydrated || isLoading) {
         return (
-            <div className="my-20">
-                <p className="text-3xl font-bold text-center text-muted-foreground animate-pulse">
-                    Your cart is Loading...
-                </p>
+            <div className="my-40 flex justify-center">
+                <LoaderCircle className="text-primary-gray animate-spin w-10 h-10"></LoaderCircle>
             </div>
         );
     }
