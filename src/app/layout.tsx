@@ -13,6 +13,7 @@ const Navbar = dynamic(() => import("../components/common/navbar/navbar"));
 
 // CSS
 import AppProvider from "@/provider/app-provider";
+import { CrispProvider } from "@/provider/crisp-provider";
 import NProgress from "@/provider/NProgress";
 import dynamic from "next/dynamic";
 import { Toaster } from "sonner";
@@ -46,6 +47,7 @@ export default function RootLayout({
         <AppProvider>
             <ClerkProvider>
                 <html className="scrollbar-thin">
+                    <CrispProvider />
                     <body
                         className={cn(
                             narrow.className,
