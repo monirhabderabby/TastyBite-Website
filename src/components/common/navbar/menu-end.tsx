@@ -13,7 +13,9 @@ import { RootState } from "@/redux/store";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { Bell, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import NavbarSearchModal from "./navbar-search-modal";
 
 const MenuEnd = ({
     scrolling,
@@ -22,6 +24,8 @@ const MenuEnd = ({
     scrolling: boolean;
     pathname: string;
 }) => {
+    const [open, setOpen] = useState<boolean>(false);
+
     const { isSignedIn } = useUser();
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
     const cartItemsNumber = useSelector(selectCartTotalQuantity);
@@ -30,29 +34,32 @@ const MenuEnd = ({
         <div className="hidden lg:flex items-center gap-x-4">
             <Button
                 variant="ghost"
-                className="px-1 hover:bg-transparent hover:text-white"
+                className="px-1 text-white hover:bg-transparent hover:text-primary-orange"
+                onClick={() => setOpen(!open)}
             >
                 <Search className="w-6" />
             </Button>
-            <Tooltip>
-                <TooltipTrigger>
-                    <Link href="/notification" className="relative">
-                        <Bell className="w-5" />
-                        <p
-                            className={`absolute -top-2 -right-3 ${
-                                scrolling
-                                    ? "bg-[#91b842] text-white"
-                                    : "bg-white text-primary-black"
-                            } w-5 h-5 flex items-center justify-center rounded-full`}
-                        >
-                            0
-                        </p>
-                    </Link>
-                </TooltipTrigger>
-                <TooltipContent className="bg-primary-orange text-white">
-                    Notifications
-                </TooltipContent>
-            </Tooltip>
+            {isSignedIn && (
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Link href="/notification" className="relative">
+                            <Bell className="w-5" />
+                            <p
+                                className={`absolute -top-2 -right-3 ${
+                                    scrolling
+                                        ? "bg-[#91b842] text-white"
+                                        : "bg-white text-primary-black"
+                                } w-5 h-5 flex items-center justify-center rounded-full`}
+                            >
+                                0
+                            </p>
+                        </Link>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-primary-orange text-white">
+                        Notifications
+                    </TooltipContent>
+                </Tooltip>
+            )}
             <Tooltip>
                 <TooltipTrigger>
                     <Link href="/wishlist" className="relative">
@@ -72,47 +79,49 @@ const MenuEnd = ({
                     Wishlist
                 </TooltipContent>
             </Tooltip>
-            <Tooltip>
-                <TooltipTrigger>
-                    {pathname !== "/cart" && isSignedIn ? (
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <div className="relative">
-                                    <ShoppingCart className="w-5" />
-                                    <p
-                                        className={`absolute -top-2 -right-3 ${
-                                            scrolling
-                                                ? "bg-[#91b842] text-white"
-                                                : "bg-white text-primary-black"
-                                        } w-5 h-5 flex items-center justify-center rounded-full`}
-                                    >
-                                        {cartItemsNumber}
-                                    </p>
-                                </div>
-                            </SheetTrigger>
-                            <SheetContent className="border p-0">
-                                <CartSheet />
-                            </SheetContent>
-                        </Sheet>
-                    ) : (
-                        <Link href="/cart" className="relative">
-                            <ShoppingCart className="w-5" />
-                            <p
-                                className={`absolute -top-2 -right-3 ${
-                                    scrolling
-                                        ? "bg-[#91b842] text-white"
-                                        : "bg-white text-primary-black"
-                                } w-5 h-5 flex items-center justify-center rounded-full`}
-                            >
-                                {cartItemsNumber}
-                            </p>
-                        </Link>
-                    )}
-                </TooltipTrigger>
-                <TooltipContent className="bg-primary-orange text-white">
-                    Cart
-                </TooltipContent>
-            </Tooltip>
+            {isSignedIn && (
+                <Tooltip>
+                    <TooltipTrigger>
+                        {pathname !== "/cart" && isSignedIn ? (
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <div className="relative">
+                                        <ShoppingCart className="w-5" />
+                                        <p
+                                            className={`absolute -top-2 -right-3 ${
+                                                scrolling
+                                                    ? "bg-[#91b842] text-white"
+                                                    : "bg-white text-primary-black"
+                                            } w-5 h-5 flex items-center justify-center rounded-full`}
+                                        >
+                                            {cartItemsNumber}
+                                        </p>
+                                    </div>
+                                </SheetTrigger>
+                                <SheetContent className="border p-0">
+                                    <CartSheet />
+                                </SheetContent>
+                            </Sheet>
+                        ) : (
+                            <Link href="/cart" className="relative">
+                                <ShoppingCart className="w-5" />
+                                <p
+                                    className={`absolute -top-2 -right-3 ${
+                                        scrolling
+                                            ? "bg-[#91b842] text-white"
+                                            : "bg-white text-primary-black"
+                                    } w-5 h-5 flex items-center justify-center rounded-full`}
+                                >
+                                    {cartItemsNumber}
+                                </p>
+                            </Link>
+                        )}
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-primary-orange text-white">
+                        Cart
+                    </TooltipContent>
+                </Tooltip>
+            )}
 
             {isSignedIn ? (
                 <UserButton />
@@ -128,6 +137,8 @@ const MenuEnd = ({
                     </TooltipContent>
                 </Tooltip>
             )}
+
+            <NavbarSearchModal open={open} setOpen={setOpen} />
         </div>
     );
 };

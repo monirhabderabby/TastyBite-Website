@@ -1,8 +1,8 @@
 import {
-    CartItemProps,
     removeFromCart,
     updateQuantity,
 } from "@/redux/features/cart/cartSlice";
+import { TFoodWithQuantity } from "@/types";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 export default function CartTable({
     cartItems,
 }: {
-    cartItems: CartItemProps[];
+    cartItems: TFoodWithQuantity[];
 }) {
     const dispatch = useDispatch();
 
@@ -25,8 +25,6 @@ export default function CartTable({
     const removeItem = (id: string) => {
         dispatch(removeFromCart(id));
     };
-
-    if (!cartItems) return;
 
     return (
         <div className="w-full border">
@@ -52,12 +50,12 @@ export default function CartTable({
                 {cartItems.length > 0 &&
                     cartItems.map((item) => (
                         <div
-                            key={item.id}
+                            key={item._id}
                             className="grid grid-cols-[2fr_1fr] md:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 p-4 items-center"
                         >
                             <div className="flex gap-4 items-center">
                                 <Image
-                                    src={item.image}
+                                    src={item.images[0]}
                                     alt={item.name}
                                     width={80}
                                     height={80}
@@ -66,7 +64,7 @@ export default function CartTable({
                                 <div>
                                     <h3 className="font-medium">{item.name}</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        {item.menu}
+                                        {item.menuId.name}
                                     </p>
                                     <div className="md:hidden">
                                         <span className="font-medium mr-2">
@@ -115,7 +113,7 @@ export default function CartTable({
                             </div>
 
                             <button
-                                onClick={() => removeItem(item.id)}
+                                onClick={() => removeItem(item._id)}
                                 className="p-2 hover:text-red-500 transition-colors ml-auto"
                                 aria-label="Remove item"
                             >
@@ -132,7 +130,7 @@ const ItemQuantityInput = ({
     item,
     updateCartQuantity,
 }: {
-    item: CartItemProps;
+    item: TFoodWithQuantity;
     updateCartQuantity: (id: string, quantity: number) => void;
 }) => {
     return (
@@ -141,7 +139,7 @@ const ItemQuantityInput = ({
                 <button
                     onClick={() =>
                         updateCartQuantity(
-                            item.id,
+                            item._id,
                             Math.max(1, item.quantity - 1)
                         )
                     }
@@ -154,7 +152,7 @@ const ItemQuantityInput = ({
                     value={item.quantity}
                     onChange={(e) =>
                         updateCartQuantity(
-                            item.id,
+                            item._id,
                             parseInt(e.target.value) || 1
                         )
                     }
@@ -163,7 +161,7 @@ const ItemQuantityInput = ({
                 />
                 <button
                     onClick={() =>
-                        updateCartQuantity(item.id, item.quantity + 1)
+                        updateCartQuantity(item._id, item.quantity + 1)
                     }
                     className="px-3 py-1 border-l hover:bg-gray-50 transition-colors"
                 >

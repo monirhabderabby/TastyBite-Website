@@ -1,6 +1,8 @@
 "use client";
 
 import { selectCartItems } from "@/redux/features/cart/cartSelector";
+import { useGetFoodByIdsMutation } from "@/redux/features/food/foodApi";
+import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,16 +13,23 @@ const CartPageContainer = () => {
     const cartItems = useSelector(selectCartItems);
     const [hydrated, setHydrated] = useState(false);
 
+    const [getFoodByIds, { data: cartFoodData, isLoading }] =
+        useGetFoodByIdsMutation();
+
     useEffect(() => {
         setHydrated(true);
     }, []);
 
-    if (!hydrated) {
+    useEffect(() => {
+        if (cartItems.length > 0) {
+            getFoodByIds(cartItems);
+        }
+    }, [cartItems, getFoodByIds]);
+
+    if (!hydrated || isLoading) {
         return (
-            <div className="my-20">
-                <p className="text-3xl font-bold text-center text-muted-foreground animate-pulse">
-                    Your cart is Loading...
-                </p>
+            <div className="my-40 flex justify-center">
+                <LoaderCircle className="text-primary-gray animate-spin w-10 h-10"></LoaderCircle>
             </div>
         );
     }
@@ -42,11 +51,11 @@ const CartPageContainer = () => {
                 </div>
             </div>
         );
-    } else if (cartItems.length > 0) {
+    } else if (cartFoodData?.data?.length > 0) {
         content = (
             <div className="container mx-auto my-20 text-primary-black">
-                <CartTable cartItems={cartItems} />
-                <CartSummary />
+                <CartTable cartItems={cartFoodData.data} />
+                <CartSummary cartItems={cartFoodData.data} />
             </div>
         );
     }

@@ -105,3 +105,5 @@ export type TFoodFeedback = {
     review: string;
     rating: number;
 };
+
+export type TFoodWithQuantity = TFood & { quantity: number };
