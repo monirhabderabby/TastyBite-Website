@@ -23,20 +23,15 @@ export default function CartSummary({
         return total + item.price * item.quantity;
     }, 0);
 
+    const showError = (message: string) => toast.error(message);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user) {
-            toast.error("You must be logged in to place an order");
-            return;
-        }
-        if (!agreedToTerms) {
-            toast.error("Please agree to the Terms & Conditions");
-            return;
-        }
-        if (!deliveryLocation) {
-            toast.error("Please, Provide your valid delivery location");
-            return;
-        }
+        if (!user) return showError("You must be logged in to place an order");
+        if (!agreedToTerms)
+            return showError("Please agree to the Terms & Conditions");
+        if (!deliveryLocation)
+            return showError("Please, Provide your valid delivery location");
         // Handle checkout logic here
         console.log({
             clerkId: user?.id,
