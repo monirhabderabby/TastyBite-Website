@@ -24,9 +24,6 @@ export async function POST(req: Request) {
 
   let event: StripeEvent;
 
-
-
-
   try {
     event = stripe.webhooks.constructEvent(
       body,
@@ -34,27 +31,15 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     ) as StripeEvent;
   } catch (error) {
-    return new NextResponse(`Webhook Error: ${body}, ${(error as Error).message}`, {
-      status: 400,
-    });
+    return new NextResponse(
+      `Webhook Error:${
+        process.env.STRIPE_WEBHOOK_SECRET
+      } ${body},${signature}, ${(error as Error).message}`,
+      {
+        status: 400,
+      }
+    );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const session = event.data.object;
   const metadata = session?.metadata;
