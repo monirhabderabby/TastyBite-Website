@@ -11,12 +11,9 @@ interface CheckoutPayload {
 interface CartFood {
   _id: string;
   name: string;
-  description: string;
   price: number;
   images: string[];
   quantity: number;
-  sizes?: { size: string; price: number }[];
-  extras?: { name: string; extra_price: number }[];
 }
 
 interface StripeCustomerResponse {
@@ -51,7 +48,7 @@ async function getStripeCustomer(
 ): Promise<StripeCustomerResponse | null> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/stripe-user/${userId}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/stripe-user/${userId}`
     );
 
     return (await res.json()) as StripeCustomerResponse;
@@ -62,24 +59,25 @@ async function getStripeCustomer(
 }
 
 const createLineItems = (cartFoods: CartFood[]) => {
-  return cartFoods.map((food) => ({
-    price_data: {
-      currency: "USD",
-      product_data: {
-        name: food.name,
-        images: [food.images[0]], // Use the first image
-        description: food.description,
-      },
-      unit_amount:
-        (food.price +
-          (food.sizes?.[0]?.price || 0) +
-          (food.extras?.[0]?.extra_price || 0)) *
-        100, // Convert to cents
-    },
-    quantity: food.quantity,
-  }));
-};
+  console.log(cartFoods);
+  return cartFoods.map((food) => {
+    // if (!food.images || food.images.length === 0) {
+      // throw new Error("Each food item must have at least one image.");
+    // }
 
+    return {
+      price_data: {
+        currency: "USD",
+        product_data: {
+          name: food.name,
+          // images: [food.images[0]], // Stripe expects an array of image URLs
+        },
+        unit_amount: food.price * 100, // Convert price to cents
+      },
+      quantity: food.quantity,
+    };
+  });
+};
 export async function POST(req: Request): Promise<NextResponse> {
   try {
     const user = await currentUser();
