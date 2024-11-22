@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { selectCartTotalQuantity } from "@/redux/features/cart/cartSelector";
 import { RootState } from "@/redux/store";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Bell, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -126,16 +126,23 @@ const MenuEnd = ({
             {isSignedIn ? (
                 <UserButton />
             ) : (
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Link href="/sign-in ">
-                            <User className="w-5" />
-                        </Link>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-primary-orange text-white">
-                        Sign In
-                    </TooltipContent>
-                </Tooltip>
+                <SignedOut>
+                    <SignInButton
+                        fallbackRedirectUrl="/"
+                        signUpFallbackRedirectUrl="/wizard"
+                    >
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Link href="/sign-in ">
+                                    <User className="w-5" />
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-primary-orange text-white">
+                                Sign In
+                            </TooltipContent>
+                        </Tooltip>
+                    </SignInButton>
+                </SignedOut>
             )}
 
             <NavbarSearchModal open={open} setOpen={setOpen} />
