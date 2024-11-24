@@ -72,7 +72,7 @@ export async function POST(req: Request) {
     // Send the formatted payload to the validation server
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/order`,
+        `https://tasty-bite-server-iota.vercel.app/api/v1/order`,
         {
           method: "POST",
           headers: {
