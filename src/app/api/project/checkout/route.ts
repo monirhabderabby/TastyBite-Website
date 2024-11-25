@@ -62,7 +62,7 @@ const createLineItems = (cartFoods: CartFood[]) => {
   console.log(cartFoods);
   return cartFoods.map((food) => {
     // if (!food.images || food.images.length === 0) {
-      // throw new Error("Each food item must have at least one image.");
+    // throw new Error("Each food item must have at least one image.");
     // }
 
     return {
