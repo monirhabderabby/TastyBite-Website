@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { selectCartTotalQuantity } from "@/redux/features/cart/cartSelector";
 import { RootState } from "@/redux/store";
-import { UserButton } from "@clerk/nextjs";
+import { SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { AlignJustify, Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -188,9 +188,16 @@ const MobileNavbar = ({
                 {isSignedIn ? (
                     <UserButton />
                 ) : (
-                    <Link href="/sign-in">
-                        <User className="w-5" />
-                    </Link>
+                    <SignedOut>
+                        <SignInButton
+                            fallbackRedirectUrl="/"
+                            signUpFallbackRedirectUrl="/wizard"
+                        >
+                            <Link href="/sign-in">
+                                <User className="w-5" />
+                            </Link>
+                        </SignInButton>
+                    </SignedOut>
                 )}
             </div>
 
