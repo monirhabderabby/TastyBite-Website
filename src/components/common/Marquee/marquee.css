@@ -1,0 +1,20 @@
+
+
+
+.text-slider.text-color, .text-slider.text-color-2 {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+}
+.text-slider.text-color {
+    color: #a4a4a4;
+    -webkit-text-stroke-color: #a4a4a4;
+}
+
+.text-slider {
+    font-size: 150px;
+    height: 100px;
+    line-height: 85px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
