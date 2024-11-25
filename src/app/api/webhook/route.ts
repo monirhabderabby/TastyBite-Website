@@ -71,16 +71,13 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     // Send the formatted payload to the validation server
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/order`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formattedPayload),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formattedPayload),
+      });
 
       const orderResponse = await res.json();
 
