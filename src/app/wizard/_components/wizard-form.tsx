@@ -39,6 +39,9 @@ export const WizardSchema = z.object({
 
 const WizardForm = () => {
   const { user, isLoaded, isSignedIn } = useUser();
+
+  if (!isLoaded) return;
+
   const router = useRouter();
   const [createUser, { isLoading, isError, isSuccess }] =
     useCreateUserMutation();
@@ -53,8 +56,6 @@ const WizardForm = () => {
       image: user?.imageUrl.toString() || "",
     },
   });
-
-  if (!isLoaded) return;
 
   // Redirect to sign-in page if the user is not signed in
   if (!isSignedIn) {
@@ -76,11 +77,6 @@ const WizardForm = () => {
       router.push("/profile");
     }
   }, [isError, isSuccess, router]);
-
-  // Check if user authentication data has loaded
-  if (!isLoaded) {
-    return null; // Return nothing while loading
-  }
 
   return (
     <div>
@@ -184,7 +180,7 @@ const WizardForm = () => {
                 <AnimatePresence>
                   <Button
                     type="submit"
-                    className="bg-primary-orange hover:bg-white text-white hover:text-primary-orange group border border-primary-orange"
+                    className="bg-primary-orange hover:bg-primary-orange/80 text-white  group border border-primary-orange"
                     disabled={isLoading}
                   >
                     <span className="mr-2">Continue</span>
