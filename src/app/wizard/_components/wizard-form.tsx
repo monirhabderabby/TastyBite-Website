@@ -39,20 +39,14 @@ export const WizardSchema = z.object({
 
 const WizardForm = () => {
   const { user, isLoaded, isSignedIn } = useUser();
-
-  if (!isLoaded) return;
-
   const router = useRouter();
-
-  // Redirect to sign-in page if the user is not signed in
-  if (!isSignedIn) {
-    redirect("/sign-in");
-  }
+  const [createUser, { isLoading, isError, isSuccess }] =
+    useCreateUserMutation();
 
   const form = useForm({
     resolver: zodResolver(WizardSchema),
     defaultValues: {
-      clerkId: user.id,
+      clerkId: user?.id,
       name: user?.fullName || "",
       email: user?.emailAddresses[0].emailAddress || "",
       phone: "",
@@ -60,8 +54,12 @@ const WizardForm = () => {
     },
   });
 
-  const [createUser, { isLoading, isError, isSuccess }] =
-    useCreateUserMutation();
+  if (!isLoaded) return;
+
+  // Redirect to sign-in page if the user is not signed in
+  if (!isSignedIn) {
+    redirect("/sign-in");
+  }
 
   async function onSubmit(data: unknown) {
     console.log(data);
