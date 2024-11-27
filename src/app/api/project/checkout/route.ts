@@ -12,7 +12,6 @@ interface CartFood {
   _id: string;
   name: string;
   price: number;
-  images: string[];
   quantity: number;
 }
 
@@ -20,35 +19,12 @@ interface StripeCustomerResponse {
   success: boolean;
   data?: { customerId: string };
 }
-
-// async function checkBookingStatus(
-//   userId: string,
-//   packageId: string
-// ): Promise<boolean> {
-//   try {
-//     const res = await fetch(
-//       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/booking/already-book`,
-//       {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ clerkId: userId, packageId }),
-//       }
-//     );
-
-//     const bookingStatus = await res.json();
-//     return !bookingStatus.success;
-//   } catch (error) {
-//     console.error("Error checking booking status:", (error as Error).message);
-//     throw new Error("Failed to check booking status.");
-//   }
-// }
-
 async function getStripeCustomer(
   userId: string
 ): Promise<StripeCustomerResponse | null> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/stripe-user/${userId}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/stripe-user/${userId}`
     );
 
     return (await res.json()) as StripeCustomerResponse;
@@ -61,16 +37,11 @@ async function getStripeCustomer(
 const createLineItems = (cartFoods: CartFood[]) => {
   console.log(cartFoods);
   return cartFoods.map((food) => {
-    // if (!food.images || food.images.length === 0) {
-    // throw new Error("Each food item must have at least one image.");
-    // }
-
     return {
       price_data: {
         currency: "USD",
         product_data: {
           name: food.name,
-          // images: [food.images[0]], // Stripe expects an array of image URLs
         },
         unit_amount: food.price * 100, // Convert price to cents
       },

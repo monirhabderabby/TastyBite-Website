@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   const formattedPayload = {
     clerkId: metadata.clerkId,
     foods: JSON.parse(metadata.cartFoods || "[]").map((item: any) => ({
-      foodId: item.foodId,
+      foodId: item._id,
       quantity: item.quantity,
     })),
     paymentStatus: "Paid", // Set based on successful payment
@@ -71,16 +71,13 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     // Send the formatted payload to the validation server
     try {
-      const res = await fetch(
-        `https://tasty-bite-server-iota.vercel.app/api/v1/order`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formattedPayload),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formattedPayload),
+      });
 
       const orderResponse = await res.json();
 
