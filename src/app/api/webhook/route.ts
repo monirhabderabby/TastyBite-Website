@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   const formattedPayload = {
     clerkId: metadata.clerkId,
     foods: JSON.parse(metadata.cartFoods || "[]").map((item: any) => ({
-      foodId: item.foodId,
+      foodId: item._id,
       quantity: item.quantity,
     })),
     paymentStatus: "Paid", // Set based on successful payment
