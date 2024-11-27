@@ -62,7 +62,6 @@ export async function POST(req: Request) {
     deliveryLocation: metadata.deliveryLocation,
     totalPrice: parseFloat(metadata.totalPrice),
     transactionId: session.payment_intent || null,
-    invoiceId: null, // Optional field, default to null
     isCancelled: false, // Default to false
     isCompleted: false, // Default to false
     deliveryMan: null, // Optional field, default to null
