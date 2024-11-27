@@ -1,4 +1,7 @@
-import ProfileEditContainer from "./_components/profile-edit/profile-edit-container";
+import dynamic from "next/dynamic";
+const ProfileEditContainer = dynamic(
+  () => import("./_components/profile-edit/profile-edit-container")
+);
 
 const Page = () => {
   return (

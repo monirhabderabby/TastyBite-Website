@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     return new NextResponse(
       `Webhook Error:${
         process.env.STRIPE_WEBHOOK_SECRET
-      } ${body},${signature}, ${(error as Error).message}`,
+      }    ${(error as Error).message}`,
       {
         status: 400,
       }
@@ -62,10 +62,6 @@ export async function POST(req: Request) {
     deliveryLocation: metadata.deliveryLocation,
     totalPrice: parseFloat(metadata.totalPrice),
     transactionId: session.payment_intent || null,
-    invoiceId: null, // Optional field, default to null
-    isCancelled: false, // Default to false
-    isCompleted: false, // Default to false
-    deliveryMan: null, // Optional field, default to null
   };
 
   if (event.type === "checkout.session.completed") {
