@@ -21,16 +21,17 @@ const NewsPromoCard = ({ blog }: NewsProps) => {
         />
       </div>
       <p className="text-sm text-primary-black mt-[30px] mb-[10px]">
-        By {blog?.user?.name} On
+        By {blog?.user?.name || "admin"} On{" "}
+        {new Date(blog?.createdAt).toDateString()}
       </p>
-      <h2 className="text-primary-black text-lg font-semibold uppercase hover:text-primary-orange duration-300 cursor-pointer line-clamp-1 tracking-widest">
+      <h2 className="text-primary-black text-lg font-semibold uppercase   line-clamp-1 tracking-widest">
         {blog?.title}
       </h2>
       <Link href={`/blog/${blog?._id}`}>
         {" "}
         <Button
           variant={"link"}
-          className="text-base uppercase underline text-primary-orange hover:text-primary-black duration-300 p-0"
+          className="text-base uppercase  hover:underline hover:text-primary-black  p-0"
         >
           Read More
         </Button>{" "}
