@@ -1,6 +1,6 @@
-import { HardHat, Loader2 } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
+import { HardHat, Loader2 } from "lucide-react";
+// import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress";
 
 export default function UnderConstruction() {
   return (
@@ -34,9 +34,7 @@ export default function UnderConstruction() {
           <p className="text-sm text-zinc-500 text-center">33% Completed</p>
         </div>
 
-        
-
-        {/* Social Links */}
+        {/* Social Links
         <div className="flex justify-center gap-4">
           {["Twitter", "GitHub", "LinkedIn"].map((platform) => (
             <Button
@@ -47,9 +45,8 @@ export default function UnderConstruction() {
               {platform}
             </Button>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
-  )
+  );
 }
-
