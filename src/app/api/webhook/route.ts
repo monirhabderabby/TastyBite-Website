@@ -64,7 +64,6 @@ export async function POST(req: Request) {
     transactionId: session.payment_intent || null,
     isCancelled: false, // Default to false
     isCompleted: false, // Default to false
-    deliveryMan: null, // Optional field, default to null
   };
 
   if (event.type === "checkout.session.completed") {
