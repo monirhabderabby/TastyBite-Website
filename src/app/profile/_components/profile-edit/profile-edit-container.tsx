@@ -81,7 +81,7 @@ const ProfileEditContainer = () => {
 
   if (isError) {
     content = <ErrorCard title="Error" message="Something went wrong!" />;
-  } else if (data) {
+  } else if (data || isLoading) {
     content = (
       <SkeletonWrapper fullWidth isLoading={isLoading || !isLoaded}>
         <div className="w-full border-input border-[.5px] rounded-md p-3 md:p-5  text-primary-black">

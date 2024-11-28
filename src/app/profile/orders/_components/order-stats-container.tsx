@@ -1,4 +1,7 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
+import { MagicCard } from "@/components/ui/magic-card";
+import { useTheme } from "next-themes";
 
 const OrderStatsContainer = () => {
   return (
@@ -19,14 +22,20 @@ interface StatCardProps {
 }
 
 const StatCard = ({ title, value }: StatCardProps) => {
+  const { theme } = useTheme();
   return (
-    <Card className="shadow-none font-roboto rounded-[6px]">
-      <CardContent className="pt-4">
-        <h1 className="text-[16px] md:text-[18px] text-primary-black/70">
-          {title}
-        </h1>
-        <p className="text-[22px] font-medium">{value} —</p>
-      </CardContent>
-    </Card>
+    <MagicCard
+      gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+      className="bg-white"
+    >
+      <Card className="shadow-none font-roboto border-none rounded-[6px] w-full bg-transparent">
+        <CardContent className="pt-4">
+          <h1 className="text-[16px] md:text-[18px] text-primary-black/70">
+            {title}
+          </h1>
+          <p className="text-[22px] font-medium">{value} —</p>
+        </CardContent>
+      </Card>
+    </MagicCard>
   );
 };
