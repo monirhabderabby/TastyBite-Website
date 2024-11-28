@@ -9,34 +9,12 @@ import reviewer from "../../../public/images/reviewer.jpg";
 import CustomerReviewCard from "../common/cards/customer-review-card";
 import SectionHeader from "../common/sectionHeader/sectionHeader";
 import { DotButton, useDotButton } from "../ui/EmblaCarouselDotButton";
+import { useGetAllFoodFeedbacksQuery } from "@/redux/features/foodFeedback/foodFeedbackApi";
+import { TFoodFeedback } from "@/types";
 
 const CustomerReviews = () => {
-  const reviews = [
-    {
-      id: "1",
-      name: "Md Salah",
-      designation: "Striker",
-      image: reviewer,
-      reviewText:
-        "Our pizza experience was exceptional! The crust was thin and crispy, just how we like it, and the array of fresh, high-quality toppings was impressive. The online ordering process was effortless, and the delivery was prompt, ensuring our pizza arrived piping hot. A true gourmet delight – we'll be ordering again soon!",
-    },
-    {
-      id: "2",
-      name: "Sadio Mane",
-      designation: "Striker",
-      image: reviewer,
-      reviewText:
-        "This pizza site exceeded my expectations! The pizza arrived well-packaged and piping hot. The flavors were well-balanced, and the cheese was perfectly melted. I appreciate the attention to detail in every bite. The website is user-friendly, making the ordering process quick and easy. Overall, a top-notch pizza delivery service that I would recommend to everyone!",
-    },
-    {
-      id: "3",
-      name: "Mr. Zalatan",
-      designation: "Striker",
-      image: reviewer,
-      reviewText:
-        "What a fantastic pizza experience! The variety of pizzas on the menu is impressive, and I love how you can customize your own. The online ordering process was seamless, and the staff was friendly and accommodating. The pizza tasted amazing - it's evident they use high-quality ingredients. I'll definitely be ordering from here again!",
-    },
-  ];
+  const { data } = useGetAllFoodFeedbacksQuery(undefined);
+  const reviews = data?.data || [];
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
@@ -56,6 +34,7 @@ const CustomerReviews = () => {
     emblaApi,
     onNavButtonClick
   );
+  
 
   return (
     <div>
@@ -75,9 +54,9 @@ const CustomerReviews = () => {
             <div className="embla">
               <div className="embla__viewport" ref={emblaRef}>
                 <div className="embla__container">
-                  {reviews.map((review) => (
-                    <div className="embla__slide" key={review.id}>
-                      <CustomerReviewCard review={review} />
+                  {reviews?.slice(0, 4)?.map((review: TFoodFeedback) => (
+                    <div className="embla__slide" key={review._id}>
+                      <CustomerReviewCard image={reviewer} review={review} />
                     </div>
                   ))}
                 </div>

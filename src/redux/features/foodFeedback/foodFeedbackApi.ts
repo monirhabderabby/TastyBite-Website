@@ -4,7 +4,7 @@ const foodFeedbackApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllFoodFeedbacks: builder.query({
       query: () => ({
-        url: "/foodFeedback",
+        url: "/food-feedback",
         method: "GET",
       }),
       providesTags: ["FoodFeedback"],
@@ -18,7 +18,7 @@ const foodFeedbackApi = baseApi.injectEndpoints({
     }),
     createFoodFeedback: builder.mutation({
       query: (body) => ({
-        url: "/foodFeedback",
+        url: "/food-feedback",
         method: "POST",
         body,
       }),
@@ -26,7 +26,7 @@ const foodFeedbackApi = baseApi.injectEndpoints({
     }),
     updateFoodFeedback: builder.mutation({
       query: ({ body, id }) => ({
-        url: `/foodFeedback/${id}`,
+        url: `/food-feedback/${id}`,
         method: "PATCH",
         body,
       }),
@@ -37,7 +37,7 @@ const foodFeedbackApi = baseApi.injectEndpoints({
     }),
     deleteFoodFeedback: builder.mutation({
       query: (id: string) => ({
-        url: `/foodFeedback/${id}`,
+        url: `/food-feedback/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [

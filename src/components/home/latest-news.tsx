@@ -15,6 +15,7 @@ import {
 } from "../ui/EmblaCarouselArrowButton";
 import { useGetAllBlogsQuery } from "@/redux/features/blog/blogApi";
 import { TBlog } from "@/types";
+import Link from "next/link";
 
 const LatestNews = () => {
   const { data, isLoading } = useGetAllBlogsQuery("?limit=3");
@@ -80,9 +81,9 @@ const LatestNews = () => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center mt-[50px]">
-        <ButtonPrimary text="View More" />
-      </div>
+    <Link href={'/blog'}><div className="flex justify-center items-center mt-[50px]">
+        <ButtonPrimary text="View More" /></div></Link>  
+      
     </div>
   );
 };

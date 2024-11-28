@@ -62,8 +62,8 @@ export const footerLinks = [
       },
       {
         id: 4,
-        name: "Menu",
-        href: "/menu",
+        name: "Foods",
+        href: "/foods",
       },
       {
         id: 5,
@@ -72,37 +72,37 @@ export const footerLinks = [
       },
     ],
   },
-  {
-    id: 2,
-    title: "TOP ITEMS",
-    links: [
-      {
-        id: 1,
-        name: "Burrata Pizza",
-        href: "/",
-      },
-      {
-        id: 2,
-        name: "Cheese pizza",
-        href: "/",
-      },
-      {
-        id: 3,
-        name: "Italian Pizza",
-        href: "/",
-      },
-      {
-        id: 4,
-        name: "Sollow Burger",
-        href: "/",
-      },
-      {
-        id: 5,
-        name: "Double Cheese Pizza",
-        href: "/",
-      },
-    ],
-  },
+  // {
+  //   id: 2,
+  //   title: "TOP ITEMS",
+  //   links: [
+  //     {
+  //       id: 1,
+  //       name: "Burrata Pizza",
+  //       href: "/",
+  //     },
+  //     {
+  //       id: 2,
+  //       name: "Cheese pizza",
+  //       href: "/",
+  //     },
+  //     {
+  //       id: 3,
+  //       name: "Italian Pizza",
+  //       href: "/",
+  //     },
+  //     {
+  //       id: 4,
+  //       name: "Sollow Burger",
+  //       href: "/",
+  //     },
+  //     {
+  //       id: 5,
+  //       name: "Double Cheese Pizza",
+  //       href: "/",
+  //     },
+  //   ],
+  // },
   {
     id: 3,
     title: "USEFUL LINKS",
@@ -110,17 +110,13 @@ export const footerLinks = [
       {
         id: 1,
         name: "Privacy Policy",
-        href: "/",
+        href: "/privacy-policy",
       },
-      {
-        id: 2,
-        name: "Shipping Plicy",
-        href: "/",
-      },
+
       {
         id: 3,
         name: "Return Policy",
-        href: "/",
+        href: "/return-policy",
       },
       {
         id: 4,
@@ -130,7 +126,7 @@ export const footerLinks = [
       {
         id: 5,
         name: "My account",
-        href: "/",
+        href: "/profile",
       },
     ],
   },
