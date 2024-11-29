@@ -1,4 +1,4 @@
-import { Bell, CreditCard, Percent, Pizza, User } from "lucide-react";
+import { Bell, CreditCard, Percent, Pizza, Truck, User } from "lucide-react";
 
 export const dashboardTabsList = [
   {
@@ -34,6 +34,13 @@ export const dashboardTabsList = [
     path: "/profile/points",
     icon: Percent,
     linkText: "Points",
+    roles: ["admin", "user"],
+  },
+  {
+    id: crypto.randomUUID(),
+    path: "/profile/delivery",
+    icon: Truck,
+    linkText: "Delivery",
     roles: ["admin", "user"],
   },
 ];
