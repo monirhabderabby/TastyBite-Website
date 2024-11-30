@@ -1,77 +1,55 @@
+import { TFoodWithQuantity } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Cookies from "js-cookie";
-
-export interface CartItemProps {
-    id: string;
-    quantity: number;
-}
 
 interface CartState {
-    items: CartItemProps[];
+    items: TFoodWithQuantity[];
 }
 
 const initialState: CartState = {
-    items: JSON.parse(Cookies.get("cart") || "[]"),
+    items: [],
 };
 
 const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart: (state, action: PayloadAction<CartItemProps>) => {
+        addToCart: (state, action: PayloadAction<TFoodWithQuantity>) => {
             const existingItem = state.items.find(
-                (item) => item.id === action.payload.id
+                (item) => item._id === action.payload._id
             );
             if (existingItem) {
                 existingItem.quantity += action.payload.quantity;
             } else {
-                state.items.push({
-                    id: action.payload.id,
-                    quantity: action.payload.quantity,
-                });
+                state.items.push(action.payload);
             }
-            Cookies.set("cart", JSON.stringify(state.items), { expires: 7 });
         },
         removeFromCart: (state, action: PayloadAction<string>) => {
             state.items = state.items.filter(
-                (item) => item.id !== action.payload
+                (item) => item._id !== action.payload
             );
-            Cookies.set("cart", JSON.stringify(state.items), { expires: 7 });
         },
         updateQuantity: (
             state,
             action: PayloadAction<{ id: string; quantity: number }>
         ) => {
             const item = state.items.find(
-                (item) => item.id === action.payload.id
+                (item) => item._id === action.payload.id
             );
             if (item) {
                 item.quantity = action.payload.quantity;
                 if (item.quantity <= 0) {
                     state.items = state.items.filter(
-                        (i) => i.id !== action.payload.id
+                        (i) => i._id !== action.payload.id
                     );
                 }
-                Cookies.set("cart", JSON.stringify(state.items), {
-                    expires: 7,
-                });
             }
-        },
-        loadCartFromCookies: (state) => {
-            state.items = JSON.parse(Cookies.get("cart") || "[]");
         },
         clearCart: (state) => {
             state.items = [];
-            Cookies.remove("cart");
         },
     },
 });
 
-export const {
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    loadCartFromCookies,
-    clearCart,
-} = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+    cartSlice.actions;
 export default cartSlice.reducer;
