@@ -50,7 +50,7 @@ const FoodCart = ({ theme, food }: FoodCartProps) => {
         } else {
             dispatch(
                 addToCart({
-                    id: food._id,
+                    ...food,
                     quantity: 1, // default quantity to add
                 })
             );
