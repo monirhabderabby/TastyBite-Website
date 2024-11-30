@@ -12,7 +12,7 @@ const QuickViewModalDesc = ({ food }: { food: TFood }) => {
     const handleMinus = () => {
         // handle minimum decrease
 
-        // set
+        // set state
         setQuantity((prev) => prev - 1);
     };
 
@@ -37,7 +37,7 @@ const QuickViewModalDesc = ({ food }: { food: TFood }) => {
                     onMinus={handleMinus}
                     onPlus={handlePlus}
                 />
-                <QuickViewAction foodId={food._id} />
+                <QuickViewAction food={food} quantity={quantity} />
             </div>
         </div>
     );

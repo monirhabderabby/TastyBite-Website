@@ -108,9 +108,9 @@ const Navbar = () => {
                                     >
                                         Expert Chefs
                                     </HoveredLink>
-                                    <HoveredLink href="/reservation">
+                                    {/* <HoveredLink href="/reservation">
                                         Reservation
-                                    </HoveredLink>
+                                    </HoveredLink> */}
                                     <HoveredLink href="/faqs">
                                         Faq&apos;s
                                     </HoveredLink>
@@ -132,7 +132,7 @@ const Navbar = () => {
                                 <Link href="/profile">
                                     <span
                                         className={`hover:text-primary-orange ${
-                                            pathname === "/contact"
+                                            pathname === "/profile"
                                                 ? "text-primary-orange"
                                                 : "text-white"
                                         }`}
