@@ -1,11 +1,14 @@
 // Packages
 import moment from "moment";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Local imports
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useUpdateOrderStatusMutation } from "@/redux/features/order/orderApi";
 import { TOrder, TUser } from "@/types";
 
 interface Props {
@@ -15,10 +18,30 @@ interface Props {
 const status = ["Order Placed", "Order Confirmed"];
 
 const RunningOrderCard = ({ data }: Props) => {
+  const [updateStatus, { isLoading }] = useUpdateOrderStatusMutation();
+
+  const router = useRouter();
+
   const { totalPrice, createdAt, orderStatus, invoiceId, deliveryMan } =
     data || {};
 
   const isCanceledActive = status?.includes(orderStatus);
+
+  const handleCancel = async () => {
+    const response = await updateStatus({
+      body: {
+        status: "Cancelled",
+      },
+      id: data._id,
+    });
+
+    if (response?.data?.success) {
+      toast.success("You order has been cancelled!");
+      router.refresh();
+    } else if (!response?.data?.success) {
+      toast.error("Failed to cancel order!");
+    }
+  };
 
   return (
     <section className="relative flex h-auto w-full  overflow-hidden rounded-lg border bg-background ">
@@ -33,7 +56,13 @@ const RunningOrderCard = ({ data }: Props) => {
             </p>
           </div>
           {isCanceledActive && (
-            <Button size="sm" variant="outline" className="text-primary-black">
+            <Button
+              size="sm"
+              variant="outline"
+              className="text-primary-black"
+              onClick={handleCancel}
+              disabled={isLoading}
+            >
               Cancel
             </Button>
           )}

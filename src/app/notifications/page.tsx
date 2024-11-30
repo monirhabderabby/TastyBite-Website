@@ -6,7 +6,7 @@ const Page = async () => {
   const user = await currentUser();
 
   return (
-    <div className="container mt-[90px] ">
+    <div className="container my-[90px] ">
       <Notification userId={user?.id as string} />
     </div>
   );

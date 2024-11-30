@@ -79,6 +79,7 @@ const Notification = ({ userId }: Props) => {
               name={notification.name}
               time={moment(notification.createdAt).fromNow()}
               isRead={notification.isRead}
+              notificationId={notification._id}
             />
           ))}
         </div>

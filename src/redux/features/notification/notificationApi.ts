@@ -7,8 +7,16 @@ const notificationApi = baseApi.injectEndpoints({
         url: `/notification/${userId}`,
         method: "GET",
       }),
+      providesTags: ["Notification"],
+    }),
+    seen: builder.mutation({
+      query: (notificationId) => ({
+        url: `/notification/${notificationId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Notification"],
     }),
   }),
 });
 
-export const { useGetNotificationQuery } = notificationApi;
+export const { useGetNotificationQuery, useSeenMutation } = notificationApi;

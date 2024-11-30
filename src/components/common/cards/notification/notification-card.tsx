@@ -1,5 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSeenMutation } from "@/redux/features/notification/notificationApi";
+import { toast } from "sonner";
 
 interface Props {
   name: string;
@@ -8,6 +11,7 @@ interface Props {
   color: string;
   time: string;
   isRead: boolean;
+  notificationId: string;
 }
 
 const NotificationCard = ({
@@ -17,7 +21,18 @@ const NotificationCard = ({
   color,
   time,
   isRead,
+  notificationId,
 }: Props) => {
+  const [markAsRead, { isLoading }] = useSeenMutation();
+
+  const handleMarkAsRead = async () => {
+    const result = await markAsRead(notificationId);
+
+    if (result?.data?.success) {
+    } else {
+      toast.error("Failed to mark the notification as read.");
+    }
+  };
   return (
     <figure
       className={cn(
@@ -51,7 +66,12 @@ const NotificationCard = ({
           </p>
         </div>
       </div>
-      <Button variant="link" className="text-primary-black/80">
+      <Button
+        variant="link"
+        className="text-primary-black/80"
+        disabled={isLoading}
+        onClick={handleMarkAsRead}
+      >
         Mark as read
       </Button>
     </figure>
