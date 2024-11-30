@@ -38,7 +38,7 @@ export default FoodsFilterContainer;
 
 export const CategoriesFilter = () => {
     const { menu } = useSelector((state: RootState) => state.filter);
-    const [selectedId, setSelectedId] = useState(menu || "");
+    // const [selectedId, setSelectedId] = useState(menu || "");
 
     const dispatch = useDispatch();
 
@@ -54,13 +54,10 @@ export const CategoriesFilter = () => {
     const allMenu = [{ _id: "all", name: "All" }, ...(menus || [])];
 
     const handleMenuChange = (_id: string) => {
-        setSelectedId(_id);
         if (_id !== "all") {
             if (_id === menu) {
-                setSelectedId("");
                 dispatch(setMenu(""));
             } else {
-                setSelectedId(_id);
                 dispatch(setMenu(_id));
             }
         } else {
@@ -82,12 +79,12 @@ export const CategoriesFilter = () => {
                             className="flex items-center gap-x-1"
                             onClick={() => handleMenuChange(_id)}
                         >
-                            {selectedId === _id && (
+                            {menu === _id && (
                                 <ChevronRight className="h-4 w-4" />
                             )}
                             <span
                                 className={cn(
-                                    selectedId === _id
+                                    menu === _id
                                         ? "text-primary-orange font-medium"
                                         : ""
                                 )}
