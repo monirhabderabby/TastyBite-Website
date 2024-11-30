@@ -133,3 +133,12 @@ export type TOrder = {
   createdAt: string; // ISO date string for order creation
   updatedAt: string; // ISO date string for the last update
 };
+export interface TNotification {
+  user: TUser; // Reference to the user
+  name: string; // Notification title
+  description: string; // Detailed description
+  time: Date; // Time of the notification
+  icon: string; // Emoji/icon for the notification
+  color: string; // Color code for UI
+  isRead: boolean; // To track if the notification is read
+}

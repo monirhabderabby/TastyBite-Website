@@ -32,9 +32,9 @@ export async function POST(req: Request) {
     ) as StripeEvent;
   } catch (error) {
     return new NextResponse(
-      `Webhook Error:${
-        process.env.STRIPE_WEBHOOK_SECRET
-      }    ${(error as Error).message}`,
+      `Webhook Error:${process.env.STRIPE_WEBHOOK_SECRET}    ${
+        (error as Error).message
+      }`,
       {
         status: 400,
       }
@@ -77,6 +77,28 @@ export async function POST(req: Request) {
 
       const orderResponse = await res.json();
 
+      if (orderResponse) {
+        try {
+          const orderDetails = orderResponse?.data;
+          const notificationPayload = {
+            user: orderDetails.user,
+            name: "Payment received for Food Order",
+            description: `Payment transactionId ${orderDetails.transactionId}. `,
+            icon: "💸",
+            color: "#00C9A7",
+          };
+
+          await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/notification`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(notificationPayload),
+          });
+        } catch (error) {
+          console.error("Failed to send email to clerk", error);
+        }
+      }
       if (!res.ok) {
         console.error("Failed to create order on webhook", orderResponse);
         return new NextResponse("Failed to create order.", { status: 500 });
