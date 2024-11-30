@@ -133,12 +133,18 @@ export type TOrder = {
   createdAt: string; // ISO date string for order creation
   updatedAt: string; // ISO date string for the last update
 };
-export interface TNotification {
-  user: TUser; // Reference to the user
-  name: string; // Notification title
-  description: string; // Detailed description
-  time: Date; // Time of the notification
-  icon: string; // Emoji/icon for the notification
-  color: string; // Color code for UI
-  isRead: boolean; // To track if the notification is read
-}
+
+export type TNotification = {
+  _id: string; // Unique identifier for the notification
+  user: string; // User ID associated with the notification
+  name: string; // Title of the notification
+  description: string; // Detailed description of the notification
+  icon: string; // Icon associated with the notification
+  color: string; // Color code for the notification
+  isRead: boolean; // Whether the notification has been read
+  isArchived: boolean; // Whether the notification has been archived
+  time: string; // Timestamp for when the notification occurred
+  createdAt: string; // Timestamp for when the notification was created
+  updatedAt: string; // Timestamp for when the notification was last updated
+  __v: number; // Version key for the document (from MongoDB)
+};

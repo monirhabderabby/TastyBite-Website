@@ -82,8 +82,8 @@ export async function POST(req: Request) {
           const orderDetails = orderResponse?.data;
           const notificationPayload = {
             user: orderDetails.user,
-            name: "Payment received for Food Order",
-            description: `Payment transactionId ${orderDetails.transactionId}. `,
+            name: "Payment received",
+            description: `Payment received successfully. Transaction ID: ${orderDetails.transactionId}.`,
             icon: "💸",
             color: "#00C9A7",
           };
