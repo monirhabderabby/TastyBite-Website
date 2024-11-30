@@ -1,8 +1,8 @@
 import { RootState } from "@/redux/store";
-import { CartItemProps } from "./cartSlice";
+import { TFoodWithQuantity } from "@/types";
 
 // Selector to get all cart items
-export const selectCartItems = (state: RootState): CartItemProps[] =>
+export const selectCartItems = (state: RootState): TFoodWithQuantity[] =>
     state.cart.items;
 
 // Selector to get the total number of items in the cart
@@ -14,11 +14,11 @@ export const selectCartTotalQuantity = (state: RootState): number => {
 export const selectCartItemById = (
     state: RootState,
     id: string
-): CartItemProps | undefined => {
-    return state.cart.items.find((item) => item.id === id);
+): TFoodWithQuantity | undefined => {
+    return state.cart.items.find((item) => item._id === id);
 };
 
 // Selector to check an item is in cart or not
 export const isFoodInCart = (id: string) => (state: RootState) => {
-    return state.cart.items.some((item) => item.id === id);
+    return state.cart.items.some((item) => item._id === id);
 };

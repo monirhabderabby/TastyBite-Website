@@ -7,19 +7,26 @@ import { isFoodInCart } from "@/redux/features/cart/cartSelector";
 import { addToCart } from "@/redux/features/cart/cartSlice";
 import { addToWishlist } from "@/redux/features/wishlist/wishlistSlice";
 import { RootState } from "@/redux/store";
+import { TFood } from "@/types";
 import { useUser } from "@clerk/nextjs";
 import { FaHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-const QuickViewAction = ({ foodId }: { foodId: string }) => {
+const QuickViewAction = ({
+    food,
+    quantity,
+}: {
+    food: TFood;
+    quantity: number;
+}) => {
     const { isSignedIn } = useUser();
     const dispatch = useDispatch();
     const wishlist = useSelector((state: RootState) => state.wishlist.items);
 
     // Check if the food is already in the wishlist
-    const isWishListed = wishlist.includes(foodId);
-    const isInCart = useSelector(isFoodInCart(foodId));
+    const isWishListed = wishlist.includes(food._id);
+    const isInCart = useSelector(isFoodInCart(food._id));
 
     const handleCart = () => {
         if (!isSignedIn) {
@@ -27,8 +34,8 @@ const QuickViewAction = ({ foodId }: { foodId: string }) => {
         } else {
             dispatch(
                 addToCart({
-                    id: foodId,
-                    quantity: 1, // default quantity to add
+                    ...food,
+                    quantity: quantity | 1, // default quantity to add
                 })
             );
             toast.success("Food successfully added in cart.");
@@ -37,7 +44,7 @@ const QuickViewAction = ({ foodId }: { foodId: string }) => {
 
     const handleWishlist = () => {
         if (!isWishListed) {
-            dispatch(addToWishlist(foodId));
+            dispatch(addToWishlist(food._id));
             toast.success("Food successfully added in wishlist.");
         }
     };
