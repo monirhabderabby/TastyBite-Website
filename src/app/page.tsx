@@ -12,7 +12,7 @@ import BannerInfo from "@/components/ui/BannerInfo";
 
 export default function Home() {
     return (
-        <div>
+        <div className="border border-black">
             {/* Rendering the Banner component at the top of the page */}
             <Banner />
             {/* Rendering the BannerInfo component below the Banner */}

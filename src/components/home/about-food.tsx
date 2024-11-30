@@ -10,10 +10,10 @@ import ButtonPrimary from "../common/button/buttonPrimary";
 const AboutFood = () => {
     return (
         <div>
-            <div className="container">
-                <div className="md:max-w-[560px] md:mx-auto lg:max-w-full my-[50px] md:my-[100px] grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="container overflow-hidden">
+                <div className="max-w-full md:max-w-[560px] md:mx-auto lg:max-w-full my-[50px] md:my-[100px] grid grid-cols-1 lg:grid-cols-2 gap-10 overflow-hidden">
                     <motion.div
-                        initial={{ opacity: 0, x: -100 }}
+                        initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: false }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
@@ -21,8 +21,8 @@ const AboutFood = () => {
                         <Image
                             src={burger}
                             alt="burger-img"
-                            width={633}
-                            height={574}
+                            width={600}
+                            height={550}
                             className="w-full"
                         />
                     </motion.div>

@@ -56,7 +56,13 @@ export const CategoriesFilter = () => {
     const handleMenuChange = (_id: string) => {
         setSelectedId(_id);
         if (_id !== "all") {
-            dispatch(setMenu(_id));
+            if (_id === menu) {
+                setSelectedId("");
+                dispatch(setMenu(""));
+            } else {
+                setSelectedId(_id);
+                dispatch(setMenu(_id));
+            }
         } else {
             dispatch(setMenu(""));
         }
