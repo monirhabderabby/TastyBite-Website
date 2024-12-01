@@ -1,8 +1,16 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { useSeenMutation } from "@/redux/features/notification/notificationApi";
+// Packages
+import { Archive } from "lucide-react";
 import { toast } from "sonner";
+
+// Local import
+import { Button } from "@/components/ui/button";
+import CustomTooltip from "@/components/ui/custom-tooltip";
+import { cn } from "@/lib/utils";
+import {
+  useArchiveNotificationMutation,
+  useSeenMutation,
+} from "@/redux/features/notification/notificationApi";
 
 interface Props {
   name: string;
@@ -12,6 +20,7 @@ interface Props {
   time: string;
   isRead: boolean;
   notificationId: string;
+  userId: string;
 }
 
 const NotificationCard = ({
@@ -22,15 +31,28 @@ const NotificationCard = ({
   time,
   isRead,
   notificationId,
+  userId,
 }: Props) => {
   const [markAsRead, { isLoading }] = useSeenMutation();
+  const [markAsArchive, { isLoading: isArchiving }] =
+    useArchiveNotificationMutation();
 
+  // handler
   const handleMarkAsRead = async () => {
-    const result = await markAsRead(notificationId);
+    const result = await markAsRead({ notificationId, userId });
 
     if (result?.data?.success) {
     } else {
       toast.error("Failed to mark the notification as read.");
+    }
+  };
+
+  const handleArchive = async () => {
+    const result = await markAsArchive({ notificationId });
+
+    if (result?.data?.success) {
+    } else {
+      toast.error("Failed to archive notification!");
     }
   };
   return (
@@ -66,14 +88,31 @@ const NotificationCard = ({
           </p>
         </div>
       </div>
-      <Button
-        variant="link"
-        className="text-primary-black/80"
-        disabled={isLoading}
-        onClick={handleMarkAsRead}
-      >
-        Mark as read
-      </Button>
+      <div>
+        <Button
+          variant="link"
+          className="text-primary-black/80"
+          disabled={isLoading || isArchiving}
+          onClick={handleMarkAsRead}
+        >
+          Mark as read
+        </Button>
+        <CustomTooltip
+          side="top"
+          trigger={
+            <Button
+              variant="outline"
+              className="text-primary-black"
+              size="icon"
+              onClick={handleArchive}
+              disabled={isLoading || isArchiving}
+            >
+              <Archive />
+            </Button>
+          }
+          message="Archive"
+        />
+      </div>
     </figure>
   );
 };
