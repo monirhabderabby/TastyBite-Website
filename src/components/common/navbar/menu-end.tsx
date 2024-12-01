@@ -20,9 +20,11 @@ import NavbarSearchModal from "./navbar-search-modal";
 const MenuEnd = ({
   scrolling,
   pathname,
+  unreadNotification,
 }: {
   scrolling: boolean;
   pathname: string;
+  unreadNotification: number;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -51,7 +53,7 @@ const MenuEnd = ({
                     : "bg-white text-primary-black"
                 } w-5 h-5 flex items-center justify-center rounded-full`}
               >
-                0
+                {unreadNotification}
               </p>
             </Link>
           </TooltipTrigger>

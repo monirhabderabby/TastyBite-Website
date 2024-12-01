@@ -42,6 +42,7 @@ const NotificationCard = ({
     const result = await markAsRead({ notificationId, userId });
 
     if (result?.data?.success) {
+      console.log(result);
     } else {
       toast.error("Failed to mark the notification as read.");
     }
