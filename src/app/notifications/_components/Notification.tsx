@@ -22,8 +22,8 @@ const Notification = ({ userId }: Props) => {
   const { isLoading, data, isError, isFetching } = useGetNotificationQuery(
     {
       userId,
-      isRead: activeTab == "unread" ? false : activeTab == "all" && undefined,
-      isArchived: activeTab == "archived" ? true : false,
+      isRead: activeTab == "unread" ? false : undefined,
+      isArchived: activeTab == "archived" && true,
     },
     {
       refetchOnMountOrArgChange: true,
