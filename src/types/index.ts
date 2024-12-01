@@ -160,5 +160,5 @@ export type GetNotificationResponse = {
   success: boolean;
   message: string;
   meta: Meta;
-  data: Notification[];
+  data: TNotification[];
 };

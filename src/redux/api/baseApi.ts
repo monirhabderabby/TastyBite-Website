@@ -28,7 +28,7 @@ export const baseApi = createApi({
     "Order",
     "SingleOrder",
     "Notification",
-    "getNotification",
+    "UnreadNotification",
   ],
 
   endpoints: () => ({}),
