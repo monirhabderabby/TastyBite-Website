@@ -148,3 +148,17 @@ export type TNotification = {
   updatedAt: string; // Timestamp for when the notification was last updated
   __v: number; // Version key for the document (from MongoDB)
 };
+
+type Meta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPage: number;
+};
+
+export type GetNotificationResponse = {
+  success: boolean;
+  message: string;
+  meta: Meta;
+  data: Notification[];
+};
