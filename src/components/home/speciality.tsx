@@ -8,8 +8,9 @@ import { motion } from "framer-motion";
 import { useCallback } from "react";
 
 // Local imports
+import { useGetAllMenusQuery } from "@/redux/features/menu/menuApi";
+import { TMenu } from "@/types";
 import Link from "next/link";
-import img from "../../../public/images/Burger.webp";
 import SpecialCategoryCard from "../common/cards/special-category-card";
 import SectionHeader from "../common/sectionHeader/sectionHeader";
 import {
@@ -17,25 +18,10 @@ import {
     PrevButton,
     usePrevNextButtons,
 } from "../ui/EmblaCarouselArrowButton";
+import { Skeleton } from "../ui/skeleton";
 
 const Speciality = () => {
-    const category = [
-        {
-            id: "1",
-            name: "Burgers",
-            image: img,
-        },
-        {
-            id: "2",
-            name: "Deserts",
-            image: img,
-        },
-        {
-            id: "3",
-            name: "Double Cheese Pizza",
-            image: img,
-        },
-    ];
+    const { data: menuData, isLoading } = useGetAllMenusQuery({ limit: 3 });
 
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
 
@@ -67,25 +53,37 @@ const Speciality = () => {
         }),
     };
 
-    return (
-        <div className="my-40">
-            <SectionHeader
-                title="Fresh From TastyBite"
-                heading="OUR SPECIALITY"
-            />
-
+    let content;
+    if (isLoading) {
+        content = (
+            <div className="container mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-4">
+                    {[...Array(3)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="flex flex-col items-center gap-4"
+                        >
+                            <Skeleton className="w-[300px] h-[300px] rounded-full" />
+                            <Skeleton className="h-6 w-32" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    } else if (menuData?.data?.length > 0) {
+        content = (
             <div className="container mx-auto my-6 md:my-8 lg:my-10">
                 <div className="hidden md:grid grid-cols-3 gap-8">
-                    {category.map((item) => (
+                    {menuData?.data.map((menu: TMenu) => (
                         <motion.div
-                            key={item.id}
-                            custom={item.id}
+                            key={menu._id}
+                            custom={menu._id}
                             initial="hidden"
                             whileInView="visible"
                             variants={stagger}
                             viewport={{ once: false }}
                         >
-                            <SpecialCategoryCard key={item.id} item={item} />
+                            <SpecialCategoryCard menu={menu} />
                         </motion.div>
                     ))}
                 </div>
@@ -98,9 +96,12 @@ const Speciality = () => {
                     <div className="embla md:hidden">
                         <div className="embla__viewport" ref={emblaRef}>
                             <div className="embla__container">
-                                {category.map((item) => (
-                                    <div className="embla__slide" key={item.id}>
-                                        <SpecialCategoryCard item={item} />
+                                {menuData.data.map((menu: TMenu) => (
+                                    <div
+                                        className="embla__slide"
+                                        key={menu._id}
+                                    >
+                                        <SpecialCategoryCard menu={menu} />
                                     </div>
                                 ))}
                             </div>
@@ -123,6 +124,17 @@ const Speciality = () => {
                     </div>
                 </motion.div>
             </div>
+        );
+    }
+
+    return (
+        <div className="my-40">
+            <SectionHeader
+                title="Fresh From TastyBite"
+                heading="OUR SPECIALITY"
+            />
+
+            {content}
 
             <div className="flex justify-center items-center">
                 <Link
