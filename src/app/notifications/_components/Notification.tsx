@@ -8,6 +8,7 @@ import { ReactNode, useState } from "react";
 // Local imports
 import NotificationCard from "@/components/common/cards/notification/notification-card";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/shadcn-tabs";
 import { useGetNotificationQuery } from "@/redux/features/notification/notificationApi";
 import { TNotification } from "@/types";
@@ -18,13 +19,19 @@ interface Props {
 
 const Notification = ({ userId }: Props) => {
   const [activeTab, setActiveTab] = useState("unread");
-  const { isLoading, data, isError } = useGetNotificationQuery({
-    userId,
-  });
-
+  const { isLoading, data, isError, isFetching } = useGetNotificationQuery(
+    {
+      userId,
+      isRead: activeTab == "unread" ? false : activeTab == "all" && undefined,
+      isArchived: activeTab == "archived" ? true : false,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
   let content;
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     content = <LoaderState />;
   } else if (isError) {
     content = (
@@ -69,21 +76,24 @@ const Notification = ({ userId }: Props) => {
   } else if (data?.success && data?.data?.length > 0) {
     content = (
       <>
-        <div className="flex flex-col gap-y-5 mt-5">
-          {data?.data?.map((notification: TNotification) => (
-            <NotificationCard
-              key={notification._id}
-              color={notification.color}
-              description={notification.description}
-              icon={notification.icon}
-              name={notification.name}
-              time={moment(notification.createdAt).fromNow()}
-              isRead={notification.isRead}
-              notificationId={notification._id}
-            />
-          ))}
-        </div>
-        <div className="flex mt-5 justify-end">
+        <ScrollArea className="max-h-[600px] w-full">
+          <div className="flex flex-col gap-y-5 mt-5 px-3">
+            {data?.data?.map((notification: TNotification) => (
+              <NotificationCard
+                key={notification._id}
+                color={notification.color}
+                description={notification.description}
+                icon={notification.icon}
+                name={notification.name}
+                time={moment(notification.createdAt).fromNow()}
+                isRead={notification.isRead}
+                notificationId={notification._id}
+                userId={userId}
+              />
+            ))}
+          </div>
+        </ScrollArea>
+        <div className="flex mt-5 justify-end px-3">
           <Button variant="outline" size="sm" className=" text-primary-black">
             Clear All
           </Button>
@@ -106,8 +116,10 @@ const Notification = ({ userId }: Props) => {
         <Tabs
           defaultValue={activeTab}
           onValueChange={(val) => setActiveTab(val)}
+          value={activeTab}
         >
           <TabsList>
+            <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="unread">Unread</TabsTrigger>
             <TabsTrigger value="archived">Archived</TabsTrigger>
           </TabsList>
