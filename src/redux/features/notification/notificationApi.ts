@@ -45,6 +45,30 @@ const notificationApi = baseApi.injectEndpoints({
       }),
       providesTags: ["UnreadNotification"],
     }),
+    deleteUnread: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/notification/${userId}?isRead=false`,
+        method: "DELETE",
+      }),
+
+      invalidatesTags: ["UnreadNotification", "Notification"],
+    }),
+    deleteArchived: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/notification/${userId}?isArchived=true`,
+        method: "DELETE",
+      }),
+
+      invalidatesTags: ["UnreadNotification", "Notification"],
+    }),
+    deleteAllNotification: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/notification/${userId}`,
+        method: "DELETE",
+      }),
+
+      invalidatesTags: ["UnreadNotification", "Notification"],
+    }),
   }),
 });
 
@@ -53,4 +77,7 @@ export const {
   useSeenMutation,
   useArchiveNotificationMutation,
   useUnreadNotificationQuery,
+  useDeleteUnreadMutation,
+  useDeleteArchivedMutation,
+  useDeleteAllNotificationMutation,
 } = notificationApi;
