@@ -11,34 +11,35 @@ import {
   useArchiveNotificationMutation,
   useSeenMutation,
 } from "@/redux/features/notification/notificationApi";
+import { TNotification } from "@/types";
 
 interface Props {
-  name: string;
-  description: string;
-  icon: string;
-  color: string;
-  time: string;
-  isRead: boolean;
-  notificationId: string;
   userId: string;
+  activeTab: string;
+  data: TNotification;
 }
 
-const NotificationCard = ({
-  name,
-  description,
-  icon,
-  color,
-  time,
-  isRead,
-  notificationId,
-  userId,
-}: Props) => {
+const NotificationCard = ({ userId, activeTab, data }: Props) => {
+  const {
+    isArchived,
+    isRead,
+    _id: notificationId,
+    color,
+    name,
+    description,
+    icon,
+    time,
+  } = data;
   const [markAsRead, { isLoading }] = useSeenMutation();
   const [markAsArchive, { isLoading: isArchiving }] =
     useArchiveNotificationMutation();
 
+  const isArchivedButtonShow =
+    activeTab === "archived" ? false : isArchived ? false : true;
+
   // handler
   const handleMarkAsRead = async () => {
+    if (isRead) return;
     const result = await markAsRead({ notificationId, userId });
 
     if (result?.data?.success) {
@@ -93,26 +94,28 @@ const NotificationCard = ({
         <Button
           variant="link"
           className="text-primary-black/80"
-          disabled={isLoading || isArchiving}
+          disabled={isLoading || isArchiving || isRead}
           onClick={handleMarkAsRead}
         >
-          Mark as read
+          {isRead ? "Seen" : "Mark as read"}
         </Button>
-        <CustomTooltip
-          side="top"
-          trigger={
-            <Button
-              variant="outline"
-              className="text-primary-black"
-              size="icon"
-              onClick={handleArchive}
-              disabled={isLoading || isArchiving}
-            >
-              <Archive />
-            </Button>
-          }
-          message="Archive"
-        />
+        {isArchivedButtonShow && (
+          <CustomTooltip
+            side="top"
+            trigger={
+              <Button
+                variant="outline"
+                className="text-primary-black"
+                size="icon"
+                onClick={handleArchive}
+                disabled={isLoading || isArchiving}
+              >
+                <Archive />
+              </Button>
+            }
+            message="Archive"
+          />
+        )}
       </div>
     </figure>
   );
