@@ -1,12 +1,12 @@
-
 import { baseApi } from "../../api/baseApi";
 
 const menuApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllMenus: builder.query({
-            query: () => ({
+            query: ({ limit }) => ({
                 url: "/menu",
                 method: "GET",
+                params: { limit },
             }),
             providesTags: ["Menu"],
         }),
