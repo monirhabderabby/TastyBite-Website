@@ -22,7 +22,7 @@ const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["Order", "Notification"],
+      invalidatesTags: ["Order", "Notification", "UnreadNotification"],
     }),
   }),
 });
