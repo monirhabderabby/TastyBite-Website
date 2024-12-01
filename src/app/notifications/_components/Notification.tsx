@@ -23,12 +23,13 @@ const Notification = ({ userId }: Props) => {
     {
       userId,
       isRead: activeTab == "unread" ? false : undefined,
-      isArchived: activeTab == "archived" && true,
+      isArchived: activeTab == "archived" ? true : undefined,
     },
     {
       refetchOnMountOrArgChange: true,
     }
   );
+
   let content;
 
   if (isLoading || isFetching) {
@@ -76,8 +77,8 @@ const Notification = ({ userId }: Props) => {
   } else if (data?.success && data?.data?.length > 0) {
     content = (
       <>
-        <ScrollArea className="max-h-[600px] w-full">
-          <div className="flex flex-col gap-y-5 mt-5 px-3">
+        <ScrollArea className="h-[600px]">
+          <div className="flex flex-col gap-y-5 mt-5 px-3 h-full">
             {data?.data?.map((notification: TNotification) => (
               <NotificationCard
                 key={notification._id}
@@ -95,7 +96,11 @@ const Notification = ({ userId }: Props) => {
         </ScrollArea>
         <div className="flex mt-5 justify-end px-3">
           <Button variant="outline" size="sm" className=" text-primary-black">
-            Clear All
+            {activeTab === "all"
+              ? "Clear All"
+              : activeTab === "unread"
+              ? "Clear All"
+              : activeTab === "archived" && "Clear Archived"}
           </Button>
         </div>
       </>
