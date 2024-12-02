@@ -73,6 +73,12 @@ const CompleteAction = ({ data }: Props) => {
           result?.data?.message ||
             "Failed to complete the order. Please try again later."
         );
+        return;
+      }
+
+      if (result?.data?.success) {
+        setOpen(false);
+        setValue("");
       }
     } catch (error: unknown) {
       // Check if the error is an instance of Error to safely access the message property
