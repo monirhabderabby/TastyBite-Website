@@ -46,15 +46,17 @@ const MenuEnd = ({
                     <TooltipTrigger>
                         <Link href="/notifications" className="relative">
                             <Bell className="w-5" />
-                            <p
-                                className={`absolute -top-2 -right-[10px] ${
-                                    scrolling
-                                        ? "bg-[#91b842] text-white"
-                                        : "bg-white text-primary-black"
-                                } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
-                            >
-                                {unreadNotification}
-                            </p>
+                            {unreadNotification > 0 && (
+                                <p
+                                    className={`absolute -top-2 -right-[10px] ${
+                                        scrolling
+                                            ? "bg-[#91b842] text-white"
+                                            : "bg-white text-primary-black"
+                                    } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
+                                >
+                                    {unreadNotification}
+                                </p>
+                            )}
                         </Link>
                     </TooltipTrigger>
                     <TooltipContent className="bg-primary-orange text-white">
@@ -66,15 +68,17 @@ const MenuEnd = ({
                 <TooltipTrigger>
                     <Link href="/wishlist" className="relative">
                         <Heart className="w-5" />
-                        <p
-                            className={`absolute -top-2 -right-[10px] ${
-                                scrolling
-                                    ? "bg-[#91b842] text-white"
-                                    : "bg-white text-primary-black"
-                            } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
-                        >
-                            {wishlist.length}
-                        </p>
+                        {wishlist.length > 0 && (
+                            <p
+                                className={`absolute -top-2 -right-[10px] ${
+                                    scrolling
+                                        ? "bg-[#91b842] text-white"
+                                        : "bg-white text-primary-black"
+                                } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
+                            >
+                                {wishlist.length}
+                            </p>
+                        )}
                     </Link>
                 </TooltipTrigger>
                 <TooltipContent className="bg-primary-orange text-white">
@@ -89,15 +93,17 @@ const MenuEnd = ({
                                 <SheetTrigger asChild>
                                     <div className="relative">
                                         <ShoppingCart className="w-5" />
-                                        <p
-                                            className={`absolute -top-2 -right-[10px] ${
-                                                scrolling
-                                                    ? "bg-[#91b842] text-white"
-                                                    : "bg-white text-primary-black"
-                                            } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
-                                        >
-                                            {cartItemsNumber}
-                                        </p>
+                                        {cartItemsNumber > 0 && (
+                                            <p
+                                                className={`absolute -top-2 -right-[10px] ${
+                                                    scrolling
+                                                        ? "bg-[#91b842] text-white"
+                                                        : "bg-white text-primary-black"
+                                                } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
+                                            >
+                                                {cartItemsNumber}
+                                            </p>
+                                        )}
                                     </div>
                                 </SheetTrigger>
                                 <SheetContent className="border p-0">
@@ -107,15 +113,17 @@ const MenuEnd = ({
                         ) : (
                             <Link href="/cart" className="relative">
                                 <ShoppingCart className="w-5" />
-                                <p
-                                    className={`absolute -top-2 -right-3 ${
-                                        scrolling
-                                            ? "bg-[#91b842] text-white"
-                                            : "bg-white text-primary-black"
-                                    } w-5 h-5 flex items-center justify-center rounded-full`}
-                                >
-                                    {cartItemsNumber}
-                                </p>
+                                {cartItemsNumber > 0 && (
+                                    <p
+                                        className={`absolute -top-2 -right-3 ${
+                                            scrolling
+                                                ? "bg-[#91b842] text-white"
+                                                : "bg-white text-primary-black"
+                                        } w-[18px] h-[18px] text-[14px] flex items-center justify-center rounded-full`}
+                                    >
+                                        {cartItemsNumber}
+                                    </p>
+                                )}
                             </Link>
                         )}
                     </TooltipTrigger>
