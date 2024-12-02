@@ -93,17 +93,22 @@ const ProfileEditContainer = () => {
               </p>
             </div>
             {isEditing ? (
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={form.handleSubmit(handleInfoUpdate)}
-              >
-                {isUpdating ? (
-                  <Loader2 className="animate-spin opacity-60" />
-                ) : (
-                  <Save />
-                )}
-              </Button>
+              <div className="flex items-start gap-x-2">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={form.handleSubmit(handleInfoUpdate)}
+                >
+                  {isUpdating ? (
+                    <Loader2 className="animate-spin opacity-60" />
+                  ) : (
+                    <Save />
+                  )}
+                </Button>
+                <Button variant="outline" onClick={() => setIsEditing(false)}>
+                  Cancel
+                </Button>
+              </div>
             ) : (
               <Button
                 size="icon"
