@@ -1,12 +1,15 @@
 "use client";
 
-import { AlertCircle, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import NotificationCard from "@/components/common/cards/notification/notification-card";
 import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/ui/empty-state";
+import ErrorState from "@/components/ui/error-state";
+import LoaderState from "@/components/ui/loader-state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/shadcn-tabs";
 import {
@@ -174,43 +177,5 @@ const Header = ({
         <TabsTrigger value="archived">Archived</TabsTrigger>
       </TabsList>
     </Tabs>
-  </div>
-);
-
-/**
- * LoaderState Component:
- * Displays a loader with a message while content is loading.
- */
-const LoaderState = ({ message }: { message: string }) => (
-  <div className="min-h-[200px] flex justify-center items-center">
-    <div className="flex flex-col items-center gap-y-2">
-      <Loader2 className="animate-spin text-primary-black/80 opacity-50" />
-      <p className="text-primary-black/80">{message}</p>
-    </div>
-  </div>
-);
-
-/**
- * ErrorState Component:
- * Displays an error message when fetching notifications fails.
- */
-const ErrorState = ({ message }: { message: ReactNode }) => (
-  <div className="min-h-[200px] flex justify-center items-center">
-    <div className="flex flex-col items-center gap-y-2">
-      <AlertCircle className="text-red-500/80 opacity-50" />
-      <p className="text-primary-black/80 max-w-[370px] text-center">
-        {message}
-      </p>
-    </div>
-  </div>
-);
-
-/**
- * EmptyState Component:
- * Displays a message when no notifications are available.
- */
-const EmptyState = ({ message }: { message: string }) => (
-  <div className="min-h-[200px] flex justify-center items-center max-w-[380px] text-center text-primary-black mx-auto">
-    {message}
   </div>
 );

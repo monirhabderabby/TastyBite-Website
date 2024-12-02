@@ -1,4 +1,5 @@
 import { baseApi } from "@/redux/api/baseApi";
+import { GetOrdersResponse } from "@/types";
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -24,6 +25,15 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Order", "Notification", "UnreadNotification"],
     }),
+    getOrderForDeliveryman: builder.query<
+      GetOrdersResponse,
+      { userId: string }
+    >({
+      query: ({ userId }) => ({
+        url: `/order/deliveryman/${userId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -31,4 +41,5 @@ export const {
   useGetRunningOrderQuery,
   useGetCompletedOrderQuery,
   useUpdateOrderStatusMutation,
+  useGetOrderForDeliverymanQuery,
 } = orderApi;
