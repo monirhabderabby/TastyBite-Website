@@ -26,7 +26,7 @@ const DeliveryCard = ({ order }: Props) => {
               {moment(order?.createdAt).format("llll")}
             </p>
           </div>
-          <CompleteAction />
+          <CompleteAction data={order} />
         </div>
       </CardHeader>
       <CardContent>
