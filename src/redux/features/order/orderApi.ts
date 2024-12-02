@@ -33,6 +33,15 @@ const orderApi = baseApi.injectEndpoints({
         url: `/order/deliveryman/${userId}`,
         method: "GET",
       }),
+      providesTags: ["DeliveryOrders"],
+    }),
+    completeOrder: builder.mutation({
+      query: (data) => ({
+        url: `/order/complete-order`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["DeliveryOrders"],
     }),
   }),
 });
@@ -42,4 +51,5 @@ export const {
   useGetCompletedOrderQuery,
   useUpdateOrderStatusMutation,
   useGetOrderForDeliverymanQuery,
+  useCompleteOrderMutation,
 } = orderApi;
