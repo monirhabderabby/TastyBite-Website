@@ -1,6 +1,9 @@
-import DeliveryCard from "@/components/common/cards/order/delivery-card";
+import { currentUser } from "@clerk/nextjs/server";
+import DeliveryContainer from "./_components/delivery-container";
 
-const Page = () => {
+const Page = async () => {
+  const auth = await currentUser();
+
   return (
     <div className="text-primary-black">
       <div className="border-b">
@@ -12,7 +15,7 @@ const Page = () => {
         </p>
       </div>
       <div className="mt-5">
-        <DeliveryCard />
+        <DeliveryContainer userId={auth?.id as string} />
       </div>
     </div>
   );

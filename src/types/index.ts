@@ -162,3 +162,10 @@ export type GetNotificationResponse = {
   meta: Meta;
   data: TNotification[];
 };
+
+export type GetOrdersResponse = {
+  success: boolean;
+  message: string;
+  meta: Meta;
+  data: TOrder[];
+};
