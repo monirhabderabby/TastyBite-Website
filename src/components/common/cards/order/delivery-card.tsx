@@ -21,7 +21,17 @@ const DeliveryCard = () => {
       </CardHeader>
       <CardContent>
         <div>
-          <p>Inv</p>
+          <p>
+            <span className="font-semibold">Customer Name : </span> Monir
+            Hossain
+          </p>
+          <p>
+            <span className="font-semibold">Customer Phone : </span> 01956306002
+          </p>
+          <p>
+            <span className="font-semibold">Delivery Location:</span> House
+            #261, Morkun Poschim Para, Tongi
+          </p>
         </div>
       </CardContent>
     </Card>
