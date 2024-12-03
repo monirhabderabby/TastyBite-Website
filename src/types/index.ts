@@ -169,3 +169,14 @@ export type GetOrdersResponse = {
   meta: Meta;
   data: TOrder[];
 };
+
+export type UserStatsResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    totalOrders: number;
+    runningOrders: number;
+    cancelledOrders: number;
+    completedOrders: number;
+  };
+};
