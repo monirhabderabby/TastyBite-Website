@@ -41,17 +41,27 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
   // handler
   const handleMarkAsRead = async () => {
     if (isRead) return;
-    const result = await markAsRead({ notificationId, userId });
+
+    const result = await markAsRead({
+      notificationId,
+      userId,
+      isRead: activeTab === "unread" ? false : undefined,
+      isArchived: activeTab === "archived" ? true : undefined,
+    });
 
     if (result?.data?.success) {
-      console.log(result);
     } else {
       toast.error("Failed to mark the notification as read.");
     }
   };
 
   const handleArchive = async () => {
-    const result = await markAsArchive({ notificationId });
+    const result = await markAsArchive({
+      notificationId,
+      userId,
+      isRead: activeTab === "unread" ? false : undefined,
+      isArchived: activeTab === "archived" ? true : undefined,
+    });
 
     if (result?.data?.success) {
     } else {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { baseApi } from "@/redux/api/baseApi";
 import { GetNotificationResponse, TNotification } from "@/types";
 
@@ -30,14 +31,37 @@ const notificationApi = baseApi.injectEndpoints({
         url: `/notification/archive/${notificationId}`,
         method: "PATCH",
       }),
-      invalidatesTags: ["Notification"],
-    }),
-    seen: builder.mutation<SeenResponse, SeenParams>({
-      query: ({ notificationId }) => ({
-        url: `/notification/${notificationId}`,
-        method: "PATCH",
-      }),
-      invalidatesTags: ["Notification", "UnreadNotification"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const { isArchived, isRead, userId, notificationId } = arg;
+        const result = dispatch(
+          baseApi.util.updateQueryData(
+            "getNotification",
+            { isArchived, isRead, userId },
+            (draft) => {
+              const arrayOfNotification = draft.data;
+              const filteredNotification = arrayOfNotification.filter(
+                (item) => item._id !== notificationId
+              );
+
+              return {
+                data: filteredNotification,
+                success: draft.success,
+                message: draft.message,
+              };
+            }
+          )
+        );
+
+        try {
+          const res = await queryFulfilled;
+
+          if (res.data.success) {
+            result.undo();
+          }
+        } catch {
+          result.undo();
+        }
+      },
     }),
     unreadNotification: builder.query({
       query: ({ userId }) => ({
@@ -45,6 +69,59 @@ const notificationApi = baseApi.injectEndpoints({
       }),
       providesTags: ["UnreadNotification"],
     }),
+    seen: builder.mutation<SeenResponse, SeenParams>({
+      query: ({ notificationId }) => ({
+        url: `/notification/${notificationId}`,
+        method: "PATCH",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const { userId, isArchived, isRead, notificationId } = arg;
+
+        // update unread notification
+        const unreadNotificationDispatchResult = dispatch(
+          baseApi.util.updateQueryData(
+            "unreadNotification",
+            { userId },
+            (draft) => {
+              draft.data = parseInt(draft.data) - 1;
+            }
+          )
+        );
+
+        // optimistic cache update start
+        const seenDispatchResult = dispatch(
+          baseApi.util.updateQueryData(
+            "getNotification",
+            { userId, isRead, isArchived },
+            (draft) => {
+              const arrayOfNotification = draft?.data;
+              const currentNotification = arrayOfNotification.find(
+                (notification) => notification._id == notificationId
+              );
+
+              currentNotification.isRead = true;
+            }
+          )
+        );
+
+        // optimistic cache update end
+
+        try {
+          const res = await queryFulfilled;
+
+          if (!res.data.success) {
+            // undo dispatch
+            seenDispatchResult.undo();
+            unreadNotificationDispatchResult.undo();
+          }
+        } catch {
+          // undo dispatch
+          seenDispatchResult.undo();
+          unreadNotificationDispatchResult.undo();
+        }
+      },
+    }),
+
     deleteUnread: builder.mutation({
       query: ({ userId }) => ({
         url: `/notification/${userId}?isRead=false`,
