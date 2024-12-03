@@ -30,6 +30,7 @@ export const baseApi = createApi({
     "Notification",
     "UnreadNotification",
     "DeliveryOrders",
+    "OrderStats",
   ],
 
   endpoints: () => ({}),
