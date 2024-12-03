@@ -67,11 +67,11 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
         // light styles
         "bg-white border-[1px] ",
         // dark styles
-        "transform-gpu flex justify-between items-end",
+        "transform-gpu flex md:flex-row flex-col justify-between items-end",
         isRead ? "border-gray-200" : "border-gray-300 bg-slate-100"
       )}
     >
-      <div className="flex flex-row items-center gap-3">
+      <section className="flex flex-row items-center gap-3">
         <div
           className="flex size-10 items-center justify-center rounded-2xl"
           style={{
@@ -88,11 +88,11 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
               {moment(time).fromNow()}
             </span>
           </figcaption>
-          <p className="text-sm font-normal text-primary-black">
+          <p className="text-sm font-normal text-primary-black ">
             {description}
           </p>
         </div>
-      </div>
+      </section>
       <div>
         <Button
           variant="link"
@@ -108,7 +108,7 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
             trigger={
               <Button
                 variant="outline"
-                className="text-primary-black"
+                className="text-primary-black h-8 w-8"
                 size="icon"
                 onClick={handleArchive}
                 disabled={isLoading || isArchiving}

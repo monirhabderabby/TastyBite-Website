@@ -96,7 +96,7 @@ const Notification = ({ userId }: Props) => {
     }
     return (
       <ScrollArea className="h-[600px]">
-        <div className="flex flex-col gap-y-5 mt-5 px-3">
+        <div className="flex flex-col gap-y-5 mt-5 ">
           {data.data.map((notification: TNotification) => (
             <NotificationCard
               key={notification._id}
