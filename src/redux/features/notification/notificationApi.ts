@@ -115,7 +115,7 @@ const notificationApi = baseApi.injectEndpoints({
     }),
 
     deleteUnread: builder.mutation({
-      query: ({ userId, isRead, isArchived }) => ({
+      query: ({ userId }) => ({
         url: `/notification/${userId}?isRead=false`,
         method: "DELETE",
       }),
