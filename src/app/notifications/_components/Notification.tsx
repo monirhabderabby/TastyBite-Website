@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -10,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import ErrorState from "@/components/ui/error-state";
 import LoaderState from "@/components/ui/loader-state";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/shadcn-tabs";
 import {
   useDeleteAllNotificationMutation,
@@ -19,6 +19,7 @@ import {
   useGetNotificationQuery,
 } from "@/redux/features/notification/notificationApi";
 import { TNotification } from "@/types";
+import { AnimatePresence } from "framer-motion";
 
 interface Props {
   userId: string;
@@ -30,9 +31,10 @@ interface Props {
  * Includes functionalities for fetching, displaying, and clearing notifications.
  */
 const Notification = ({ userId }: Props) => {
-  const [activeTab, setActiveTab] = useState<"all" | "unread" | "archived">(
-    "unread"
-  );
+  const [activeTab, setActiveTab] = useState("unread");
+
+  const isRead = activeTab === "unread" ? false : undefined;
+  const isArchived = activeTab === "archived" ? true : undefined;
 
   const { isLoading, data, isError, isFetching } = useGetNotificationQuery(
     {
@@ -59,9 +61,24 @@ const Notification = ({ userId }: Props) => {
    */
   const handleDelete = async () => {
     try {
-      if (activeTab === "all") await deleteAllNotification({ userId });
-      else if (activeTab === "unread") await deleteUnread({ userId });
-      else if (activeTab === "archived") await deleteArchived({ userId });
+      if (activeTab === "all")
+        await deleteAllNotification({
+          userId,
+          isRead,
+          isArchived,
+        });
+      else if (activeTab === "unread") {
+        await deleteUnread({
+          userId,
+          isRead,
+          isArchived,
+        });
+      } else if (activeTab === "archived")
+        await deleteArchived({
+          userId,
+          isRead,
+          isArchived,
+        });
     } catch {
       toast.warning("Something went wrong!");
     }
@@ -95,8 +112,8 @@ const Notification = ({ userId }: Props) => {
       );
     }
     return (
-      <ScrollArea className="h-[600px]">
-        <div className="flex flex-col gap-y-5 mt-5 ">
+      <motion.div layout className="flex flex-col gap-y-5 mt-5 ">
+        <AnimatePresence mode="popLayout">
           {data.data.map((notification: TNotification) => (
             <NotificationCard
               key={notification._id}
@@ -105,8 +122,8 @@ const Notification = ({ userId }: Props) => {
               data={notification}
             />
           ))}
-        </div>
-      </ScrollArea>
+        </AnimatePresence>
+      </motion.div>
     );
   }, [isLoading, isFetching, isError, data, activeTab, userId]);
 
@@ -122,23 +139,25 @@ const Notification = ({ userId }: Props) => {
   return (
     <div>
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      {renderContent}
-      {data?.success && data?.data?.length > 0 && (
-        <div className="flex mt-5 justify-end px-3">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-primary-black"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {clearButtonLabel}
-            {isDeleting && (
-              <Loader2 className="animate-spin opacity-60 h-4 w-4 ml-2" />
-            )}
-          </Button>
-        </div>
-      )}
+      <AnimatePresence>
+        {renderContent}
+        {data?.success && data?.data?.length > 0 && (
+          <div className="flex mt-5 justify-end px-3">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-primary-black"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {clearButtonLabel}
+              {isDeleting && (
+                <Loader2 className="animate-spin opacity-60 h-4 w-4 ml-2" />
+              )}
+            </Button>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
