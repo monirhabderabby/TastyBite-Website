@@ -1,5 +1,6 @@
 "use client";
 // Packages
+import { motion } from "framer-motion";
 import { Archive } from "lucide-react";
 import { toast } from "sonner";
 
@@ -69,7 +70,7 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
     }
   };
   return (
-    <figure
+    <motion.figure
       className={cn(
         "relative mx-auto min-h-fit w-full  cursor-pointer overflow-hidden rounded-lg p-4",
         // animation styles
@@ -80,6 +81,10 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
         "transform-gpu flex md:flex-row flex-col justify-between items-end",
         isRead ? "border-gray-200" : "border-gray-300 bg-slate-100"
       )}
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0, overflow: "hidden" }}
+      transition={{ type: "spring", bounce: 0, duration: 0.4 }}
     >
       <section className="flex flex-row items-center gap-3">
         <div
@@ -130,7 +135,7 @@ const NotificationCard = ({ userId, activeTab, data }: Props) => {
           />
         )}
       </div>
-    </figure>
+    </motion.figure>
   );
 };
 
