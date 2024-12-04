@@ -1,6 +1,12 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    "react-hooks/rules-of-hooks": "off"
+    "react-hooks/rules-of-hooks": "off",
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-nocheck": false // Allow `@ts-nocheck`.
+      }
+    ]
   }
 }
