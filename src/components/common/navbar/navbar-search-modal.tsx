@@ -4,11 +4,14 @@ import { Input } from "@/components/ui/input";
 import Modal from "@/components/ui/modal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+import { setSearchTerm } from "@/redux/features/filter/filterSlice";
 import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
+import { RootState } from "@/redux/store";
 import { TFood } from "@/types";
 import { motion } from "framer-motion";
 import { debounce } from "lodash";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FoodCart from "../cards/food-card/food-card";
 import FoodCardLoader from "../skeleton-loader/food-card-loader";
 
@@ -18,7 +21,9 @@ interface Props {
 }
 
 const NavbarSearchModal = ({ open, setOpen }: Props) => {
-    const [searchTerm, setSearchTerm] = useState("");
+    const { searchTerm } = useSelector((state: RootState) => state.filter);
+
+    const dispatch = useDispatch();
 
     // for dynamic animation
     const stagger = {
@@ -43,9 +48,9 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
     const debouncedSearchTermChange = useMemo(
         () =>
             debounce((value: string) => {
-                setSearchTerm(value);
+                dispatch(setSearchTerm(value));
             }, 500),
-        [setSearchTerm]
+        [dispatch]
     );
 
     const handleSearchTermChange = (value: string) => {
@@ -53,11 +58,11 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
     };
 
     useEffect(() => {
-        setSearchTerm("");
         return () => {
-            debouncedSearchTermChange.cancel();
+            dispatch(setSearchTerm(""));
+            console.log("Navbar search modal unmounted");
         };
-    }, [debouncedSearchTermChange]);
+    }, [dispatch]);
 
     // foods content
     let content;

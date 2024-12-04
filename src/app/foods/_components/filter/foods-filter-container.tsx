@@ -38,7 +38,6 @@ export default FoodsFilterContainer;
 
 export const CategoriesFilter = () => {
     const { menu } = useSelector((state: RootState) => state.filter);
-    // const [selectedId, setSelectedId] = useState(menu || "");
 
     const dispatch = useDispatch();
 
@@ -51,7 +50,7 @@ export const CategoriesFilter = () => {
         })
     );
 
-    const allMenu = [{ _id: "all", name: "All" }, ...(menus || [])];
+    const allMenu = [{ _id: "", name: "All" }, ...(menus || [])];
 
     const handleMenuChange = (_id: string) => {
         if (_id !== "all") {
@@ -117,6 +116,14 @@ export const PriceFilter = () => {
         setValue(value);
         debouncedPriceRangeChange(value);
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch(setMin(0));
+            dispatch(setMax(200));
+        };
+    }, [dispatch]);
+
     return (
         <div>
             <h1 className="text-[24px] uppercase text-primary-black font-semibold tracking-[2px]">
@@ -167,9 +174,9 @@ export const SearchFoodByName = () => {
 
     useEffect(() => {
         return () => {
-            debouncedSearchTermChange.cancel();
+            dispatch(setSearchTerm(""));
         };
-    }, [debouncedSearchTermChange]);
+    }, [dispatch]);
 
     return (
         <div>

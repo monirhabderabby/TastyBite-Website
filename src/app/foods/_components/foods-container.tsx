@@ -21,14 +21,16 @@ const FoodsContainer = () => {
         }),
     };
 
-    const { menu, min, max, searchTerm } = useSelector(
+    const { menu, min, max, searchTerm, sortBy } = useSelector(
         (state: RootState) => state.filter
     );
+
     const { data: foods, isLoading } = useGetAllFoodsQuery({
         searchTerm,
         menu,
         min,
         max,
+        sortBy,
     });
 
     let content;

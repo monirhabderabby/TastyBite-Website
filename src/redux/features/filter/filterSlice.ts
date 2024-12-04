@@ -5,6 +5,7 @@ interface FilterState {
     min: number;
     max: number;
     searchTerm: string;
+    sortBy: string;
 }
 
 const initialState: FilterState = {
@@ -12,6 +13,7 @@ const initialState: FilterState = {
     min: 0,
     max: 200,
     searchTerm: "",
+    sortBy: "",
 };
 
 const filterSlice = createSlice({
@@ -30,9 +32,13 @@ const filterSlice = createSlice({
         setSearchTerm(state, action: PayloadAction<string>) {
             state.searchTerm = action.payload;
         },
+        setSorting(state, action: PayloadAction<string>) {
+            state.sortBy = action.payload;
+        },
     },
 });
 
-export const { setMenu, setMin, setMax, setSearchTerm } = filterSlice.actions;
+export const { setMenu, setMin, setMax, setSearchTerm, setSorting } =
+    filterSlice.actions;
 
 export default filterSlice.reducer;
