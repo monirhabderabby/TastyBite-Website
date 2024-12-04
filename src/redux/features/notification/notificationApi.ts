@@ -1,6 +1,8 @@
 // @ts-nocheck
 import {
+  clearNotificationCache,
   decreamentNotificationCount,
+  resetUnreadNotificationCount,
   updateNotificationReadStatus,
 } from "@/cache/notification/notification.cache";
 import { baseApi } from "@/redux/api/baseApi";
@@ -119,42 +121,84 @@ const notificationApi = baseApi.injectEndpoints({
         url: `/notification/${userId}?isRead=false`,
         method: "DELETE",
       }),
-
-      // invalidatesTags: ["UnreadNotification", "Notification"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const { userId, isRead, isArchived } = arg;
         // optimistic cache update start
 
         // update unread notification for navbar
-        const unreadCacheResult = dispatch(
-          baseApi.util.updateQueryData(
-            "unreadNotification",
-            { userId },
-            (draft) => {
-              return {
-                success: true,
-                message: draft.message,
-                data: 0,
-              };
-            }
-          )
+        const unreadCacheDispatchResult = resetUnreadNotificationCount(
+          dispatch,
+          userId
         );
 
-        const notificationCacheResult = dispatch(
+        const getNotificationCacheResult = clearNotificationCache(
+          dispatch,
+          userId,
+          isRead,
+          isArchived
+        );
+
+        // optimistic cache update end
+
+        try {
+          await queryFulfilled;
+        } catch {
+          unreadCacheDispatchResult.undo();
+          getNotificationCacheResult.undo();
+        }
+      },
+    }),
+    deleteArchived: builder.mutation({
+      query: ({ userId }) => ({
+        url: `/notification/${userId}?isArchived=true`,
+        method: "DELETE",
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const { userId, isRead, isArchived } = arg;
+        // optimistic cache update start
+
+        let totalUnread = null;
+
+        const getNotificationCacheResult = dispatch(
           baseApi.util.updateQueryData(
             "getNotification",
             { userId, isRead, isArchived },
             (draft) => {
+              const totalUnreadNotifications = draft.data.filter(
+                (item) => !item.isRead
+              );
+
+              if (totalUnreadNotifications.length > 0) {
+                totalUnread = totalUnreadNotifications.length;
+              }
               return {
                 success: true,
                 message: draft.message,
                 meta: {
                   page: draft.meta.page,
                   limit: draft.meta.limit,
-                  total: 0,
-                  totalPage: 1,
+                  total: 0, // Reset total notifications
+                  totalPage: 1, // Reset total pages
                 },
-                data: [],
+                data: [], // Clear all notification data
+              };
+            }
+          )
+        );
+
+        // update unread notification for navbar
+        const unreadCacheDispatchResult = dispatch(
+          baseApi.util.updateQueryData(
+            "unreadNotification",
+            { userId },
+            (draft) => {
+              const updatedData = totalUnread
+                ? parseInt(draft.data) - totalUnread
+                : draft.data;
+              return {
+                success: true,
+                message: draft.message,
+                data: updatedData,
               };
             }
           )
@@ -165,26 +209,42 @@ const notificationApi = baseApi.injectEndpoints({
         try {
           await queryFulfilled;
         } catch {
-          unreadCacheResult.undo();
-          notificationCacheResult.undo();
+          unreadCacheDispatchResult.undo();
+          getNotificationCacheResult.undo();
         }
       },
-    }),
-    deleteArchived: builder.mutation({
-      query: ({ userId }) => ({
-        url: `/notification/${userId}?isArchived=true`,
-        method: "DELETE",
-      }),
-
-      invalidatesTags: ["UnreadNotification", "Notification"],
     }),
     deleteAllNotification: builder.mutation({
       query: ({ userId }) => ({
         url: `/notification/${userId}`,
         method: "DELETE",
       }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const { userId, isRead, isArchived } = arg;
+        // optimistic cache update start
 
-      invalidatesTags: ["UnreadNotification", "Notification"],
+        // update unread notification for navbar
+        const unreadCacheDispatchResult = resetUnreadNotificationCount(
+          dispatch,
+          userId
+        );
+
+        const getNotificationCacheResult = clearNotificationCache(
+          dispatch,
+          userId,
+          isRead,
+          isArchived
+        );
+
+        // optimistic cache update end
+
+        try {
+          await queryFulfilled;
+        } catch {
+          unreadCacheDispatchResult.undo();
+          getNotificationCacheResult.undo();
+        }
+      },
     }),
   }),
 });

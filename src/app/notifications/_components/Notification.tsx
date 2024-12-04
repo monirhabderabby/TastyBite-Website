@@ -61,15 +61,24 @@ const Notification = ({ userId }: Props) => {
    */
   const handleDelete = async () => {
     try {
-      if (activeTab === "all") await deleteAllNotification({ userId });
-      else if (activeTab === "unread") {
-        const res = await deleteUnread({
+      if (activeTab === "all")
+        await deleteAllNotification({
           userId,
           isRead,
           isArchived,
         });
-        console.log(res);
-      } else if (activeTab === "archived") await deleteArchived({ userId });
+      else if (activeTab === "unread") {
+        await deleteUnread({
+          userId,
+          isRead,
+          isArchived,
+        });
+      } else if (activeTab === "archived")
+        await deleteArchived({
+          userId,
+          isRead,
+          isArchived,
+        });
     } catch {
       toast.warning("Something went wrong!");
     }
