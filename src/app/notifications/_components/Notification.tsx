@@ -31,9 +31,10 @@ interface Props {
  * Includes functionalities for fetching, displaying, and clearing notifications.
  */
 const Notification = ({ userId }: Props) => {
-  const [activeTab, setActiveTab] = useState<"all" | "unread" | "archived">(
-    "unread"
-  );
+  const [activeTab, setActiveTab] = useState("unread");
+
+  const isRead = activeTab === "unread" ? false : undefined;
+  const isArchived = activeTab === "archived" ? true : undefined;
 
   const { isLoading, data, isError, isFetching } = useGetNotificationQuery(
     {
@@ -61,8 +62,14 @@ const Notification = ({ userId }: Props) => {
   const handleDelete = async () => {
     try {
       if (activeTab === "all") await deleteAllNotification({ userId });
-      else if (activeTab === "unread") await deleteUnread({ userId });
-      else if (activeTab === "archived") await deleteArchived({ userId });
+      else if (activeTab === "unread") {
+        const res = await deleteUnread({
+          userId,
+          isRead,
+          isArchived,
+        });
+        console.log(res);
+      } else if (activeTab === "archived") await deleteArchived({ userId });
     } catch {
       toast.warning("Something went wrong!");
     }
@@ -123,23 +130,25 @@ const Notification = ({ userId }: Props) => {
   return (
     <div>
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      {renderContent}
-      {data?.success && data?.data?.length > 0 && (
-        <div className="flex mt-5 justify-end px-3">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-primary-black"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {clearButtonLabel}
-            {isDeleting && (
-              <Loader2 className="animate-spin opacity-60 h-4 w-4 ml-2" />
-            )}
-          </Button>
-        </div>
-      )}
+      <AnimatePresence>
+        {renderContent}
+        {data?.success && data?.data?.length > 0 && (
+          <div className="flex mt-5 justify-end px-3">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-primary-black"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {clearButtonLabel}
+              {isDeleting && (
+                <Loader2 className="animate-spin opacity-60 h-4 w-4 ml-2" />
+              )}
+            </Button>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

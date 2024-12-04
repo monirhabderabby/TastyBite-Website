@@ -1,4 +1,8 @@
 // @ts-nocheck
+import {
+  decreamentNotificationCount,
+  updateNotificationReadStatus,
+} from "@/cache/notification/notification.cache";
 import { baseApi } from "@/redux/api/baseApi";
 import { GetNotificationResponse, TNotification } from "@/types";
 
@@ -76,32 +80,21 @@ const notificationApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         const { userId, isArchived, isRead, notificationId } = arg;
 
-        // update unread notification
-        const unreadNotificationDispatchResult = dispatch(
-          baseApi.util.updateQueryData(
-            "unreadNotification",
-            { userId },
-            (draft) => {
-              draft.data = parseInt(draft.data) - 1;
-            }
-          )
+        // decreament notification count from unread notification count
+
+        const decreamentNotificationCountResult = decreamentNotificationCount(
+          dispatch,
+          userId
         );
 
         // optimistic cache update start
-        const seenDispatchResult = dispatch(
-          baseApi.util.updateQueryData(
-            "getNotification",
-            { userId, isRead, isArchived },
-            (draft) => {
-              const arrayOfNotification = draft?.data;
-              const currentNotification = arrayOfNotification.find(
-                (notification) => notification._id == notificationId
-              );
-
-              currentNotification.isRead = true;
-            }
-          )
-        );
+        const seenDispatchResult = updateNotificationReadStatus({
+          dispatch,
+          userId,
+          notificationId,
+          isRead,
+          isArchived,
+        });
 
         // optimistic cache update end
 
@@ -111,23 +104,71 @@ const notificationApi = baseApi.injectEndpoints({
           if (!res.data.success) {
             // undo dispatch
             seenDispatchResult.undo();
-            unreadNotificationDispatchResult.undo();
+            decreamentNotificationCountResult.undo();
           }
         } catch {
           // undo dispatch
           seenDispatchResult.undo();
-          unreadNotificationDispatchResult.undo();
+          decreamentNotificationCountResult.undo();
         }
       },
     }),
 
     deleteUnread: builder.mutation({
-      query: ({ userId }) => ({
+      query: ({ userId, isRead, isArchived }) => ({
         url: `/notification/${userId}?isRead=false`,
         method: "DELETE",
       }),
 
-      invalidatesTags: ["UnreadNotification", "Notification"],
+      // invalidatesTags: ["UnreadNotification", "Notification"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const { userId, isRead, isArchived } = arg;
+        // optimistic cache update start
+
+        // update unread notification for navbar
+        const unreadCacheResult = dispatch(
+          baseApi.util.updateQueryData(
+            "unreadNotification",
+            { userId },
+            (draft) => {
+              return {
+                success: true,
+                message: draft.message,
+                data: 0,
+              };
+            }
+          )
+        );
+
+        const notificationCacheResult = dispatch(
+          baseApi.util.updateQueryData(
+            "getNotification",
+            { userId, isRead, isArchived },
+            (draft) => {
+              return {
+                success: true,
+                message: draft.message,
+                meta: {
+                  page: draft.meta.page,
+                  limit: draft.meta.limit,
+                  total: 0,
+                  totalPage: 1,
+                },
+                data: [],
+              };
+            }
+          )
+        );
+
+        // optimistic cache update end
+
+        try {
+          await queryFulfilled;
+        } catch {
+          unreadCacheResult.undo();
+          notificationCacheResult.undo();
+        }
+      },
     }),
     deleteArchived: builder.mutation({
       query: ({ userId }) => ({
