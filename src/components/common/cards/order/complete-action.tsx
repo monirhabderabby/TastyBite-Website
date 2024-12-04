@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useCompleteOrderMutation } from "@/redux/features/order/orderApi";
 import { TOrder } from "@/types";
+import { useUser } from "@clerk/nextjs";
 
 interface Props {
   data: TOrder;
@@ -32,6 +33,7 @@ interface Props {
 const CompleteAction = ({ data }: Props) => {
   const [open, setOpen] = useState<true | false>(false);
   const [value, setValue] = useState("");
+  const { isLoaded, user } = useUser();
 
   // Destructuring the RTK Query mutation hook
   const [completeOrder, { isLoading }] = useCompleteOrderMutation();
@@ -59,7 +61,7 @@ const CompleteAction = ({ data }: Props) => {
 
     // send completion request to server with RTQ Query
     try {
-      const result = await completeOrder(body);
+      const result = await completeOrder({ body, userId: user?.id });
       if (result?.error) {
         toast.error(
           // @ts-expect-error: TypeScript might not recognize `data.message` as valid, but it's expected from the server response.
@@ -99,7 +101,12 @@ const CompleteAction = ({ data }: Props) => {
         <Badge className="bg-green-600">{data?.orderStatus}</Badge>
       ) : (
         <AlertDialogTrigger>
-          <Button size="sm" variant="outline" className="text-primary-black">
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-primary-black"
+            disabled={!isLoaded}
+          >
             Complete
           </Button>
         </AlertDialogTrigger>
