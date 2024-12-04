@@ -3,10 +3,10 @@ import { baseApi } from "../../api/baseApi";
 const foodApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllFoods: builder.query({
-            query: ({ searchTerm, menu, min, max, limit }) => ({
+            query: ({ searchTerm, menu, min, max, limit, sortBy }) => ({
                 url: `/food`,
                 method: "GET",
-                params: { searchTerm, menu, min, max, limit },
+                params: { searchTerm, menu, min, max, limit, sortBy },
             }),
             providesTags: ["food"],
         }),
