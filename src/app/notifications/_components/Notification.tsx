@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -10,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import ErrorState from "@/components/ui/error-state";
 import LoaderState from "@/components/ui/loader-state";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/shadcn-tabs";
 import {
   useDeleteAllNotificationMutation,
@@ -19,6 +19,7 @@ import {
   useGetNotificationQuery,
 } from "@/redux/features/notification/notificationApi";
 import { TNotification } from "@/types";
+import { AnimatePresence } from "framer-motion";
 
 interface Props {
   userId: string;
@@ -95,8 +96,8 @@ const Notification = ({ userId }: Props) => {
       );
     }
     return (
-      <ScrollArea className="h-[600px]">
-        <div className="flex flex-col gap-y-5 mt-5 ">
+      <motion.div layout className="flex flex-col gap-y-5 mt-5 ">
+        <AnimatePresence mode="popLayout">
           {data.data.map((notification: TNotification) => (
             <NotificationCard
               key={notification._id}
@@ -105,8 +106,8 @@ const Notification = ({ userId }: Props) => {
               data={notification}
             />
           ))}
-        </div>
-      </ScrollArea>
+        </AnimatePresence>
+      </motion.div>
     );
   }, [isLoading, isFetching, isError, data, activeTab, userId]);
 

@@ -54,8 +54,7 @@ const notificationApi = baseApi.injectEndpoints({
 
         try {
           const res = await queryFulfilled;
-
-          if (res.data.success) {
+          if (!res.data?.success) {
             result.undo();
           }
         } catch {
