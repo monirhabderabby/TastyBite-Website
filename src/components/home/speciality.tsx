@@ -74,10 +74,10 @@ const Speciality = () => {
         content = (
             <div className="container mx-auto my-6 md:my-8 lg:my-10">
                 <div className="hidden md:grid grid-cols-3 gap-8">
-                    {menuData?.data.map((menu: TMenu) => (
+                    {menuData?.data.map((menu: TMenu, i: number) => (
                         <motion.div
                             key={menu._id}
-                            custom={menu._id}
+                            custom={i}
                             initial="hidden"
                             whileInView="visible"
                             variants={stagger}
