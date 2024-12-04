@@ -39,15 +39,37 @@ const orderApi = baseApi.injectEndpoints({
         url: `/order/deliveryman/${userId}`,
         method: "GET",
       }),
-      providesTags: ["DeliveryOrders"],
     }),
     completeOrder: builder.mutation({
-      query: (data) => ({
+      query: ({ body }) => ({
         url: `/order/complete-order`,
         method: "PATCH",
-        body: data,
+        body: body,
       }),
-      invalidatesTags: ["DeliveryOrders"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        const { userId, body } = arg;
+
+        try {
+          const res = await queryFulfilled;
+          if (res.data.success) {
+            dispatch(
+              baseApi.util.updateQueryData(
+                "getOrderForDeliveryman",
+                { userId },
+                (draft) => {
+                  const arrayOfOrders = draft.data;
+                  const target = arrayOfOrders.find(
+                    (item) => item._id == body.orderId
+                  );
+
+                  target.isCompleted = true;
+                  target.orderStatus = "Delivered";
+                }
+              )
+            );
+          }
+        } catch {}
+      },
     }),
     getOrderStats: builder.query<UserStatsResponse, string>({
       query: (userId) => ({
