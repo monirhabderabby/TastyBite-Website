@@ -8,8 +8,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // Components
+import { increamenttNotificationCount } from "@/cache/notification/notification.cache";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/navbar-menu";
+import { pusherClient } from "@/lib/pusher";
 import { useUnreadNotificationQuery } from "@/redux/features/notification/notificationApi";
+import { useAppDispatch } from "@/redux/store";
 import Logo from "../logo/Logo";
 import MobileNavbar from "./mobile-navbar";
 
@@ -21,6 +24,7 @@ const Navbar = () => {
   const [active, setActive] = useState<string | null>(null);
 
   const { isSignedIn, isLoaded, user } = useUser();
+  const dispatch = useAppDispatch();
 
   // Use a flag to conditionally skip the query
   const skipQuery = !isLoaded || !user?.id;
@@ -33,6 +37,28 @@ const Navbar = () => {
   );
 
   const pathname = usePathname(); // Get current route to highlight active menu
+
+  // read real time notification count from server
+
+  useEffect(() => {
+    const notificationHandler = () => {
+      if (user?.id) {
+        increamenttNotificationCount(dispatch, user.id!);
+      }
+    };
+    if (user?.id) {
+      pusherClient.subscribe(user.id!);
+    }
+
+    pusherClient.bind("notification:new", notificationHandler);
+
+    return () => {
+      if (user?.id) {
+        pusherClient.unsubscribe(user.id);
+      }
+      pusherClient.unbind("notification:new", notificationHandler);
+    };
+  }, [user?.id, dispatch]);
 
   // Track window scroll to update navbar style
   useEffect(() => {

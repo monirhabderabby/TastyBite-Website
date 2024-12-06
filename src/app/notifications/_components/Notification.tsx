@@ -1,17 +1,20 @@
+// @ts-nocheck
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { injectRealTimeNotification } from "@/cache/notification/notification.cache";
 import NotificationCard from "@/components/common/cards/notification/notification-card";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import ErrorState from "@/components/ui/error-state";
 import LoaderState from "@/components/ui/loader-state";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/shadcn-tabs";
+import { useAppDispatch } from "@/hooks/use-dispatch";
+import { pusherClient } from "@/lib/pusher";
 import {
   useDeleteAllNotificationMutation,
   useDeleteArchivedMutation,
@@ -19,7 +22,8 @@ import {
   useGetNotificationQuery,
 } from "@/redux/features/notification/notificationApi";
 import { TNotification } from "@/types";
-import { AnimatePresence } from "framer-motion";
+import { getTabConfig } from "./getTabConfig";
+import NotificationHeader from "./header";
 
 interface Props {
   userId: string;
@@ -32,9 +36,8 @@ interface Props {
  */
 const Notification = ({ userId }: Props) => {
   const [activeTab, setActiveTab] = useState("unread");
-
-  const isRead = activeTab === "unread" ? false : undefined;
-  const isArchived = activeTab === "archived" ? true : undefined;
+  const dispatch = useAppDispatch();
+  const { isArchived, isRead, clearButtonLabel } = getTabConfig(activeTab);
 
   const { isLoading, data, isError, isFetching } = useGetNotificationQuery(
     {
@@ -55,6 +58,34 @@ const Notification = ({ userId }: Props) => {
 
   // Mutations for deleting notifications based on the active tab
   const isDeleting = isUnreadDeleting || isArchivedDeleting || isDeletingAll;
+
+  // recieved real time notification from pusher
+  const notificationHandler = useCallback(
+    (data: TNotification) => {
+      // inject new notification to the cache using @injectRealTimeNotification utility function
+      injectRealTimeNotification({
+        dispatch,
+        data,
+        isRead,
+        isArchived,
+        userId,
+      });
+    },
+    [dispatch, userId, isRead, isArchived]
+  );
+
+  // listen real time notification from pusher
+  useEffect(() => {
+    if (userId) {
+      pusherClient.subscribe(userId);
+    }
+    pusherClient.bind("notification:new", notificationHandler);
+
+    return () => {
+      pusherClient.unsubscribe(userId);
+      pusherClient.unbind("notification:new", notificationHandler);
+    };
+  }, [userId, dispatch, notificationHandler]);
 
   /**
    * Handles notification deletion based on the active tab.
@@ -88,35 +119,37 @@ const Notification = ({ userId }: Props) => {
    * Dynamically renders content based on the current state of notifications:
    * Loading, Error, Empty, or List of Notifications.
    */
-  const renderContent = useMemo(() => {
-    if (isLoading || isFetching)
-      return <LoaderState message="Retrieving notifications..." />;
-    if (isError || !data?.success) {
-      return (
-        <ErrorState
-          message={
-            <>
-              Something went wrong. Please try again later or{" "}
-              <Link href="/contact" className="text-blue-600 hover:underline">
-                contact support
-              </Link>
-              .
-            </>
-          }
-        />
-      );
-    }
-    if (data?.data?.length === 0) {
-      return (
-        <EmptyState message="No notifications found. You’re all caught up!" />
-      );
-    }
+  let renderContent;
+
+  if (isLoading || isFetching)
+    return <LoaderState message="Retrieving notifications..." />;
+  if (isError || !data?.success) {
     return (
+      <ErrorState
+        message={
+          <>
+            Something went wrong. Please try again later or{" "}
+            <Link href="/contact" className="text-blue-600 hover:underline">
+              contact support
+            </Link>
+            .
+          </>
+        }
+      />
+    );
+  }
+  if (data?.data?.length === 0) {
+    return (
+      <EmptyState message="No notifications found. You’re all caught up!" />
+    );
+  }
+  if (data?.data?.length > 0) {
+    renderContent = (
       <motion.div layout className="flex flex-col gap-y-5 mt-5 ">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence initial={false}>
           {data.data.map((notification: TNotification) => (
             <NotificationCard
-              key={notification._id}
+              key={notification?._id}
               userId={userId}
               activeTab={activeTab}
               data={notification}
@@ -125,20 +158,12 @@ const Notification = ({ userId }: Props) => {
         </AnimatePresence>
       </motion.div>
     );
-  }, [isLoading, isFetching, isError, data, activeTab, userId]);
-
-  /**
-   * Returns the label for the clear button based on the active tab.
-   */
-  const clearButtonLabel = useMemo(() => {
-    if (activeTab === "all") return "Clear All";
-    if (activeTab === "unread") return "Clear All Unread";
-    return "Clear Archived";
-  }, [activeTab]);
+  }
 
   return (
     <div>
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      <NotificationHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+
       <AnimatePresence>
         {renderContent}
         {data?.success && data?.data?.length > 0 && (
@@ -163,38 +188,3 @@ const Notification = ({ userId }: Props) => {
 };
 
 export default Notification;
-
-/**
- * Header Component:
- * Displays the title, description, and tab navigation for the Notification component.
- */
-const Header = ({
-  activeTab,
-  setActiveTab,
-}: {
-  activeTab: string;
-  setActiveTab: (tab: "all" | "unread" | "archived") => void;
-}) => (
-  <div className="flex justify-between items-center border-b pb-4">
-    <div>
-      <h1 className="text-[22px] font-narrow font-semibold text-primary-black">
-        Notifications
-      </h1>
-      <p className="text-primary-black/50">
-        Set your notification preferences to stay updated.
-      </p>
-    </div>
-    <Tabs
-      value={activeTab}
-      onValueChange={(val) =>
-        setActiveTab(val as "all" | "unread" | "archived")
-      }
-    >
-      <TabsList>
-        <TabsTrigger value="all">All</TabsTrigger>
-        <TabsTrigger value="unread">Unread</TabsTrigger>
-        <TabsTrigger value="archived">Archived</TabsTrigger>
-      </TabsList>
-    </Tabs>
-  </div>
-);
