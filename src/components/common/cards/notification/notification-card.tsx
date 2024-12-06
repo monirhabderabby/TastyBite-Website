@@ -2,6 +2,7 @@
 // Packages
 import { motion } from "framer-motion";
 import { Archive } from "lucide-react";
+import moment from "moment";
 import { toast } from "sonner";
 
 // Local import
@@ -13,7 +14,6 @@ import {
   useSeenMutation,
 } from "@/redux/features/notification/notificationApi";
 import { TNotification } from "@/types";
-import moment from "moment";
 
 interface Props {
   userId: string;
