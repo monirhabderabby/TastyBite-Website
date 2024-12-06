@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { baseApi } from "@/redux/api/baseApi";
+import { TNotification } from "@/types";
 import { Dispatch } from "@reduxjs/toolkit";
 
 /**
@@ -21,6 +22,54 @@ export const decreamentNotificationCount = (
         draft.data = parseInt(draft.data) - 1;
       }
     })
+  );
+};
+/**
+ * Increaments the unread notification count for the given user in the cache.
+ *
+ * This function is used to optimistically update the unread notification count
+ * displayed in the navbar or other UI components without waiting for a server response.
+ * It directly modifies the cached value in the Redux state using RTK Query's
+ * `updateQueryData` utility.
+ *
+ */
+export const increamenttNotificationCount = (
+  dispatch: Dispatch,
+  userId: string
+) => {
+  return dispatch(
+    baseApi.util.updateQueryData("unreadNotification", { userId }, (draft) => {
+      draft.data = parseInt(draft.data) + 1;
+    })
+  );
+};
+
+type TypeInjectRealTimeNotification = {
+  dispatch: Dispatch;
+  data: TNotification;
+  userId: string;
+  isRead: boolean;
+  isArchived: boolean;
+};
+export const injectRealTimeNotification = ({
+  dispatch,
+  data,
+  userId,
+  isRead,
+  isArchived,
+}: TypeInjectRealTimeNotification) => {
+  dispatch(
+    baseApi.util.updateQueryData(
+      "getNotification",
+      { userId, isRead, isArchived },
+      (draft) => {
+        const arrayOfData = draft.data || [];
+        return {
+          ...draft,
+          data: [data, ...arrayOfData],
+        };
+      }
+    )
   );
 };
 

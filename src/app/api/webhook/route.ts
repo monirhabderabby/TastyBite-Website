@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { pusherServer } from "@/lib/pusher";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -65,6 +66,57 @@ export async function POST(req: Request) {
   };
 
   if (event.type === "checkout.session.completed") {
+    // Send Payment Recieved Notification using Pusher Start
+
+    const notificationPayload = {
+      user: formattedPayload.clerkId,
+      name: "Payment received",
+      description: `Payment received successfully. Transaction ID: ${formattedPayload.transactionId}.`,
+      icon: "💸",
+      color: "#00C9A7",
+    };
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notification`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(notificationPayload),
+        }
+      );
+
+      // Check if the response is not OK (e.g., status codes 4xx or 5xx)
+      if (!res.ok) {
+        // Extract error message if available or throw a generic error
+        const errorText = await res.text();
+        throw new Error(
+          `Failed to send notification. Status: ${res.status}, Message: ${errorText}`
+        );
+      }
+
+      const notificationRes = await res.json();
+
+      try {
+        await pusherServer.trigger(
+          metadata.clerkId,
+          "notification:new",
+          notificationRes?.data
+        );
+      } catch (error) {
+        console.log("Failed to send notification:", error);
+      }
+    } catch (error) {
+      console.error(
+        "An error occurred while sending the notification from /api/webhook:",
+        error
+      );
+    }
+
+    // Send Payment Recieved Notification using Pusher End
+
     // Send the formatted payload to the validation server
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/order`, {
@@ -77,28 +129,6 @@ export async function POST(req: Request) {
 
       const orderResponse = await res.json();
 
-      if (orderResponse) {
-        try {
-          const orderDetails = orderResponse?.data;
-          const notificationPayload = {
-            user: orderDetails.user,
-            name: "Payment received",
-            description: `Payment received successfully. Transaction ID: ${orderDetails.transactionId}.`,
-            icon: "💸",
-            color: "#00C9A7",
-          };
-
-          await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/notification`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(notificationPayload),
-          });
-        } catch (error) {
-          console.error("Failed to send email to clerk", error);
-        }
-      }
       if (!res.ok) {
         console.error("Failed to create order on webhook", orderResponse);
         return new NextResponse("Failed to create order.", { status: 500 });
