@@ -11,7 +11,8 @@ import {
     updateQuantity,
 } from "@/redux/features/cart/cartSlice";
 import { useCheckoutMutation } from "@/redux/features/payment/checkoutApi";
-import { TFoodWithQuantity } from "@/types";
+import { useGetLocationByUserQuery } from "@/redux/features/user/userApi";
+import { TAddress, TFoodWithQuantity } from "@/types";
 import { useUser } from "@clerk/nextjs";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -20,6 +21,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { ScrollArea } from "../ui/scroll-area";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "../ui/select";
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 
 function QuantityInput({
@@ -126,11 +134,15 @@ interface CartSummaryProps {
 function CartSummary({
     subTotal,
     onCheckout,
-    deliveryLocation,
     setDeliveryLocation,
     agreedToTerms,
     setAgreedToTerms,
 }: CartSummaryProps) {
+    const { user } = useUser();
+
+    const { data, isLoading, isSuccess, isError } = useGetLocationByUserQuery(
+        user?.id
+    );
     return (
         <form onSubmit={onCheckout}>
             <div className="space-y-4 p-5">
@@ -143,13 +155,26 @@ function CartSummary({
                     <span>${subTotal.toFixed(2)}</span>
                 </div>
                 <div>
-                    <input
-                        type="text"
-                        placeholder="Enter Delivery Location"
-                        value={deliveryLocation}
-                        onChange={(e) => setDeliveryLocation(e.target.value)}
-                        className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
-                    />
+                    <Select
+                        onValueChange={(value) => setDeliveryLocation(value)}
+                    >
+                        <SelectTrigger className="w-full text-[#999999] ">
+                            <SelectValue placeholder="Select delivery location" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {!isLoading &&
+                                !isError &&
+                                isSuccess &&
+                                data?.data.map((address: TAddress) => (
+                                    <SelectItem
+                                        key={address._id}
+                                        value={address._id as string}
+                                    >
+                                        {address.name}
+                                    </SelectItem>
+                                ))}
+                        </SelectContent>
+                    </Select>
                 </div>
                 <div className="flex items-center space-x-2">
                     <Checkbox
