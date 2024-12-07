@@ -1,21 +1,18 @@
 "use client";
 
+import { TAddress } from "@/types";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import AddressForm from "./address-form";
 import Map from "./map";
 
-export type TAddress = {
-    streetAndNumber: string;
-    place: string;
-    region: string;
-    postcode: string;
-    country: string;
-    latitude: number;
-    longitude: number;
-};
-
-export function AddressInput() {
+export function AddressInput({
+    editingAddress,
+}: {
+    editingAddress: TAddress | null;
+}) {
+    const [name, setName] = useState<string>("");
     const [address, setAddress] = useState<TAddress>({
         streetAndNumber: "",
         place: "",
@@ -29,8 +26,12 @@ export function AddressInput() {
     const handleFormSubmit = (event: { preventDefault: () => void }) => {
         event.preventDefault();
 
+        if (!name) {
+            toast.error("Please, provide name of address.");
+            return;
+        }
         if (address.streetAndNumber) {
-            console.log("Selected address:", address);
+            console.log("Selected address:", { name, ...address });
         }
     };
 
@@ -38,12 +39,20 @@ export function AddressInput() {
         setAddress({ ...address, latitude, longitude });
     };
 
+    useEffect(() => {
+        if (editingAddress) {
+            setAddress(editingAddress);
+        }
+    }, [editingAddress]);
+
     return (
-        <div className="grid grid-cols-2 gap-x-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 lg:gap-x-10">
             <AddressForm
                 onSubmit={handleFormSubmit}
                 address={address}
                 setAddress={setAddress}
+                name={name}
+                setName={setName}
             />
             {address.longitude && address.latitude && (
                 <Map

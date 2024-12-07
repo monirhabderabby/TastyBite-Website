@@ -84,117 +84,122 @@ const ProfileEditContainer = () => {
         content = <ErrorCard title="Error" message="Something went wrong!" />;
     } else if (data || isLoading) {
         content = (
-            <SkeletonWrapper fullWidth isLoading={isLoading || !isLoaded}>
-                <div className="w-full border-input border-[.5px] rounded-md p-3 md:p-5  text-primary-black">
-                    <div className="flex justify-between">
-                        <div>
-                            <h1 className="text-[22px] font-narrow font-semibold">
-                                Profile
-                            </h1>
-                            <p className="text-primary-black/50">
-                                Manage your info and settings here.
-                            </p>
-                        </div>
-                        {isEditing ? (
-                            <div className="flex items-start gap-x-2">
+            <div>
+                <SkeletonWrapper fullWidth isLoading={isLoading || !isLoaded}>
+                    <div className="w-full border-input border-[.5px] rounded-md p-3 md:p-5  text-primary-black">
+                        <div className="flex justify-between">
+                            <div>
+                                <h1 className="text-[22px] font-narrow font-semibold">
+                                    Profile
+                                </h1>
+                                <p className="text-primary-black/50">
+                                    Manage your info and settings here.
+                                </p>
+                            </div>
+                            {isEditing ? (
+                                <div className="flex items-start gap-x-2">
+                                    <Button
+                                        size="icon"
+                                        variant="outline"
+                                        onClick={form.handleSubmit(
+                                            handleInfoUpdate
+                                        )}
+                                    >
+                                        {isUpdating ? (
+                                            <Loader2 className="animate-spin opacity-60" />
+                                        ) : (
+                                            <Save />
+                                        )}
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setIsEditing(false)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
+                            ) : (
                                 <Button
                                     size="icon"
                                     variant="outline"
-                                    onClick={form.handleSubmit(
-                                        handleInfoUpdate
-                                    )}
+                                    onClick={() => setIsEditing(true)}
                                 >
-                                    {isUpdating ? (
-                                        <Loader2 className="animate-spin opacity-60" />
-                                    ) : (
-                                        <Save />
-                                    )}
+                                    <Pencil />
                                 </Button>
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setIsEditing(false)}
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                        ) : (
-                            <Button
-                                size="icon"
-                                variant="outline"
-                                onClick={() => setIsEditing(true)}
-                            >
-                                <Pencil />
-                            </Button>
-                        )}
-                    </div>
+                            )}
+                        </div>
 
-                    <div className="mt-5">
-                        <Form {...form}>
-                            <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <FormField
-                                    control={form.control}
-                                    name="name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Name</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    className={cn(
-                                                        "w-full disabled:opacity-90"
-                                                    )}
-                                                    {...field}
-                                                    disabled={
-                                                        isLoading || !isEditing
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    className="w-full disabled:opacity-90"
-                                                    {...field}
-                                                    disabled={true}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="phone"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Phone</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    className="w-full disabled:opacity-90"
-                                                    {...field}
-                                                    disabled={
-                                                        isLoading || !isEditing
-                                                    }
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </form>
-                        </Form>
+                        <div className="mt-5">
+                            <Form {...form}>
+                                <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Name</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        className={cn(
+                                                            "w-full disabled:opacity-90"
+                                                        )}
+                                                        {...field}
+                                                        disabled={
+                                                            isLoading ||
+                                                            !isEditing
+                                                        }
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Email</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        className="w-full disabled:opacity-90"
+                                                        {...field}
+                                                        disabled={true}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="phone"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Phone</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        className="w-full disabled:opacity-90"
+                                                        {...field}
+                                                        disabled={
+                                                            isLoading ||
+                                                            !isEditing
+                                                        }
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </form>
+                            </Form>
+                        </div>
                     </div>
-                </div>
-
-                <DeliveryAddress />
-            </SkeletonWrapper>
+                </SkeletonWrapper>
+                <SkeletonWrapper fullWidth isLoading={isLoading || !isLoaded}>
+                    <DeliveryAddress />
+                </SkeletonWrapper>
+            </div>
         );
     }
 

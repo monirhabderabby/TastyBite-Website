@@ -2,8 +2,8 @@
 
 import { Input } from "@/components/ui/input";
 import getPlaces from "@/hooks/getPlaces";
+import { TAddress } from "@/types";
 import { ChangeEvent, useState } from "react";
-import { TAddress } from "./address-input";
 
 interface Suggestion {
     place_name: string;
@@ -73,19 +73,23 @@ const AutoCompleteInput: React.FC<AutoCompleteInputProps> = ({
                     placeholder="Address"
                     value={streetAndNumber}
                     onChange={handleChange}
-                    // className="w-full p-2 border rounded"
+                    className="no-underline"
                 />
-                <ul className="absolute top-7 bg-white border border-black rounded overflow-hidden z-50 w-full p-0">
-                    {suggestions?.map((suggestion, index) => (
-                        <li
-                            key={index}
-                            onClick={() => handleSuggestionClick(suggestion)}
-                            className="list-none p-2 hover:bg-blue-800 hover:text-white cursor-pointer"
-                        >
-                            {suggestion.place_name}
-                        </li>
-                    ))}
-                </ul>
+                {suggestions?.length > 0 && (
+                    <ul className="absolute top-7 bg-white border border-black rounded overflow-hidden z-50 w-full p-0">
+                        {suggestions?.map((suggestion, index) => (
+                            <li
+                                key={index}
+                                onClick={() =>
+                                    handleSuggestionClick(suggestion)
+                                }
+                                className="list-none p-2 hover:bg-blue-800 hover:text-white cursor-pointer"
+                            >
+                                {suggestion.place_name}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </div>
     );
