@@ -196,9 +196,8 @@ const ProfileEditContainer = () => {
                         </div>
                     </div>
                 </SkeletonWrapper>
-                <SkeletonWrapper fullWidth isLoading={isLoading || !isLoaded}>
-                    <DeliveryAddress />
-                </SkeletonWrapper>
+
+                <DeliveryAddress />
             </div>
         );
     }
