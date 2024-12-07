@@ -7,13 +7,16 @@ import { Shield } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import LocationSelector from "./location-selector";
 
 export default function CartSummary({
     cartItems,
 }: {
     cartItems: TFoodWithQuantity[];
 }) {
-    const [deliveryLocation, setDeliveryLocation] = useState("");
+    const [deliveryLocation, setDeliveryLocation] = useState<
+        string | undefined
+    >("");
     const [couponCode, setCouponCode] = useState("");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
 
@@ -52,13 +55,6 @@ export default function CartSummary({
             totalPrice: subTotal,
         });
         window.location.href = checkoutRes.data?.url;
-
-        console.log({
-            clerkId: user?.id,
-            cartFoods: cartItems,
-            deliveryLocation,
-            totalPrice: subTotal,
-        });
     };
 
     return (
@@ -67,17 +63,17 @@ export default function CartSummary({
                 <div className="grid gap-8 md:grid-cols-[1fr_350px] mt-10">
                     <div className="space-y-3">
                         <div>
-                            <h2 className="text-base font-medium mb-2">
-                                Delivery Location
-                            </h2>
-                            <input
-                                type="text"
-                                placeholder="Enter Delivery Location"
-                                value={deliveryLocation}
-                                onChange={(e) =>
-                                    setDeliveryLocation(e.target.value)
-                                }
-                                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+                            <div className="flex justify-between">
+                                <h2 className="text-base font-medium mb-2">
+                                    Select Delivery Location
+                                </h2>
+                                <Link href={"/profile"} className="underline">
+                                    Change Location
+                                </Link>
+                            </div>
+                            <LocationSelector
+                                deliveryLocation={deliveryLocation}
+                                setDeliveryLocation={setDeliveryLocation}
                             />
                         </div>
 
