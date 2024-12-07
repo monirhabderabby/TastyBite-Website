@@ -45,11 +45,11 @@ const Map: React.FC<MapProps> = ({
     };
 
     return (
-        <div className="map">
+        <div className="">
             <ReactMapGl
                 {...viewport}
                 mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-                mapStyle="mapbox://styles/mapbox/streets-v12"
+                mapStyle="mapbox://styles/monirhrabby/cm4ds3u3d01oz01r245wxa9fq"
                 onMove={(event) => {
                     setViewport(event.viewState);
                 }}

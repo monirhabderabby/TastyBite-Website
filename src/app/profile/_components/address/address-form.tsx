@@ -1,19 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { TAddress } from "./address-input";
+
+import { TAddress } from "@/types";
 import AutoCompleteInput from "./auto-complete-input";
 
 interface AddressFormProps {
     address: TAddress;
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
     setAddress: (address: TAddress) => void;
+    name: string;
+    setName: (name: string) => void;
 }
 
 export default function AddressForm({
     address,
     onSubmit,
     setAddress,
+    name,
+    setName,
 }: AddressFormProps) {
     const handleManualInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -26,9 +31,27 @@ export default function AddressForm({
     };
 
     return (
-        <form className="space-y-2" onSubmit={onSubmit}>
+        <form
+            className="space-y-2 md:space-y-1 lg:space-y-2"
+            onSubmit={onSubmit}
+        >
             <div className="space-y-1">
-                <label htmlFor="address">Address</label>
+                <label htmlFor="name" className="text-sm">
+                    Name
+                </label>
+                <Input
+                    type="text"
+                    id="name"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </div>
+
+            <div className="space-y-1">
+                <label htmlFor="address" className="text-sm">
+                    Address
+                </label>
                 <AutoCompleteInput
                     setAddress={setAddress}
                     handleManualInputChange={handleManualInputChange}
@@ -37,7 +60,9 @@ export default function AddressForm({
             </div>
 
             <div className="space-y-1">
-                <label htmlFor="city">City</label>
+                <label htmlFor="city" className="text-sm">
+                    City
+                </label>
                 <Input
                     type="text"
                     id="city"
@@ -50,7 +75,9 @@ export default function AddressForm({
             </div>
 
             <div className="space-y-1">
-                <label htmlFor="state">State/Province/Region</label>
+                <label htmlFor="state" className="text-sm">
+                    State/Province/Region
+                </label>
                 <Input
                     type="text"
                     id="state"
@@ -61,31 +88,36 @@ export default function AddressForm({
                     }
                 />
             </div>
+            <div className="grid md:grid-cols-2 gap-x-2">
+                <div className="space-y-1">
+                    <label htmlFor="postcode" className="text-sm">
+                        Postcode
+                    </label>
+                    <Input
+                        type="text"
+                        id="postcode"
+                        placeholder="Postcode"
+                        value={address.postcode}
+                        onChange={(event) =>
+                            handleManualInputChange(event, "postcode")
+                        }
+                    />
+                </div>
 
-            <div className="space-y-1">
-                <label htmlFor="postcode">Postcode</label>
-                <Input
-                    type="text"
-                    id="postcode"
-                    placeholder="Postcode"
-                    value={address.postcode}
-                    onChange={(event) =>
-                        handleManualInputChange(event, "postcode")
-                    }
-                />
-            </div>
-
-            <div className="space-y-1">
-                <label htmlFor="country">Country</label>
-                <Input
-                    type="text"
-                    id="country"
-                    placeholder="Country"
-                    value={address.country}
-                    onChange={(event) =>
-                        handleManualInputChange(event, "country")
-                    }
-                />
+                <div className="space-y-1">
+                    <label htmlFor="country" className="text-sm">
+                        Country
+                    </label>
+                    <Input
+                        type="text"
+                        id="country"
+                        placeholder="Country"
+                        value={address.country}
+                        onChange={(event) =>
+                            handleManualInputChange(event, "country")
+                        }
+                    />
+                </div>
             </div>
 
             <div className="flex items-center gap-x-2">
@@ -94,7 +126,8 @@ export default function AddressForm({
                 </Button>
                 <Button
                     type="reset"
-                    className="reset-button"
+                    className="px-5"
+                    variant="outline"
                     onClick={() =>
                         setAddress({
                             streetAndNumber: "",
