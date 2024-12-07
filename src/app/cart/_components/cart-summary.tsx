@@ -17,7 +17,7 @@ export default function CartSummary({
     const [deliveryLocation, setDeliveryLocation] = useState<
         string | undefined
     >("");
-    const [couponCode, setCouponCode] = useState("");
+    // const [couponCode, setCouponCode] = useState("");
     const [agreedToTerms, setAgreedToTerms] = useState(false);
 
     const { user } = useUser();
@@ -35,7 +35,7 @@ export default function CartSummary({
         if (!agreedToTerms)
             return showError("Please agree to the Terms & Conditions");
         if (!deliveryLocation)
-            return showError("Please, Provide your valid delivery location");
+            return showError("Please, select your delivery location");
         // Handle checkout logic here
 
         if (checkoutLoading) {
@@ -64,10 +64,13 @@ export default function CartSummary({
                     <div className="space-y-3">
                         <div>
                             <div className="flex justify-between">
-                                <h2 className="text-base font-medium mb-2">
+                                <h2 className="text-base font-medium">
                                     Select Delivery Location
                                 </h2>
-                                <Link href={"/profile"} className="underline">
+                                <Link
+                                    href={"/profile"}
+                                    className="underline text-sm text-primary-orange"
+                                >
                                     Change Location
                                 </Link>
                             </div>
@@ -84,7 +87,7 @@ export default function CartSummary({
                             </span>
                         </div>
 
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                             <h2 className="text-base font-medium">
                                 Coupon Code
                             </h2>
@@ -98,7 +101,7 @@ export default function CartSummary({
                             <p className="text-sm text-muted-foreground">
                                 Coupon code will work on checkout page
                             </p>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="bg-gray-50 p-6 rounded-lg space-y-4">

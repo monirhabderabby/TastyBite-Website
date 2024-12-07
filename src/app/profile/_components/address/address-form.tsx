@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 
 import { TAddress } from "@/types";
+import { Loader } from "lucide-react";
 import AutoCompleteInput from "./auto-complete-input";
 
 interface AddressFormProps {
@@ -11,6 +12,9 @@ interface AddressFormProps {
     setAddress: (address: TAddress) => void;
     name: string;
     setName: (name: string) => void;
+    isLoading: boolean;
+    updateLoading: boolean;
+    editingAddressName: string | undefined;
 }
 
 export default function AddressForm({
@@ -19,6 +23,9 @@ export default function AddressForm({
     setAddress,
     name,
     setName,
+    isLoading,
+    updateLoading,
+    editingAddressName,
 }: AddressFormProps) {
     const handleManualInputChange = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -37,13 +44,13 @@ export default function AddressForm({
         >
             <div className="space-y-1">
                 <label htmlFor="name" className="text-sm">
-                    Name
+                    Location Name
                 </label>
                 <Input
                     type="text"
                     id="name"
-                    placeholder="Name"
-                    value={name}
+                    placeholder="Ex: Home or, Office"
+                    defaultValue={editingAddressName || name}
                     onChange={(e) => setName(e.target.value)}
                 />
             </div>
@@ -120,9 +127,16 @@ export default function AddressForm({
                 </div>
             </div>
 
-            <div className="flex items-center gap-x-2">
-                <Button type="submit" className="confirm-button">
+            <div className="flex items-center gap-x-2 pt-2">
+                <Button
+                    type="submit"
+                    className="confirm-button"
+                    disabled={isLoading || updateLoading}
+                >
                     Confirm
+                    {(isLoading || updateLoading) && (
+                        <Loader className="w-4 h-4 animate-spin" />
+                    )}
                 </Button>
                 <Button
                     type="reset"

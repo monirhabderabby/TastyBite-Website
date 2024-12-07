@@ -54,7 +54,7 @@ const userApi = baseApi.injectEndpoints({
         updateLocation: builder.mutation({
             query: ({ id, body }) => ({
                 url: `/delivery-location/${id}`,
-                method: "PATCH",
+                method: "PUT",
                 body,
             }),
             invalidatesTags: () => ["Location"],
@@ -88,6 +88,7 @@ export const {
     useCreateLocationMutation,
     useUpdateLocationMutation,
     useDeleteLocationMutation,
+    useGetLocationByUserQuery,
 } = userApi;
 
 export default userApi;
