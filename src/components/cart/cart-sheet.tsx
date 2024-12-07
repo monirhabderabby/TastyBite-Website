@@ -158,7 +158,7 @@ function CartSummary({
                     <Select
                         onValueChange={(value) => setDeliveryLocation(value)}
                     >
-                        <SelectTrigger className="w-full text-[#999999] ">
+                        <SelectTrigger className="w-full text-primary-black">
                             <SelectValue placeholder="Select delivery location" />
                         </SelectTrigger>
                         <SelectContent>
