@@ -60,7 +60,6 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
     useEffect(() => {
         return () => {
             dispatch(setSearchTerm(""));
-            console.log("Navbar search modal unmounted");
         };
     }, [dispatch]);
 
