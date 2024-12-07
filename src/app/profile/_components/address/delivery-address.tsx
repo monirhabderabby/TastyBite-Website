@@ -4,45 +4,37 @@ import { Pencil, Plus, Trash2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { TAddress } from "@/types";
 import { useState } from "react";
 import { AddressInput } from "./address-input";
 
-interface Address {
-    id: string;
-    name: string;
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-    phone: string;
-}
-
 const DeliveryAddress = () => {
     const [isAddingNew, setIsAddingNew] = useState(false);
-    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editingAddress, setEditingAddress] = useState<TAddress | null>(null);
 
     // Example addresses - in a real app, these would come from an API or database
-    const addresses: Address[] = [
+    const addresses: TAddress[] = [
         {
-            id: "1",
+            _id: "1",
+            country: "Australia",
+            latitude: -37.671811500000004,
+            longitude: 144.846079,
             name: "Home",
-            street: "123 Main Street",
-            city: "New York",
-            state: "NY",
-            zipCode: "10001",
-            country: "United States",
-            phone: "01956306002",
+            place: "Melbourne",
+            postcode: "3045",
+            region: "Victoria",
+            streetAndNumber: "Melbourne Airport (MEL)",
         },
         {
-            id: "2",
+            _id: "2",
+            country: "United Kingdom",
+            latitude: 53.335612,
+            longitude: -2.852171,
             name: "Office",
-            street: "456 Business Ave",
-            city: "New York",
-            state: "NY",
-            zipCode: "10002",
-            country: "United States",
-            phone: "01956306003",
+            place: "Liverpool",
+            postcode: "L24 1YD",
+            region: "England",
+            streetAndNumber: "Liverpool John Lennon Airport (LPL)",
         },
     ];
 
@@ -57,7 +49,7 @@ const DeliveryAddress = () => {
                         Manage your delivery addresses here.
                     </p>
                 </div>
-                {!isAddingNew && (
+                {(!isAddingNew || !editingAddress) && (
                     <Button
                         className="gap-2"
                         onClick={() => setIsAddingNew(true)}
@@ -68,37 +60,39 @@ const DeliveryAddress = () => {
                 )}
             </div>
 
-            {(isAddingNew || editingId) && (
+            {(isAddingNew || editingAddress) && (
                 <Card className="p-4 mb-4">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-lg font-semibold">
-                            {editingId ? "Edit Address" : "Add New Address"}
+                            {editingAddress
+                                ? "Edit Address"
+                                : "Add New Address"}
                         </h2>
                         <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => {
                                 setIsAddingNew(false);
-                                setEditingId(null);
+                                setEditingAddress(null);
                             }}
                         >
                             <X className="h-4 w-4" />
                         </Button>
                     </div>
-                    <AddressInput />
+                    <AddressInput editingAddress={editingAddress} />
                 </Card>
             )}
 
             <div className="grid gap-4 mb-6">
                 {addresses.map((address) => (
-                    <Card key={address.id} className="relative">
+                    <Card key={address._id} className="relative">
                         <CardContent className="p-6">
                             <div className="absolute right-4 top-4 flex gap-2">
                                 <Button
                                     variant="ghost"
                                     size="icon"
                                     className="h-8 w-8"
-                                    onClick={() => setEditingId(address.id)}
+                                    onClick={() => setEditingAddress(address)}
                                 >
                                     <Pencil className="h-4 w-4" />
                                     <span className="sr-only">
@@ -117,17 +111,14 @@ const DeliveryAddress = () => {
                                 </Button>
                             </div>
                             <div className="grid gap-1">
-                                <div className="font-medium">
+                                <div className="text-lg font-medium">
                                     {address.name}
                                 </div>
-                                <div className="text-sm text-gray-500">
-                                    {address.street}
+                                <div className="text-base text-gray-500">
+                                    {address.streetAndNumber}
                                     <br />
-                                    {address.city}, {address.state}{" "}
-                                    {address.zipCode}, <br /> {address.country}
-                                </div>
-                                <div className="text-sm text-gray-500 mt-2">
-                                    Phone: {address.phone}
+                                    {address.place}, {address.region}{" "}
+                                    {address.postcode}, <br /> {address.country}
                                 </div>
                             </div>
                         </CardContent>
