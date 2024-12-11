@@ -7,17 +7,14 @@ import type { Metadata } from "next";
 import { PT_Sans_Narrow, Pacifico } from "next/font/google";
 
 // Local imports
-import Footer from "@/components/common/footer/footer";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-const Navbar = dynamic(() => import("../components/common/navbar/navbar"));
 
 // CSS
+import { Toaster } from "@/components/ui/sonner";
 import AppProvider from "@/provider/app-provider";
 import { CrispProvider } from "@/provider/crisp-provider";
+import LoaderProvider from "@/provider/loader-provider";
 import NProgress from "@/provider/NProgress";
-import dynamic from "next/dynamic";
-import { Toaster } from "sonner";
 import "./globals.css";
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,7 +36,7 @@ export const metadata: Metadata = {
     "TastyBite is a comprehensive food delivery platform offering a wide variety of cuisines, from pizzas to gourmet meals. Explore diverse menus, customize your orders, and enjoy fast, reliable delivery. Experience top-notch service, exclusive deals, and a seamless user interface powered by modern web technologies.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -51,16 +48,11 @@ export default function RootLayout({
           <CrispProvider />
           <GoogleAnalytics gaId="G-1CQPVHENQ9" />
           <body className={cn(narrow.className, "antialiased text-white ")}>
-            <TooltipProvider>
-              <Navbar />
-              <div className="min-h-screen" vaul-drawer-wrapper="">
-                {children}
-              </div>
-
-              <Footer />
+            <LoaderProvider>
+              {children}
               <Toaster richColors />
               <NProgress />
-            </TooltipProvider>
+            </LoaderProvider>
           </body>
         </html>
       </ClerkProvider>

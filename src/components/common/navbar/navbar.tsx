@@ -1,7 +1,6 @@
 "use client";
 
 // Packages
-import { useUser } from "@clerk/nextjs";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,18 +18,22 @@ import MobileNavbar from "./mobile-navbar";
 const MenuContent = dynamic(() => import("./menu-content"));
 const MenuEnd = dynamic(() => import("./menu-end"));
 
-const Navbar = () => {
+interface Props {
+  userId: string | undefined;
+}
+
+const Navbar = ({ userId }: Props) => {
   const [scrolling, setScrolling] = useState<boolean>(false);
   const [active, setActive] = useState<string | null>(null);
 
-  const { isSignedIn, isLoaded, user } = useUser();
+  // const { isSignedIn, isLoaded, user } = useUser();
   const dispatch = useAppDispatch();
 
   // Use a flag to conditionally skip the query
-  const skipQuery = !isLoaded || !user?.id;
+  const skipQuery = !userId;
 
   const { data: notification } = useUnreadNotificationQuery(
-    { userId: user?.id },
+    { userId },
     {
       skip: skipQuery,
     }
@@ -42,23 +45,23 @@ const Navbar = () => {
 
   useEffect(() => {
     const notificationHandler = () => {
-      if (user?.id) {
-        increamenttNotificationCount(dispatch, user.id!);
+      if (userId) {
+        increamenttNotificationCount(dispatch, userId);
       }
     };
-    if (user?.id) {
-      pusherClient.subscribe(user.id!);
+    if (userId) {
+      pusherClient.subscribe(userId!);
     }
 
     pusherClient.bind("notification:new", notificationHandler);
 
     return () => {
-      if (user?.id) {
-        pusherClient.unsubscribe(user.id);
+      if (userId) {
+        pusherClient.unsubscribe(userId);
       }
       pusherClient.unbind("notification:new", notificationHandler);
     };
-  }, [user?.id, dispatch]);
+  }, [userId, dispatch]);
 
   // Track window scroll to update navbar style
   useEffect(() => {
@@ -145,7 +148,7 @@ const Navbar = () => {
                   <HoveredLink href="/team">Our Team</HoveredLink>
                 </div>
               </MenuItem>
-              {isSignedIn && (
+              {userId && (
                 <Link href="/profile">
                   <span
                     className={`hover:text-primary-orange ${
@@ -170,7 +173,7 @@ const Navbar = () => {
           {/* Mobile Responsive */}
           <MobileNavbar
             scrolling={scrolling}
-            isSignedIn={isSignedIn}
+            isSignedIn={Boolean(userId)}
             unreadNotification={notification?.data}
           />
         </div>
