@@ -10,11 +10,14 @@ import { PT_Sans_Narrow, Pacifico } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 // CSS
+import Footer from "@/components/common/footer/footer";
+import Navbar from "@/components/common/navbar/navbar";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import AppProvider from "@/provider/app-provider";
 import { CrispProvider } from "@/provider/crisp-provider";
-import LoaderProvider from "@/provider/loader-provider";
 import NProgress from "@/provider/NProgress";
+import { currentUser } from "@clerk/nextjs/server";
 import "./globals.css";
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,6 +44,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await currentUser();
+
   return (
     <AppProvider>
       <ClerkProvider>
@@ -48,11 +53,16 @@ export default async function RootLayout({
           <CrispProvider />
           <GoogleAnalytics gaId="G-1CQPVHENQ9" />
           <body className={cn(narrow.className, "antialiased text-white ")}>
-            <LoaderProvider>
-              {children}
+            <TooltipProvider>
+              <Navbar userId={user?.id} />
+              <div className="min-h-screen" vaul-drawer-wrapper="">
+                {children}
+              </div>
+
+              <Footer />
               <Toaster richColors />
               <NProgress />
-            </LoaderProvider>
+            </TooltipProvider>
           </body>
         </html>
       </ClerkProvider>
