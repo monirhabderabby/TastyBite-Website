@@ -15,7 +15,7 @@ interface Props {
 
 export default function Tabs({ data, activeTab, setActiveTab }: Props) {
   return (
-    <div className="flex flex-wrap space-x-1">
+    <div className="flex flex-wrap  space-x-1  justify-center">
       {data.map((tab: tab) => (
         <Tab
           key={tab.id}
@@ -41,7 +41,7 @@ const Tab = ({ tab, activeTab, setActiveTab }: TabProps) => {
     <button
       onClick={() => setActiveTab(tab.id)}
       className={cn(
-        "relative rounded-full px-3 py-1.5 text-sm md:text-xl font-medium  outline-sky-400 transition focus-visible:outline-2 my-2",
+        "relative rounded-full px-3 py-1.5 text-sm md:text-xl font-medium  outline-sky-400 transition focus-visible:outline-2 my-2 ",
         activeTab === tab.id ? "text-white" : "hover:text-white/60"
       )}
       style={{
