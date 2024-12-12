@@ -1,11 +1,11 @@
 import { TStaff } from "@/types";
-import { Facebook, Linkedin, Youtube, Instagram } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function ChefCard({ chef: teamMember }: { chef: TStaff }) {
   return (
-    <div className="relative m-10  group p-4 group">
+    <div className="relative  group p-4 group">
       <div className="relative">
         {/* Rotating border */}
         <div
