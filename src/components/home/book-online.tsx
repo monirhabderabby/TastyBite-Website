@@ -1,11 +1,14 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
+// Packages
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+// Local imports
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ButtonPrimary from "../common/button/buttonPrimary";
 import SectionHeader from "../common/sectionHeader/sectionHeader";
 import { Button } from "../ui/button";
@@ -143,7 +146,7 @@ const BookOnline = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-center md:justify-start items-center">
+              <div className="flex justify-center md:justify-start items-center ">
                 <ButtonPrimary text="Book Now" btnType="submit" />
               </div>
             </form>
