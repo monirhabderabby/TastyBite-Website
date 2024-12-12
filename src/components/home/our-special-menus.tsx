@@ -1,8 +1,13 @@
+// Packages
 import dynamic from "next/dynamic";
 import Link from "next/link";
+
+// Local imports
 import SectionHeader from "../common/sectionHeader/sectionHeader";
 import BlackRubBG from "../ui/black-rub-bg";
-const MenusContaner = dynamic(() => import("./menus-container"));
+const MenusContaner = dynamic(() => import("./menus-container"), {
+  ssr: false,
+});
 
 const OurSpecialMenus = () => {
   return (
