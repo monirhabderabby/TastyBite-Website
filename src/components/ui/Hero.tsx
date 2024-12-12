@@ -6,7 +6,7 @@ import Image from "next/image";
 const Hero = () => {
   return (
     <div className=" inset-x-0 bottom-0 flex justify-center container absolute">
-      <div>
+      <div className="relative">
         <motion.div
           initial={{
             y: 200, // Start off-screen (from the bottom)
@@ -48,7 +48,7 @@ const Hero = () => {
               width={200}
               height={200}
               alt="leaf"
-              className="bg-cover absolute bottom-0 right-0 h-[50px] w-[50px] md:h-[150px] md:w-[150px] lg:w-[200px] lg:h-[200px]"
+              className="bg-cover w-[150px] h-[150px] absolute bottom-0 right-0"
             />
           </motion.div>
           {/* leaf - 2 */}
