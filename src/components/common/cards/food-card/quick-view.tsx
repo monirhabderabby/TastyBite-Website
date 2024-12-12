@@ -1,5 +1,5 @@
 // Packages
-import { Heart, Share2 } from "lucide-react";
+import { Heart } from "lucide-react";
 
 // Local imports
 import { Button } from "@/components/ui/button";
@@ -74,14 +74,6 @@ const QuickViewAction = ({
                 ) : (
                     <Heart className="text-gray-500 h-5 w-5" />
                 )}
-            </Button>
-            <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full h-[40px] w-[40px]"
-                title="Share this content"
-            >
-                <Share2 className="text-gray-500 h-5 w-5" />
             </Button>
         </div>
     );
