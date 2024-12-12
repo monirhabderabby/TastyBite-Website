@@ -43,6 +43,7 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
     data: foods,
     isLoading,
     isError,
+    isFetching,
   } = useGetAllFoodsQuery({
     searchTerm,
   });
@@ -69,7 +70,7 @@ const NavbarSearchModal = ({ open, setOpen }: Props) => {
   // foods content
   let content;
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     content = (
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-[50px]">
         {[1, 2, 3].map((n) => (
