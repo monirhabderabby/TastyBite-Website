@@ -1,11 +1,8 @@
 import Image from "next/image";
 import Pageheader from "@/components/common/PageHeaderBanner/Pageheader";
-
-import Blog_Search from "../_components/Blog_Search";
 import PopularBlog from "@/components/blog/PopularBlog";
 import Blog_category from "../_components/Blog_Category";
 import SocialLink from "@/components/blog/SocialLink";
-import { TBlog } from "@/types";
 import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
 import BlogCommentForm from "./_components/BlogCommentForm";
 import BlogCommentDisplay from "./_components/BlogCommentDisplay";
@@ -21,20 +18,15 @@ export default async function BlogDetailsPage({
 }: {
   params: Record<string, string>;
 }) {
-  let blogData: TBlog | null = null;
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${params.blogId}`
-    );
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${params.blogId}`
+  );
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch blog data");
-    }
-    const data = await res.json();
-    blogData = data?.data;
-  } catch (err) {
-    console.log(err);
+  if (!res.ok) {
+    throw new Error("Failed to fetch blog data");
   }
+  const data = await res.json();
+  const blogData = data?.data;
 
   const breadcrumbLinks = {
     mode: "dark",
@@ -95,7 +87,6 @@ export default async function BlogDetailsPage({
 
           {/* blog sidebar part */}
           <div className=" col-span-5 lg:mt-4 lg:col-span-2">
-            <Blog_Search />
             <PopularBlog blogId={params.blogId} />
             <Blog_category />
             <SocialLink />
