@@ -83,7 +83,7 @@ export default Footer;
 
 const CopyRightMarker = () => {
     return (
-        <section className="h-[80px] w-full container flex justify-between items-center">
+        <section className="h-[100px] md:h-[80px] w-full container flex flex-col md:flex-row justify-center md:justify-between items-center gap-y-2 md:pr-28 xl:pr-0">
             <h6 className="text-[14px]">
                 &copy; TastyBite all Rights Reserved. Designed by{" "}
                 <span className="text-primary-orange">NextGen Dev</span>

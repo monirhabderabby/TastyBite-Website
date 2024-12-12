@@ -30,6 +30,7 @@ import {
 } from "../ui/select";
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 
+// Component for Quantity Input Field
 function QuantityInput({
     value,
     onDecrease,
@@ -44,12 +45,14 @@ function QuantityInput({
     return (
         <div className="flex">
             <div className="flex items-center border rounded-md">
+                {/* Decrease quantity button */}
                 <button
                     onClick={onDecrease}
                     className="px-3 py-1 border-r hover:bg-gray-100"
                 >
                     -
                 </button>
+                {/* Input field for quantity */}
                 <input
                     type="number"
                     value={value}
@@ -57,6 +60,7 @@ function QuantityInput({
                     className="w-12 text-center focus:outline-none"
                     min="1"
                 />
+                {/* Increase quantity button */}
                 <button
                     onClick={onIncrease}
                     className="px-3 py-1 border-l hover:bg-gray-100"
@@ -68,6 +72,7 @@ function QuantityInput({
     );
 }
 
+// Component to display each Cart Item
 function CartItem({
     item,
     onUpdateQuantity,
@@ -79,6 +84,7 @@ function CartItem({
 }) {
     return (
         <div className="flex items-start gap-4 py-4 border-b">
+            {/* Item image */}
             <Image
                 src={item.images[0]}
                 alt={item.name}
@@ -89,12 +95,14 @@ function CartItem({
             <div className="flex-1">
                 <div className="flex justify-between">
                     <div>
+                        {/* Item details */}
                         <h3 className="font-medium">{item.name}</h3>
                         <p className="text-sm text-muted-foreground">
                             {item.menuId.name}
                         </p>
                         <p className="mt-1">${item.price.toFixed(2)}</p>
                     </div>
+                    {/* Remove item button */}
                     <button
                         onClick={() => onRemove(item._id)}
                         className="text-muted-foreground hover:text-foreground"
@@ -102,6 +110,7 @@ function CartItem({
                         <X className="h-4 w-4" />
                     </button>
                 </div>
+                {/* Quantity input */}
                 <div className="mt-2">
                     <QuantityInput
                         value={item.quantity}
@@ -122,6 +131,7 @@ function CartItem({
     );
 }
 
+// Component for Cart Summary and Checkout
 interface CartSummaryProps {
     subTotal: number;
     onCheckout: (e: React.FormEvent) => void;
@@ -140,12 +150,15 @@ function CartSummary({
 }: CartSummaryProps) {
     const { user } = useUser();
 
+    // Fetch user's saved delivery locations
     const { data, isLoading, isSuccess, isError } = useGetLocationByUserQuery(
         user?.id
     );
+
     return (
         <form onSubmit={onCheckout}>
             <div className="space-y-4 p-5">
+                {/* Subtotal and Total display */}
                 <div className="flex justify-between">
                     <span>Subtotal:</span>
                     <span>${subTotal.toFixed(2)}</span>
@@ -154,6 +167,7 @@ function CartSummary({
                     <span>Total:</span>
                     <span>${subTotal.toFixed(2)}</span>
                 </div>
+                {/* Delivery location selection */}
                 <div>
                     <Select
                         onValueChange={(value) => setDeliveryLocation(value)}
@@ -176,6 +190,7 @@ function CartSummary({
                         </SelectContent>
                     </Select>
                 </div>
+                {/* Terms and conditions checkbox */}
                 <div className="flex items-center space-x-2">
                     <Checkbox
                         id="terms"
@@ -191,6 +206,7 @@ function CartSummary({
                         I agree with the Terms & conditions
                     </label>
                 </div>
+                {/* Checkout and View Cart buttons */}
                 <div className="flex flex-col gap-1">
                     <Button
                         className="w-full bg-orange-400 hover:bg-orange-500"
@@ -210,16 +226,19 @@ function CartSummary({
     );
 }
 
+// Main CartSheet Component
 export default function CartSheet() {
-    const [deliveryLocation, setDeliveryLocation] = useState("");
-    const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const [deliveryLocation, setDeliveryLocation] = useState(""); // State for selected delivery location
+    const [agreedToTerms, setAgreedToTerms] = useState(false); // State for terms agreement
 
     const { user } = useUser();
 
+    // Get cart data from Redux store
     const cartItems = useSelector(selectCartItems);
     const cartItemsNumber = useSelector(selectCartTotalQuantity);
     const dispatch = useDispatch();
 
+    // Update item quantity in the cart
     const updateCartQuantity = (id: string, quantity: number) => {
         if (quantity > 0) {
             dispatch(updateQuantity({ id, quantity }));
@@ -228,21 +247,26 @@ export default function CartSheet() {
         }
     };
 
+    // Remove item from the cart
     const removeItem = (id: string) => {
         dispatch(removeFromCart(id));
     };
 
+    // Calculate subtotal
     const subTotal = cartItems.reduce(
         (total: number, item: TFoodWithQuantity) => {
             return total + item.price * item.quantity;
         },
         0
     );
+
+    // Mutation for checkout process
     const [createCheckoutSession, { isLoading: checkoutLoading }] =
         useCheckoutMutation();
 
     const showError = (message: string) => toast.error(message);
 
+    // Handle checkout submission
     const handleCheckout = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!user) return showError("You must be logged in to place an order");
@@ -250,7 +274,6 @@ export default function CartSheet() {
             return showError("Please agree to the Terms & Conditions");
         if (!deliveryLocation)
             return showError("Please, Provide your valid delivery location");
-        // Implement checkout functionality
 
         if (checkoutLoading) {
             return;
@@ -261,76 +284,62 @@ export default function CartSheet() {
             cartFoods: cartItems.map((item: TFoodWithQuantity) => ({
                 _id: item._id,
                 name: item.name,
-                // images: item.images,
                 quantity: item.quantity,
                 price: item.price,
             })),
             deliveryLocation,
             totalPrice: subTotal,
         });
-        window.location.href = checkoutRes.data?.url;
+
+        window.location.href = checkoutRes.data?.url; // Redirect to checkout URL
     };
 
     return (
         <div className="text-primary-black">
             <div className="mt-4">
-                <div className="">
-                    <div className="">
-                        <SheetHeader>
-                            <div className="flex justify-between items-center p-5">
-                                <SheetTitle className="text-primary-black text-2xl font-semibold">
-                                    Shopping Cart
-                                </SheetTitle>
-                                <SheetDescription>
-                                    <span className="text-muted-foreground">
-                                        {cartItemsNumber}{" "}
-                                        {cartItemsNumber === 1
-                                            ? "item"
-                                            : "items"}
-                                    </span>
-                                </SheetDescription>
-                            </div>
-                        </SheetHeader>
-                        <div className="">
-                            <ScrollArea className="h-[55vh] px-5">
-                                <div className="space-y-4">
-                                    {cartItems.length > 0 ? (
-                                        cartItems.map(
-                                            (item: TFoodWithQuantity) => (
-                                                <CartItem
-                                                    key={item._id}
-                                                    item={item}
-                                                    onUpdateQuantity={
-                                                        updateCartQuantity
-                                                    }
-                                                    onRemove={removeItem}
-                                                />
-                                            )
-                                        )
-                                    ) : (
-                                        <p className="text-center text-muted-foreground my-20">
-                                            Your cart is empty.
-                                        </p>
-                                    )}
-                                </div>
-                            </ScrollArea>
-                            {cartItems.length > 0 && (
-                                <div className="mt-4 shadow-inner">
-                                    <CartSummary
-                                        subTotal={subTotal}
-                                        onCheckout={handleCheckout}
-                                        deliveryLocation={deliveryLocation}
-                                        setDeliveryLocation={
-                                            setDeliveryLocation
-                                        }
-                                        agreedToTerms={agreedToTerms}
-                                        setAgreedToTerms={setAgreedToTerms}
-                                    />
-                                </div>
-                            )}
-                        </div>
+                <SheetHeader>
+                    <div className="flex justify-between items-center p-5">
+                        <SheetTitle className="text-primary-black text-2xl font-semibold">
+                            Shopping Cart
+                        </SheetTitle>
+                        <SheetDescription>
+                            <span className="text-muted-foreground">
+                                {cartItemsNumber}{" "}
+                                {cartItemsNumber === 1 ? "item" : "items"}
+                            </span>
+                        </SheetDescription>
                     </div>
-                </div>
+                </SheetHeader>
+                <ScrollArea className="h-[52vh] 2xl:h-[55vh] px-5">
+                    <div className="space-y-4">
+                        {cartItems.length > 0 ? (
+                            cartItems.map((item: TFoodWithQuantity) => (
+                                <CartItem
+                                    key={item._id}
+                                    item={item}
+                                    onUpdateQuantity={updateCartQuantity}
+                                    onRemove={removeItem}
+                                />
+                            ))
+                        ) : (
+                            <p className="text-center text-muted-foreground my-20">
+                                Your cart is empty.
+                            </p>
+                        )}
+                    </div>
+                </ScrollArea>
+                {cartItems.length > 0 && (
+                    <div className="mt-4 shadow-inner">
+                        <CartSummary
+                            subTotal={subTotal}
+                            onCheckout={handleCheckout}
+                            deliveryLocation={deliveryLocation}
+                            setDeliveryLocation={setDeliveryLocation}
+                            agreedToTerms={agreedToTerms}
+                            setAgreedToTerms={setAgreedToTerms}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );
