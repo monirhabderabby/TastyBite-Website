@@ -4,6 +4,7 @@ import AboutHome from "@/components/home/about-home";
 import BestChef from "@/components/home/best-chef";
 import BookOnline from "@/components/home/book-online";
 import CustomerReviews from "@/components/home/customer-reviews";
+import DeliveryPartnerSection from "@/components/home/delivery-partner-section";
 import LatestNews from "@/components/home/latest-news";
 import OurSpecialMenus from "@/components/home/our-special-menus";
 import Speciality from "@/components/home/speciality";
@@ -34,6 +35,7 @@ export default async function Home() {
       <CustomerReviews />
       {/* About food */}
       <AboutFood />
+      <DeliveryPartnerSection />
       {/* About section */}
       <AboutHome />
     </div>
