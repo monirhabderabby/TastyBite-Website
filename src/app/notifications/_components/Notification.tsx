@@ -121,9 +121,9 @@ const Notification = ({ userId }: Props) => {
    */
   let renderContent;
 
-  if (isLoading || isFetching)
-    renderContent = <LoaderState message="Retrieving notifications..." />;
-  if (isError || !data?.success) {
+  if (isLoading || isFetching){
+    renderContent = <LoaderState message="Retrieving notifications..." />; }
+ else if (isError || !data?.success) {
     return (
       <ErrorState
         message={
