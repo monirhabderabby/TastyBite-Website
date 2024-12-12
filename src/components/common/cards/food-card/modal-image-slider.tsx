@@ -28,14 +28,14 @@ const ModalImageSlider = ({
       <div
         className={cn(
           selectedImageContainer,
-          "w-full bg-orange-300 h-[220px] md:h-[300px] relative md:rounded-[5px]"
+          "w-full bg-orange-300 h-[250px] md:h-[300px] relative md:rounded-[5px]"
         )}
       >
         <Image
           src={selectedImg}
           fill
           alt="product"
-          className="md:rounded-[5px] h-[220px] md:h-[300px]"
+          className="md:rounded-[5px] h-[250px] md:h-[300px]"
         />
       </div>
       <div className=" mt-5 md:mt-10 px-4">
