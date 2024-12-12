@@ -71,7 +71,7 @@ const Hero = () => {
               width={350}
               height={350}
               alt="leaf"
-              className="bg-cover absolute bottom-[50px] md:bottom-[120px] w-[100px] h-[100px] right-0 md:h-[250px] md:w-[300px] lg:h-[300px] lg:w-[350px]"
+              className="bg-cover absolute bottom-[80px] md:bottom-[50px] lg:bottom-[120px] w-[100px] h-[100px] right-20 md:right-0 md:h-[250px] md:w-[300px] lg:h-[300px] lg:w-[350px]"
             />
           </motion.div>
           {/* leaf - 3 */}
