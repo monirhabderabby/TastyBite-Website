@@ -121,9 +121,9 @@ const Notification = ({ userId }: Props) => {
    */
   let renderContent;
 
-  if (isLoading || isFetching){
-    renderContent = <LoaderState message="Retrieving notifications..." />; }
- else if (isError || !data?.success) {
+  if (isLoading | isFetching) {
+    renderContent = <LoaderState message={`Retrieving notifications...`} />;
+  } else if (isError | !data?.success) {
     return (
       <ErrorState
         message={
@@ -137,13 +137,11 @@ const Notification = ({ userId }: Props) => {
         }
       />
     );
-  }
-  if (data?.data?.length === 0) {
+  } else if (data?.data?.length === 0) {
     renderContent = (
       <EmptyState message="No notifications found. You’re all caught up!" />
     );
-  }
-  if (data?.data?.length > 0) {
+  } else if (data?.data?.length > 0) {
     renderContent = (
       <motion.div layout className="flex flex-col gap-y-5 mt-5 ">
         <AnimatePresence initial={false}>
