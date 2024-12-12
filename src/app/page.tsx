@@ -1,3 +1,4 @@
+// Local imports
 import AboutFood from "@/components/home/about-food";
 import AboutHome from "@/components/home/about-home";
 import BestChef from "@/components/home/best-chef";
