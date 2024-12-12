@@ -1,6 +1,11 @@
-import { stripe } from "@/lib/stripe";
+// Packages
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+
+// Local imports
+import { stripe } from "@/lib/stripe";
+import getStripeCustomer from "./lib/get-stripe-customer";
+import storeStripeCustomer from "./lib/store-stripe-customer";
 
 interface CheckoutPayload {
   cartFoods: CartFood[];
@@ -15,27 +20,7 @@ interface CartFood {
   quantity: number;
 }
 
-interface StripeCustomerResponse {
-  success: boolean;
-  data?: { customerId: string };
-}
-async function getStripeCustomer(
-  userId: string
-): Promise<StripeCustomerResponse | null> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/stripe-user/${userId}`
-    );
-
-    return (await res.json()) as StripeCustomerResponse;
-  } catch (error) {
-    console.error("Error fetching Stripe customer:", (error as Error).message);
-    return null;
-  }
-}
-
 const createLineItems = (cartFoods: CartFood[]) => {
-  console.log(cartFoods);
   return cartFoods.map((food) => {
     return {
       price_data: {
@@ -49,17 +34,23 @@ const createLineItems = (cartFoods: CartFood[]) => {
     };
   });
 };
+
 export async function POST(req: Request): Promise<NextResponse> {
   try {
+    // getting logged in user information
     const user = await currentUser();
+
+    // body
     const { cartFoods, deliveryLocation, totalPrice }: CheckoutPayload =
       await req.json();
 
+    // validating request body
     if (!user || !user.id || !cartFoods || cartFoods.length === 0) {
       return new NextResponse("Invalid request data", { status: 400 });
     }
 
     const stripeCustomerResponse = await getStripeCustomer(user.id);
+
     let stripeCustomerId = stripeCustomerResponse?.data?.customerId;
 
     if (!stripeCustomerId) {
@@ -67,6 +58,7 @@ export async function POST(req: Request): Promise<NextResponse> {
         email: user.emailAddresses[0]?.emailAddress,
       });
       stripeCustomerId = stripeCustomer.id;
+      await storeStripeCustomer(user.id, stripeCustomerId);
     }
 
     const lineItems = createLineItems(cartFoods);
