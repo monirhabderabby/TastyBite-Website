@@ -64,6 +64,12 @@ export const CategoriesFilter = () => {
         }
     };
 
+    useEffect(() => {
+        return () => {
+            dispatch(setMenu(""));
+        };
+    }, [dispatch]);
+
     return (
         <div>
             <h1 className="text-[24px] uppercase text-primary-black font-semibold tracking-[2px]">
