@@ -12,12 +12,11 @@ export default function BlogCommentDisplay({
 }: {
   blogData: TBlog | null;
 }) {
-  const limit = 5;
+  const limit = 5; // Number of comments to display per page
   const [page, setPage] = useState(1);
 
   const query = `limit=${limit}&page=${page}`;
-
-  const { data: blogCommentRes } = useGetBlogCommentQuery({
+  const { data: blogCommentRes, isLoading } = useGetBlogCommentQuery({
     id: blogData?._id || 0,
     query,
   });
@@ -27,12 +26,20 @@ export default function BlogCommentDisplay({
 
   const comments = blogCommentRes?.data || [];
   const totalPages = blogCommentRes?.meta?.totalPage || 1;
+  const totalComments = blogCommentRes?.meta?.total || 0;
   return (
     <div id="blog-comment-display" className="max-w-2xl  mx-auto p-4">
       <h2 className="text-xl font-bold mb-6">
-        {String(comments.length).padStart(2, "0")} COMMENTS
+        {String(totalComments).padStart(2, "0")} COMMENTS
       </h2>
       <div className="space-y-6">
+        {isLoading && (
+          <p className="text-muted-foreground">Loading comments...</p>
+        )}
+
+        {comments.length === 0 && !isLoading && (
+          <p className="text-muted-foreground">No comments yet</p>
+        )}
         {comments.map((comment: any) => (
           <div
             key={comment.id}
@@ -62,12 +69,14 @@ export default function BlogCommentDisplay({
           </div>
         ))}
       </div>
-      <Blog_Pagination
-        sectionId="blog-comment-display"
-        page={page}
-        handlePageChange={handlePageChange}
-        totalPages={totalPages}
-      />
+      {totalComments > 5 && (
+        <Blog_Pagination
+          sectionId="blog-comment-display"
+          page={page}
+          handlePageChange={handlePageChange}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 }
