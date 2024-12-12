@@ -102,11 +102,11 @@ const LatestNews = () => {
                 </div>
             </div>
 
-            <Link href={"/blog"}>
-                <div className="flex justify-center items-center mt-[50px]">
+            <div className="flex justify-center items-center mt-[50px]">
+                <Link href={"/blog"}>
                     <ButtonPrimary text="View More" />
-                </div>
-            </Link>
+                </Link>
+            </div>
         </div>
     );
 };
