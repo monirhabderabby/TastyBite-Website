@@ -1,47 +1,50 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-    selectCartItems,
-    selectCartTotalQuantity,
-} from "@/redux/features/cart/cartSelector";
-import {
-    removeFromCart,
-    updateQuantity,
-} from "@/redux/features/cart/cartSlice";
-import { useCheckoutMutation } from "@/redux/features/payment/checkoutApi";
-import { useGetLocationByUserQuery } from "@/redux/features/user/userApi";
-import { TAddress, TFoodWithQuantity } from "@/types";
+// Packages
 import { useUser } from "@clerk/nextjs";
-import { X } from "lucide-react";
+import { Loader2, Lock, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+
+// Local imports
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  selectCartItems,
+  selectCartTotalQuantity,
+} from "@/redux/features/cart/cartSelector";
+import {
+  removeFromCart,
+  updateQuantity,
+} from "@/redux/features/cart/cartSlice";
+import { useCheckoutMutation } from "@/redux/features/payment/checkoutApi";
+import { useGetLocationByUserQuery } from "@/redux/features/user/userApi";
+import { TAddress, TFoodWithQuantity } from "@/types";
 import { ScrollArea } from "../ui/scroll-area";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "../ui/select";
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 
 // Component for Quantity Input Field
 function QuantityInput({
-    value,
-    onDecrease,
-    onIncrease,
-    onChange,
+  value,
+  onDecrease,
+  onIncrease,
+  onChange,
 }: {
-    value: number;
-    onDecrease: () => void;
-    onIncrease: () => void;
-    onChange: (value: number) => void;
+  value: number;
+  onDecrease: () => void;
+  onIncrease: () => void;
+  onChange: (value: number) => void;
 }) {
+
     return (
         <div className="flex">
             <div className="flex items-center border rounded-md">
@@ -74,13 +77,13 @@ function QuantityInput({
 
 // Component to display each Cart Item
 function CartItem({
-    item,
-    onUpdateQuantity,
-    onRemove,
+  item,
+  onUpdateQuantity,
+  onRemove,
 }: {
-    item: TFoodWithQuantity;
-    onUpdateQuantity: (id: string, quantity: number) => void;
-    onRemove: (id: string) => void;
+  item: TFoodWithQuantity;
+  onUpdateQuantity: (id: string, quantity: number) => void;
+  onRemove: (id: string) => void;
 }) {
     return (
         <div className="flex items-start gap-4 py-4 border-b">
@@ -128,102 +131,112 @@ function CartItem({
                 </div>
             </div>
         </div>
-    );
+        <div className="mt-2">
+          <QuantityInput
+            value={item.quantity}
+            onDecrease={() =>
+              onUpdateQuantity(item._id, Math.max(1, item.quantity - 1))
+            }
+            onIncrease={() => onUpdateQuantity(item._id, item.quantity + 1)}
+            onChange={(value) => onUpdateQuantity(item._id, value)}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // Component for Cart Summary and Checkout
 interface CartSummaryProps {
-    subTotal: number;
-    onCheckout: (e: React.FormEvent) => void;
-    deliveryLocation: string;
-    setDeliveryLocation: (location: string) => void;
-    agreedToTerms: boolean;
-    setAgreedToTerms: (agreed: boolean) => void;
+  subTotal: number;
+  onCheckout: (e: React.FormEvent) => void;
+  deliveryLocation: string;
+  setDeliveryLocation: (location: string) => void;
+  agreedToTerms: boolean;
+  setAgreedToTerms: (agreed: boolean) => void;
+  checkoutLoading?: true | false;
 }
 
 function CartSummary({
-    subTotal,
-    onCheckout,
-    setDeliveryLocation,
-    agreedToTerms,
-    setAgreedToTerms,
+  subTotal,
+  onCheckout,
+  setDeliveryLocation,
+  agreedToTerms,
+  setAgreedToTerms,
+  checkoutLoading,
+  deliveryLocation,
 }: CartSummaryProps) {
-    const { user } = useUser();
-
-    // Fetch user's saved delivery locations
-    const { data, isLoading, isSuccess, isError } = useGetLocationByUserQuery(
-        user?.id
-    );
-
-    return (
-        <form onSubmit={onCheckout}>
-            <div className="space-y-4 p-5">
-                {/* Subtotal and Total display */}
-                <div className="flex justify-between">
-                    <span>Subtotal:</span>
-                    <span>${subTotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between font-medium">
-                    <span>Total:</span>
-                    <span>${subTotal.toFixed(2)}</span>
-                </div>
-                {/* Delivery location selection */}
-                <div>
-                    <Select
-                        onValueChange={(value) => setDeliveryLocation(value)}
-                    >
-                        <SelectTrigger className="w-full text-primary-black">
-                            <SelectValue placeholder="Select delivery location" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {!isLoading &&
-                                !isError &&
-                                isSuccess &&
-                                data?.data.map((address: TAddress) => (
-                                    <SelectItem
-                                        key={address._id}
-                                        value={address._id as string}
-                                    >
-                                        {address.name}
-                                    </SelectItem>
-                                ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-                {/* Terms and conditions checkbox */}
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        id="terms"
-                        checked={agreedToTerms}
-                        onCheckedChange={(checked: boolean) =>
-                            setAgreedToTerms(checked as boolean)
-                        }
-                    />
-                    <label
-                        htmlFor="terms"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                        I agree with the Terms & conditions
-                    </label>
-                </div>
-                {/* Checkout and View Cart buttons */}
-                <div className="flex flex-col gap-1">
-                    <Button
-                        className="w-full bg-orange-400 hover:bg-orange-500"
-                        disabled={!agreedToTerms}
-                        type="submit"
-                    >
-                        CHECKOUT
-                    </Button>
-                    <Link href={"/cart"} className="mt-2">
-                        <Button variant="outline" className="w-full">
-                            VIEW CART
-                        </Button>
-                    </Link>
-                </div>
-            </div>
-        </form>
-    );
+  const { user } = useUser();
+  const { data, isLoading, isSuccess, isError } = useGetLocationByUserQuery(
+    user?.id
+  );
+  return (
+    <form onSubmit={onCheckout}>
+      <div className="space-y-4 p-5">
+        <div className="flex justify-between">
+          <span>Subtotal:</span>
+          <span>${subTotal.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between font-medium">
+          <span>Total:</span>
+          <span>${subTotal.toFixed(2)}</span>
+        </div>
+        <div>
+          <Select onValueChange={(value) => setDeliveryLocation(value)}>
+            <SelectTrigger className="w-full text-primary-black">
+              <SelectValue placeholder="Select delivery location" />
+            </SelectTrigger>
+            <SelectContent>
+              {!isLoading &&
+                !isError &&
+                isSuccess &&
+                data?.data.map((address: TAddress) => (
+                  <SelectItem key={address._id} value={address._id as string}>
+                    {address.name}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="terms"
+            checked={agreedToTerms}
+            onCheckedChange={(checked: boolean) =>
+              setAgreedToTerms(checked as boolean)
+            }
+          />
+          <label
+            htmlFor="terms"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            I agree with the Terms & conditions
+          </label>
+        </div>
+        <div className="flex flex-col gap-1">
+          <Button
+            className="w-full relative bg-orange-400 hover:bg-orange-500"
+            disabled={!agreedToTerms || checkoutLoading || !deliveryLocation}
+            type="submit"
+          >
+            CHECKOUT
+            <span>
+              {checkoutLoading ? (
+                <Loader2 className="animate-spin h-4 w-4 absolute right-4 top-[10px]" />
+              ) : (
+                <Lock className="h-4 w-4 absolute right-4 top-[10px]" />
+              )}
+            </span>
+          </Button>
+          <Link href={"/cart"} className="mt-2">
+            <Button variant="outline" className="w-full">
+              VIEW CART
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </form>
+  );
 }
 
 // Main CartSheet Component
@@ -231,7 +244,7 @@ export default function CartSheet() {
     const [deliveryLocation, setDeliveryLocation] = useState(""); // State for selected delivery location
     const [agreedToTerms, setAgreedToTerms] = useState(false); // State for terms agreement
 
-    const { user } = useUser();
+  const { user } = useUser();
 
     // Get cart data from Redux store
     const cartItems = useSelector(selectCartItems);
@@ -264,7 +277,7 @@ export default function CartSheet() {
     const [createCheckoutSession, { isLoading: checkoutLoading }] =
         useCheckoutMutation();
 
-    const showError = (message: string) => toast.error(message);
+  const showError = (message: string) => toast.error(message);
 
     // Handle checkout submission
     const handleCheckout = async (e: React.FormEvent) => {
@@ -275,9 +288,9 @@ export default function CartSheet() {
         if (!deliveryLocation)
             return showError("Please, Provide your valid delivery location");
 
-        if (checkoutLoading) {
-            return;
-        }
+    if (checkoutLoading) {
+      return;
+    }
 
         const checkoutRes = await createCheckoutSession({
             clerkId: user?.id,
@@ -341,6 +354,9 @@ export default function CartSheet() {
                     </div>
                 )}
             </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
