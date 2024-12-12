@@ -32,6 +32,7 @@ import {
 } from "../ui/select";
 import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet";
 
+// Component for Quantity Input Field
 function QuantityInput({
   value,
   onDecrease,
@@ -43,33 +44,38 @@ function QuantityInput({
   onIncrease: () => void;
   onChange: (value: number) => void;
 }) {
-  return (
-    <div className="flex">
-      <div className="flex items-center border rounded-md">
-        <button
-          onClick={onDecrease}
-          className="px-3 py-1 border-r hover:bg-gray-100"
-        >
-          -
-        </button>
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(parseInt(e.target.value) || 1)}
-          className="w-12 text-center focus:outline-none"
-          min="1"
-        />
-        <button
-          onClick={onIncrease}
-          className="px-3 py-1 border-l hover:bg-gray-100"
-        >
-          +
-        </button>
-      </div>
-    </div>
-  );
+
+    return (
+        <div className="flex">
+            <div className="flex items-center border rounded-md">
+                {/* Decrease quantity button */}
+                <button
+                    onClick={onDecrease}
+                    className="px-3 py-1 border-r hover:bg-gray-100"
+                >
+                    -
+                </button>
+                {/* Input field for quantity */}
+                <input
+                    type="number"
+                    value={value}
+                    onChange={(e) => onChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center focus:outline-none"
+                    min="1"
+                />
+                {/* Increase quantity button */}
+                <button
+                    onClick={onIncrease}
+                    className="px-3 py-1 border-l hover:bg-gray-100"
+                >
+                    +
+                </button>
+            </div>
+        </div>
+    );
 }
 
+// Component to display each Cart Item
 function CartItem({
   item,
   onUpdateQuantity,
@@ -79,28 +85,51 @@ function CartItem({
   onUpdateQuantity: (id: string, quantity: number) => void;
   onRemove: (id: string) => void;
 }) {
-  return (
-    <div className="flex items-start gap-4 py-4 border-b">
-      <Image
-        src={item.images[0]}
-        alt={item.name}
-        width={80}
-        height={80}
-        className="rounded-md"
-      />
-      <div className="flex-1">
-        <div className="flex justify-between">
-          <div>
-            <h3 className="font-medium">{item.name}</h3>
-            <p className="text-sm text-muted-foreground">{item.menuId.name}</p>
-            <p className="mt-1">${item.price.toFixed(2)}</p>
-          </div>
-          <button
-            onClick={() => onRemove(item._id)}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <X className="h-4 w-4" />
-          </button>
+    return (
+        <div className="flex items-start gap-4 py-4 border-b">
+            {/* Item image */}
+            <Image
+                src={item.images[0]}
+                alt={item.name}
+                width={80}
+                height={80}
+                className="rounded-md"
+            />
+            <div className="flex-1">
+                <div className="flex justify-between">
+                    <div>
+                        {/* Item details */}
+                        <h3 className="font-medium">{item.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                            {item.menuId.name}
+                        </p>
+                        <p className="mt-1">${item.price.toFixed(2)}</p>
+                    </div>
+                    {/* Remove item button */}
+                    <button
+                        onClick={() => onRemove(item._id)}
+                        className="text-muted-foreground hover:text-foreground"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                </div>
+                {/* Quantity input */}
+                <div className="mt-2">
+                    <QuantityInput
+                        value={item.quantity}
+                        onDecrease={() =>
+                            onUpdateQuantity(
+                                item._id,
+                                Math.max(1, item.quantity - 1)
+                            )
+                        }
+                        onIncrease={() =>
+                            onUpdateQuantity(item._id, item.quantity + 1)
+                        }
+                        onChange={(value) => onUpdateQuantity(item._id, value)}
+                    />
+                </div>
+            </div>
         </div>
         <div className="mt-2">
           <QuantityInput
@@ -117,6 +146,7 @@ function CartItem({
   );
 }
 
+// Component for Cart Summary and Checkout
 interface CartSummaryProps {
   subTotal: number;
   onCheckout: (e: React.FormEvent) => void;
@@ -137,7 +167,6 @@ function CartSummary({
   deliveryLocation,
 }: CartSummaryProps) {
   const { user } = useUser();
-
   const { data, isLoading, isSuccess, isError } = useGetLocationByUserQuery(
     user?.id
   );
@@ -210,115 +239,120 @@ function CartSummary({
   );
 }
 
+// Main CartSheet Component
 export default function CartSheet() {
-  const [deliveryLocation, setDeliveryLocation] = useState("");
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const [deliveryLocation, setDeliveryLocation] = useState(""); // State for selected delivery location
+    const [agreedToTerms, setAgreedToTerms] = useState(false); // State for terms agreement
 
   const { user } = useUser();
 
-  const cartItems = useSelector(selectCartItems);
-  const cartItemsNumber = useSelector(selectCartTotalQuantity);
-  const dispatch = useDispatch();
+    // Get cart data from Redux store
+    const cartItems = useSelector(selectCartItems);
+    const cartItemsNumber = useSelector(selectCartTotalQuantity);
+    const dispatch = useDispatch();
 
-  const updateCartQuantity = (id: string, quantity: number) => {
-    if (quantity > 0) {
-      dispatch(updateQuantity({ id, quantity }));
-    } else {
-      removeItem(id);
-    }
-  };
+    // Update item quantity in the cart
+    const updateCartQuantity = (id: string, quantity: number) => {
+        if (quantity > 0) {
+            dispatch(updateQuantity({ id, quantity }));
+        } else {
+            removeItem(id);
+        }
+    };
 
-  const removeItem = (id: string) => {
-    dispatch(removeFromCart(id));
-  };
+    // Remove item from the cart
+    const removeItem = (id: string) => {
+        dispatch(removeFromCart(id));
+    };
 
-  const subTotal = cartItems.reduce(
-    (total: number, item: TFoodWithQuantity) => {
-      return total + item.price * item.quantity;
-    },
-    0
-  );
-  const [createCheckoutSession, { isLoading: checkoutLoading }] =
-    useCheckoutMutation();
+    // Calculate subtotal
+    const subTotal = cartItems.reduce(
+        (total: number, item: TFoodWithQuantity) => {
+            return total + item.price * item.quantity;
+        },
+        0
+    );
+
+    // Mutation for checkout process
+    const [createCheckoutSession, { isLoading: checkoutLoading }] =
+        useCheckoutMutation();
 
   const showError = (message: string) => toast.error(message);
 
-  const handleCheckout = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return showError("You must be logged in to place an order");
-    if (!agreedToTerms)
-      return showError("Please agree to the Terms & Conditions");
-    if (!deliveryLocation)
-      return showError("Please, Provide your valid delivery location");
-    // Implement checkout functionality
+    // Handle checkout submission
+    const handleCheckout = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!user) return showError("You must be logged in to place an order");
+        if (!agreedToTerms)
+            return showError("Please agree to the Terms & Conditions");
+        if (!deliveryLocation)
+            return showError("Please, Provide your valid delivery location");
 
     if (checkoutLoading) {
       return;
     }
 
-    const checkoutRes = await createCheckoutSession({
-      clerkId: user?.id,
-      cartFoods: cartItems.map((item: TFoodWithQuantity) => ({
-        _id: item._id,
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      deliveryLocation,
-      totalPrice: subTotal,
-    });
-    window.location.href = checkoutRes.data?.url;
-  };
+        const checkoutRes = await createCheckoutSession({
+            clerkId: user?.id,
+            cartFoods: cartItems.map((item: TFoodWithQuantity) => ({
+                _id: item._id,
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price,
+            })),
+            deliveryLocation,
+            totalPrice: subTotal,
+        });
 
-  return (
-    <div className="text-primary-black">
-      <div className="mt-4">
-        <div className="">
-          <div className="">
-            <SheetHeader>
-              <div className="flex justify-between items-center p-5">
-                <SheetTitle className="text-primary-black text-2xl font-semibold">
-                  Shopping Cart
-                </SheetTitle>
-                <SheetDescription>
-                  <span className="text-muted-foreground">
-                    {cartItemsNumber} {cartItemsNumber === 1 ? "item" : "items"}
-                  </span>
-                </SheetDescription>
-              </div>
-            </SheetHeader>
-            <div className="">
-              <ScrollArea className="h-[55vh] px-5">
-                <div className="space-y-4">
-                  {cartItems.length > 0 ? (
-                    cartItems.map((item: TFoodWithQuantity) => (
-                      <CartItem
-                        key={item._id}
-                        item={item}
-                        onUpdateQuantity={updateCartQuantity}
-                        onRemove={removeItem}
-                      />
-                    ))
-                  ) : (
-                    <p className="text-center text-muted-foreground my-20">
-                      Your cart is empty.
-                    </p>
-                  )}
-                </div>
-              </ScrollArea>
-              {cartItems.length > 0 && (
-                <div className="mt-4 shadow-inner">
-                  <CartSummary
-                    subTotal={subTotal}
-                    onCheckout={handleCheckout}
-                    deliveryLocation={deliveryLocation}
-                    setDeliveryLocation={setDeliveryLocation}
-                    agreedToTerms={agreedToTerms}
-                    setAgreedToTerms={setAgreedToTerms}
-                    checkoutLoading={checkoutLoading}
-                  />
-                </div>
-              )}
+        window.location.href = checkoutRes.data?.url; // Redirect to checkout URL
+    };
+
+    return (
+        <div className="text-primary-black">
+            <div className="mt-4">
+                <SheetHeader>
+                    <div className="flex justify-between items-center p-5">
+                        <SheetTitle className="text-primary-black text-2xl font-semibold">
+                            Shopping Cart
+                        </SheetTitle>
+                        <SheetDescription>
+                            <span className="text-muted-foreground">
+                                {cartItemsNumber}{" "}
+                                {cartItemsNumber === 1 ? "item" : "items"}
+                            </span>
+                        </SheetDescription>
+                    </div>
+                </SheetHeader>
+                <ScrollArea className="h-[52vh] 2xl:h-[55vh] px-5">
+                    <div className="space-y-4">
+                        {cartItems.length > 0 ? (
+                            cartItems.map((item: TFoodWithQuantity) => (
+                                <CartItem
+                                    key={item._id}
+                                    item={item}
+                                    onUpdateQuantity={updateCartQuantity}
+                                    onRemove={removeItem}
+                                />
+                            ))
+                        ) : (
+                            <p className="text-center text-muted-foreground my-20">
+                                Your cart is empty.
+                            </p>
+                        )}
+                    </div>
+                </ScrollArea>
+                {cartItems.length > 0 && (
+                    <div className="mt-4 shadow-inner">
+                        <CartSummary
+                            subTotal={subTotal}
+                            onCheckout={handleCheckout}
+                            deliveryLocation={deliveryLocation}
+                            setDeliveryLocation={setDeliveryLocation}
+                            agreedToTerms={agreedToTerms}
+                            setAgreedToTerms={setAgreedToTerms}
+                        />
+                    </div>
+                )}
             </div>
           </div>
         </div>
