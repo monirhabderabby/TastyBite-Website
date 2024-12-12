@@ -3,8 +3,8 @@ import Image from "next/image";
 
 import { GoArrowRight } from "react-icons/go";
 //
-import Link from "next/link";
 import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
+import Link from "next/link";
 import RichTextViewer from "../../textEditor/richTextViewer";
 
 const BlogCard = ({ blog }: { blog: TBlog }) => {
@@ -27,7 +27,7 @@ const BlogCard = ({ blog }: { blog: TBlog }) => {
         <BlogHeaderInfo blog={blog} />
 
         <div className="space-y-6  h-[200px] scrollbar-thin overflow-auto">
-          <h2 className="text-[30px] md:text-[44px] leading-[1.4] text-black font-extrabold">
+          <h2 className="text-[22px] md:text-[30px] lg:text-[44px] leading-[1.4] text-black font-extrabold">
             {blog.title}
           </h2>
           <p className="text-[18px] leading-[28px] text-[#5c5c5b] primary-gray font-normal">
