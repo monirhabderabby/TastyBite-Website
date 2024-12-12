@@ -1,4 +1,12 @@
 "use client";
+// Packages
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+// Local imports
 import ButtonPrimary from "@/components/common/button/buttonPrimary";
 import {
   Form,
@@ -10,36 +18,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateContactMutation } from "@/redux/features/contact/contactApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
-const FormSchema = z.object({
-  firstName: z.string().min(2, {
-    message: "FirstName must be at least 2 characters.",
-  }),
-  lastName: z.string().min(2, {
-    message: "LastName must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please, provide a valid email.",
-  }),
-  message: z.string().min(2, {
-    message: "Message must be at least 2 characters.",
-  }),
-  phone: z.string().min(10, {
-    message: "Please provide a valid phone number.",
-  }),
-});
+import {
+  ContactUsFormSchema,
+  ContactUsFormSchemaType,
+} from "@/schemas/contact.schema";
 
 const ContactForm = () => {
   const [createContact] = useCreateContactMutation();
   const router = useRouter();
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<ContactUsFormSchemaType>({
+    resolver: zodResolver(ContactUsFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -49,7 +37,7 @@ const ContactForm = () => {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: ContactUsFormSchemaType) {
     const res = await createContact(data);
 
     if (res.data) {
@@ -60,7 +48,7 @@ const ContactForm = () => {
   }
 
   return (
-    <div className="my-14 md:my-28 container">
+    <div className="my-10 md:my-16 container">
       <div className="flex flex-col md:flex-row justify-center md:justify-between md:items-center gap-6">
         <div className="flex-1">
           <Form {...form}>
@@ -156,7 +144,7 @@ const ContactForm = () => {
                 />
               </div>
 
-              <div className="flex justify-center md:justify-start items-center">
+              <div className="flex justify-center md:justify-end items-center">
                 <ButtonPrimary text="Book Now" btnType="submit" />
               </div>
             </form>
