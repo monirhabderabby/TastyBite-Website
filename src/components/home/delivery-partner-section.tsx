@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function DeliveryPartnerSection() {
   return (
-    <section className="w-full bg-[#1a1a1a] py-16 md:py-24">
+    <section className="w-full bg-[#1a1a1a] py-20 md:py-28">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
