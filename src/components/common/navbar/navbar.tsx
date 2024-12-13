@@ -145,7 +145,6 @@ const Navbar = ({ userId }: Props) => {
                   <HoveredLink href="/testimonial">Testimonial</HoveredLink>
                   <HoveredLink href="/gallery">Gallery</HoveredLink>
                   <HoveredLink href="/about">About Us</HoveredLink>
-                  <HoveredLink href="/team">Our Team</HoveredLink>
                 </div>
               </MenuItem>
               {userId && (

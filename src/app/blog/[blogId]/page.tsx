@@ -1,14 +1,13 @@
 import Pageheader from "@/components/common/PageHeaderBanner/Pageheader";
 import Image from "next/image";
-
-import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
 import PopularBlog from "@/components/blog/PopularBlog";
 import SocialLink from "@/components/blog/SocialLink";
-import { TBlog } from "@/types";
+import BlogHeaderInfo from "@/components/blog/BlogHeaderInfo";
+import BlogCommentForm from "./_components/BlogCommentForm";
+import BlogCommentDisplay from "./_components/BlogCommentDisplay";
 import dynamic from "next/dynamic";
 import Blog_category from "../_components/Blog_Category";
-import BlogCommentDisplay from "./_components/BlogCommentDisplay";
-import BlogCommentForm from "./_components/BlogCommentForm";
+
 
 const RichTextViewer = dynamic(
     () => import("@/components/common/textEditor/richTextViewer"),
@@ -20,20 +19,15 @@ export default async function BlogDetailsPage({
 }: {
     params: Record<string, string>;
 }) {
-    let blogData: TBlog | null = null;
-    try {
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${params.blogId}`
-        );
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/blog/${params.blogId}`
+  );
 
-        if (!res.ok) {
-            throw new Error("Failed to fetch blog data");
-        }
-        const data = await res.json();
-        blogData = data?.data;
-    } catch (err) {
-        console.log(err);
-    }
+  if (!res.ok) {
+    throw new Error("Failed to fetch blog data");
+  }
+  const data = await res.json();
+  const blogData = data?.data;
 
     const breadcrumbLinks = {
         mode: "dark",
