@@ -14,7 +14,7 @@ const AboutFood = () => {
   return (
     <div>
       <div className="container overflow-hidden py-20 md:py-28">
-        <div className="max-w-full md:mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-4 lg:gap-10 overflow-hidden">
+        <div className="max-w-full md:mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10 md:gap-4 lg:gap-10 overflow-hidden">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -38,13 +38,13 @@ const AboutFood = () => {
               className="w-[520px]"
             >
               <p
-                className={`text-primary-orange text-left text-xl md:text-xl lg:text-[30px] font-pacifico mb-2 md:mb-0 lg:mb-5`}
+                className={`text-primary-orange text-left text-[20px] md:text-[24px] lg:text-[28px] font-pacifico mb-2 md:mb-0 lg:mb-5`}
               >
                 About Our Food
               </p>
               <h2
                 className={`text-primary-black
-                            text-left text-5xl md:text-3xl lg:text-[60px] lg:leading-[60px] xl:text-[70px] xl:leading-[70px] uppercase font-bold tracking-wide mb-5 md:mb-1 lg:mb-5`}
+                            text-left  text-3xl sm:text-4xl md:text-5xl uppercase font-bold tracking-wide mb-5 md:mb-1 lg:mb-5`}
               >
                 Where Quality Meet Excellent{" "}
                 <span className="text-primary-orange">Service.</span>
