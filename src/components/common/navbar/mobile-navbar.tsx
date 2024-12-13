@@ -100,9 +100,6 @@ const MobileNavbar = ({
                                         <SheetClose asChild>
                                             <Link href="/gallery">Gallery</Link>
                                         </SheetClose>
-                                        <SheetClose asChild>
-                                            <Link href="/team">Our Team</Link>
-                                        </SheetClose>
                                     </div>
                                 </AccordionContent>
                             </AccordionItem>

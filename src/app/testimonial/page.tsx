@@ -39,8 +39,8 @@ export default async function testimonial() {
     <div className="pt-16 h-screen bg-[#121619] ">
       <div>
         <div className="bg-primary-black w-full relative overflow-hidden">
-          <div className="w-full absolute h-[32px] md:h-[66px] lg:h-[136px] -top-4 md:-top-8 lg:-top-16"></div>
-          <div className="container py-[50px] lg:py-[100px]">
+      
+          <div className="container py-[50px] lg:pt-[100px]">
             <SectionHeader
               title="What Our Clients Say"
               heading="CUSTOMER REVIEWS"

@@ -1,7 +1,5 @@
 "use client";
 
-import ButtonPrimary from "@/components/common/button/buttonPrimary";
-
 import {
   Form,
   FormControl,
@@ -19,7 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
+import { useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 const FormSchema = z.object({
   comment: z
     .string()
@@ -29,6 +28,7 @@ const FormSchema = z.object({
     .max(200, { message: "Comment must be at most 200 characters." }),
 });
 
+// BlogCommentForm component allows users to post comments on a blog.
 const BlogCommentForm = ({ blog }: { blog: TBlog }) => {
   const [createBlogComment, { isLoading }] = useCreateBlogCommentMutation();
 
@@ -40,10 +40,18 @@ const BlogCommentForm = ({ blog }: { blog: TBlog }) => {
     mode: "all",
   });
 
+  const { user } = useUser();
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (isLoading) return;
+    // Check if user is logged in
+    if (!user) {
+      toast.error("You need to be logged in to comment");
+      return;
+    }
+
     const commentBody = {
-      clerkId: "user_2npvSYgJ4PVW52Tj4Y1uQWCEMol",
+      clerkId: user.id,
       blogId: blog._id,
       comment: data.comment,
     };
@@ -79,7 +87,13 @@ const BlogCommentForm = ({ blog }: { blog: TBlog }) => {
           />
 
           <div className="flex  justify-center md:justify-start items-center">
-            <ButtonPrimary text="Create comment" btnType="submit" />
+            <Button
+              type="submit"
+              className="uppercase text-white hover:text-primary-orange bg-primary-orange hover:bg-transparent rounded-[50px] text-base px-[41px] py-[14px] h-[50px] tracking-wide border-[1px] border-primary-orange font-semibold duration-300"
+            >
+              {" "}
+              {isLoading ? "Loading..." : "Create Comment"}{" "}
+            </Button>
           </div>
         </form>
       </Form>

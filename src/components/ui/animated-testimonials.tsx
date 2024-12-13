@@ -14,7 +14,7 @@ type Testimonial = {
 };
 export const AnimatedTestimonials = ({
   testimonials,
-  autoplay = false,
+  autoplay = true,
 }: {
   testimonials: Testimonial[];
   autoplay?: boolean;
@@ -83,10 +83,10 @@ export const AnimatedTestimonials = ({
                   <Image
                     src={testimonial.src}
                     alt={testimonial.name}
-                    width={600}
-                    height={500}
+                    width={500}
+                    height={400}
                     draggable={false}
-                    className="h-full w-full rounded-3xl object-cover object-center"
+                    className="h-[400px] w-[320px] md:w-[500px] md:h-[600px] xl:w-[650px] xl:h-[500px] bg-primary-orange rounded-3xl object-cover object-center"
                   />
                 </motion.div>
               ))}
@@ -145,7 +145,7 @@ export const AnimatedTestimonials = ({
               ))}
             </motion.p>
           </motion.div>
-          <div className="flex gap-4 pt-12 md:pt-0">
+          <div className="flex justify-center md:justify-start  gap-4 pt-8 md:pt-0">
             <button
               onClick={handlePrev}
               className="h-7 w-7 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center group/button"
