@@ -25,7 +25,7 @@ const SectionHeader = ({
       <p
         className={`text-primary-orange text-center md:text-${
           textPosition ? textPosition : "center"
-        } text-xl md:text-2xl lg:text-[30px] font-pacifico mb-2 md:mb-3 lg:mb-5`}
+        } text-[20px] md:text-[24px] lg:text-[28px] font-pacifico mb-2 md:mb-3 lg:mb-5`}
       >
         {title}
       </p>
@@ -34,7 +34,7 @@ const SectionHeader = ({
           headingTextColor ? headingTextColor : "text-primary-black"
         } text-center md:text-${
           textPosition ? textPosition : "center"
-        } text-4xl md:text-5xl lg:text-[70px] uppercase font-bold tracking-wide`}
+        } text-3xl sm:text-4xl md:text-5xl uppercase font-bold tracking-wide`}
       >
         {heading}
       </h2>
