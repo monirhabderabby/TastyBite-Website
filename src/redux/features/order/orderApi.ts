@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { baseApi } from "@/redux/api/baseApi";
-import { GetOrdersResponse, UserStatsResponse } from "@/types";
+import { UserStatsResponse } from "@/types";
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -31,12 +31,9 @@ const orderApi = baseApi.injectEndpoints({
         "OrderStats",
       ],
     }),
-    getOrderForDeliveryman: builder.query<
-      GetOrdersResponse,
-      { userId: string }
-    >({
-      query: ({ userId }) => ({
-        url: `/order/deliveryman/${userId}`,
+    getOrderForDeliveryman: builder.query({
+      query: ({ userId, isCompleted, isCancelled }) => ({
+        url: `/order/deliveryman/${userId}?isCompleted=${isCompleted}&isCancelled=${isCancelled}`,
         method: "GET",
       }),
     }),

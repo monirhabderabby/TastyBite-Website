@@ -7,7 +7,7 @@ const RunningOrders = dynamic(() => import("./_components/running-orders"));
 const Page = async () => {
   const user = await currentUser();
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 mb-10">
       <OrderStatsContainer userId={user?.id as string} />
       <RunningOrders />
       <CompletedOrder />

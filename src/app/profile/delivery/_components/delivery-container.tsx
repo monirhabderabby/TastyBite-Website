@@ -16,6 +16,8 @@ interface Props {
 const DeliveryContainer = ({ userId }: Props) => {
   const { isLoading, data, isError } = useGetOrderForDeliverymanQuery({
     userId,
+    isCompleted: false,
+    isCancelled: false,
   });
 
   let content;
