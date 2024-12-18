@@ -192,3 +192,11 @@ export type TAddress = {
     latitude: number;
     longitude: number;
 };
+
+export interface TopThreeFood {
+    _id: string;
+    totalOrders: number;
+    name: string;
+    images: string[];
+    category: string;
+}

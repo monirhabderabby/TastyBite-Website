@@ -2,10 +2,10 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { setMenu } from "@/redux/features/filter/filterSlice";
-import { useGetAllFoodsQuery } from "@/redux/features/food/foodApi";
+import { useGetTopThreeFoodsQuery } from "@/redux/features/food/foodApi";
 import { useGetAllMenusQuery } from "@/redux/features/menu/menuApi";
 import { useAppDispatch } from "@/redux/store";
-import { TFood, TMenu } from "@/types";
+import { TMenu, TopThreeFood } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 const MenuContent = () => {
     const [hydrated, setHydrated] = useState(false);
-    const { data, isLoading } = useGetAllFoodsQuery({ limit: 3 });
+    const { data, isLoading } = useGetTopThreeFoodsQuery({});
     const { data: menuData, isLoading: menuLoading } = useGetAllMenusQuery({});
 
     const dispatch = useAppDispatch();
@@ -91,7 +91,7 @@ const MenuContent = () => {
             </div>
             {/* Special foods */}
             <div>
-                {data?.data?.map((food: TFood) => (
+                {data?.data?.map((food: TopThreeFood) => (
                     <div
                         key={food._id}
                         className="grid grid-cols-[1fr_auto] shadow-sm px-5 py-3 rounded-lg"
@@ -109,7 +109,7 @@ const MenuContent = () => {
                                     {food.name}
                                 </h4>
                                 <p className="text-primary-black">
-                                    {food.menuId.name}
+                                    {food.category}
                                 </p>
                             </div>
                         </div>
