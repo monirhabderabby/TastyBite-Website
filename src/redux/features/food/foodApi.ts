@@ -76,6 +76,13 @@ const foodApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["food"],
         }),
+        getTopThreeFoods: builder.query({
+            query: () => ({
+                url: "/stats/top-three-foods",
+                method: "GET",
+            }),
+            providesTags: ["food"],
+        }),
     }),
 });
 
@@ -89,4 +96,5 @@ export const {
     useCreateFoodReviewMutation,
     useGetFoodReviewByFoodQuery,
     useGetFoodByIdsMutation,
+    useGetTopThreeFoodsQuery,
 } = foodApi;
