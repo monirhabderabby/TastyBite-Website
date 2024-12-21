@@ -74,6 +74,11 @@ const orderApi = baseApi.injectEndpoints({
       }),
       providesTags: ["OrderStats"],
     }),
+    getAssignedOrderStats: builder.query({
+      query: (userId) => ({
+        url: `/stats/deliveryman-order-stats/${userId}`,
+      }),
+    }),
   }),
 });
 
@@ -84,4 +89,5 @@ export const {
   useGetOrderForDeliverymanQuery,
   useCompleteOrderMutation,
   useGetOrderStatsQuery,
+  useGetAssignedOrderStatsQuery,
 } = orderApi;
