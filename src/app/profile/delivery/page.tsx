@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import dynamic from "next/dynamic";
+import AssignedOrderStats from "./_components/assigned-order-stats";
 const DeliveryContainer = dynamic(
   () => import("./_components/delivery-container")
 );
@@ -12,6 +13,9 @@ const Page = async () => {
 
   return (
     <>
+      <div className="mb-5">
+        <AssignedOrderStats userId={auth?.id as string} />
+      </div>
       <div>
         <div className="border-b">
           <h1 className="text-[22px] font-narrow font-semibold text-primary-black">
