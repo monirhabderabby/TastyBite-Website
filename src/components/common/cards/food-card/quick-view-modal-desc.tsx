@@ -7,40 +7,40 @@ import ProductInfo from "./product-info";
 import QuickViewAction from "./quick-view";
 
 const QuickViewModalDesc = ({ food }: { food: TFood }) => {
-  const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1);
 
-  const handleMinus = () => {
-    // handle minimum decrease
+    const handleMinus = () => {
+        // handle minimum decrease
 
-    // set state
-    setQuantity((prev) => prev - 1);
-  };
+        // set state
+        setQuantity((prev) => prev - 1);
+    };
 
-  const handlePlus = () => {
-    // handle maximum increase
+    const handlePlus = () => {
+        // handle maximum increase
 
-    // set state
-    setQuantity((prev) => prev + 1);
-  };
-  return (
-    <div className="flex flex-col gap-y-3 justify-between h-full ">
-      <ProductInfo
-        title={food.name}
-        description={food.description}
-        price={food.price}
-        extras={food.extras}
-        sizes={food.sizes}
-      />
-      <div className="space-y-[30px]">
-        <QuantityControl
-          quantity={quantity}
-          onMinus={handleMinus}
-          onPlus={handlePlus}
-        />
-        <QuickViewAction food={food} quantity={quantity} />
-      </div>
-    </div>
-  );
+        // set state
+        setQuantity((prev) => prev + 1);
+    };
+    return (
+        <div className="flex flex-col gap-y-3 justify-between h-full ">
+            <ProductInfo
+                title={food.name}
+                description={food.description}
+                price={food.price}
+                // extras={food.extras}
+                // sizes={food.sizes}
+            />
+            <div className="space-y-[30px]">
+                <QuantityControl
+                    quantity={quantity}
+                    onMinus={handleMinus}
+                    onPlus={handlePlus}
+                />
+                <QuickViewAction food={food} quantity={quantity} />
+            </div>
+        </div>
+    );
 };
 
 export default QuickViewModalDesc;
